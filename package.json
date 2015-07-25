@@ -1,0 +1,40 @@
+{
+  "name": "waveformjs",
+  "description": "draw waveforms in javascript",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jonnywildey/waveformjs",
+  "author": {
+    "name": "Jonny Wildey",
+    "email": "jonnywildey@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jonnywildey/waveformjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jonnywildey/waveformjs/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jonnywildey/waveformjs/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/waveformjs",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.4.0",
+    "grunt-wiredep": "^2.0.0"
+  },
+  "keywords": []
+}
