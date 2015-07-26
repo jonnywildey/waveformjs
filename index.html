@@ -1,22 +1,20 @@
-
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/fabric/dist/fabric.min.js"></script>
 <script src="bower_components/mathjs/dist/math.min.js"></script>
 <script src="bower_components/aurora.js/build/aurora.js"></script>
 <!-- endbower -->
-
-<script src="dist/waveformjs.js"></script> 
+<script src="dist/waveformjs.js"></script>
+<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
 <script type='text/javascript'>
-$(document).ready(function () {
-	waveformjs.run('/~Jonny/waveformjs/audio/test.wav', document.getElementById('canvas'));
-	});
+	$(document).ready(function () {
+		waveformjs.run('/~Jonny/waveformjs/audio/test.wav', document.getElementById('canvas'));
+		});
 </script>
-
 <body>
-<div style="height:100%;width:100%;overflow:hidden">
-	<canvas id="canvas" width="800" height="500" style="border:1px solid #ccc;"/>
-</div>
-
+	<div style="background-color: white">
+		<div style="height:100%;width:100%;overflow:hidden">
+			<canvas id="canvas" width="800" height="500" style="border:1px solid #ccc;" />
+		</div>
+	</div>
 </body>
- 

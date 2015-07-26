@@ -1,3 +1,4 @@
+/* global fft */
 /* global AV */
 /* global dsputil */
 /* global $ */
@@ -9,6 +10,7 @@ var waveformjs = {
             var asset = AV.Asset.fromURL(audioFile);
             //due to the constructor from asset being broken, create separate player.
             var player = AV.Player.fromURL(audioFile);
+            drawsignal.setPlayer(player);
                       
             //create colors
             var strokeColors = [
@@ -45,7 +47,7 @@ var waveformjs = {
                       
             //play when ready
             player.on('ready', function () {
-                drawsignal.drawPlaybackLine(player, asset.duration)
+                //drawsignal.drawPlaybackLine(player, asset.duration)
             })
                       
             /**
@@ -53,21 +55,14 @@ var waveformjs = {
              */
             var drawAmplitudes = function (buffer) {
                 var channels = asset.format.channelsPerFrame;
-                //split into stereo signals
-                var channelArray = dsputil.splitArraysByChannel(buffer, channels);
-                      
-                //draw signal
-                channelArray.forEach(function (signal, i) {
-                    //change colors
-                    drawsignal.pathSettings.stroke = strokeColors[i % strokeColors.length];
-                    drawsignal.pathSettings.fill = fillColors[i % fillColors.length];
-                    //draw
-                    drawsignal.signalToCanvas(signal, i % 2);
-                });
+                var signals = dsputil.splitArraysByChannel(buffer, channels);
+                //          
+                drawsignal.signalToCircle(signals, asset.duration, 100);
+                //
+                //drawsignal.signalToCanvas(signals, asset.duration);
             }
 
             drawFrequencies = function (buffer) {
-
                 var channels = asset.format.channelsPerFrame;
                 var sampleRate = asset.format.sampleRate;
                 var frameSize = 1024;

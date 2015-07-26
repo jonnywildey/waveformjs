@@ -20,7 +20,7 @@
       "url": "https://github.com/jonnywildey/waveformjs/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/waveformjs",
+  "main": "dist/waveformjs",
   "engines": {
     "node": ">= 0.10.0"
   },
