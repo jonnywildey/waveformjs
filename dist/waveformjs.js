@@ -36,6 +36,11 @@ var drawsignal = {
     resolution: 1,
 	
 	/**
+	 * Linear easing function
+	 */
+	linearEasing: function (t, b, c, d) { return c * t / d + b; },
+	
+	/**
 	 * colors for wave strokes
 	 */
 	strokeColors: [
@@ -208,12 +213,21 @@ var drawsignal = {
 				diff = ms - oldms;
 				path.animate('angle', '' + (-angle) + '', {
 					onChange: me.canvas.renderAll.bind(me.canvas),
-					duration: diff, //bit of leeway
+					duration: diff,
 					//linear easing
-					easing: function (t, b, c, d) { return c * t / d + b; }
+					easing: me.linearEasing
 				});
 				oldms = ms;
 			}, me.playbackDelay + (duration * 0.0005));
+		});
+		
+		me.getPlayer().on('end', function() {
+			path.animate('angle', '' + -360 + '', {
+					onChange: me.canvas.renderAll.bind(me.canvas),
+					duration: 100, //bit of leeway
+					//linear easing
+					easing: me.linearEasing
+				});
 		});
 	},
 
@@ -321,7 +335,7 @@ var drawsignal = {
 			onChange: me.canvas.renderAll.bind(canvas),
 			duration: msdif,
 			//linear easing
-			easing: function (t, b, c, d) { return c * t / d + b; }
+			easing: me.linearEasing
 		});
 	}
 
