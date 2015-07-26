@@ -1,3 +1,6 @@
+/**
+ * Utilities for dsp
+ */
 var dsputil = {
 	
 	/**
@@ -22,12 +25,35 @@ var dsputil = {
 		var c = 0;
 		var val;
 		var sf = Math.floor(start);
-		var ec = Math.ceil(end)
+		var ec = Math.ceil(end);
 		for (var i = sf; i < ec && i < buffer.length; i++) {
 			val = buffer[i];
 			c += Math.abs(val);
 		}
-		return c / (end - start);
+		var result = c / (end - start);
+		return result;	
+	},
+	
+	/**
+	 * count the amplitudes in the middle of the frame more
+	 */
+	windowedAmplitude: function(buffer, start, end) {
+		var c = 0;
+		var val;
+		var sf = Math.floor(start);
+		var ec = Math.ceil(end);
+		var len = end - start;
+		var hLen = len * 0.5;
+		var amp;
+		var pos;
+		for (var i = sf; i < ec && i < buffer.length; i++) {
+			val = buffer[i];
+			pos = i - sf;
+			amp = (pos < hLen) ? pos / hLen : (pos - hLen) / hLen;
+			c += Math.abs(val) * amp;
+		}
+		var result = c / hLen;
+		return result;		
 	},
 	
 	/**
@@ -40,9 +66,10 @@ var dsputil = {
 		for (var i = 0; i < channels; i++) {
 			splitArray[i] = [];
 		}
-		for (var i = 0; i < buffer.length; i += channels) {
-			for (var j = 0; j < channels; j++) {
-				splitArray[j].push(buffer[i + j]);
+		//split
+		for (var i = 0; i < channels; i++) {
+			for (var j = 0; j < buffer.length - 1; j++) {
+				splitArray[i].push(buffer[j + i]);
 			}
 		}
 		return splitArray;

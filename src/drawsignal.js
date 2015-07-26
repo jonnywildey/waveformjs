@@ -9,8 +9,7 @@ var drawsignal = {
 	/**
 	 * Basic path settings
 	 */
-	pathSettings: { fill: 'blue', stroke: 'green', opacity: 0.5, fillRule: 'evenodd', 
-					 },
+	pathSettings: { fill: 'blue', stroke: 'green', opacity: 0.5, fillRule: 'evenodd' },
 	
 	/**
 	 * Settings for an outline
@@ -33,6 +32,35 @@ var drawsignal = {
      * 5 = medium
      */
     resolution: 1,
+	
+	/**
+	 * colors for wave strokes
+	 */
+	strokeColors: [
+		'hsl(260, 90%, 70%)',
+		'hsl(200, 90%, 70%)',
+		'hsl(160, 90%, 70%)',
+		'hsl(100, 90%, 70%)',
+		'hsl(70, 90%, 70%)',
+		'hsl(60, 90%, 70%)',
+		'hsl(40, 90%, 70%)',
+		'hsl(20, 90%, 70%)',
+    ],
+	
+	/**
+	 * colors for wave fill
+	 */
+	fillColors: [
+		'hsl(205, 80%, 30%)',
+		'hsl(160, 80%, 30%)',
+		'hsl(110, 80%, 30%)',
+		'hsl(90, 80%, 30%)',
+		'hsl(70, 80%, 30%)',
+		'hsl(50, 80%, 30%)',
+		'hsl(30, 80%, 30%)',
+		'hsl(10, 80%, 30%)',
+    ],
+
     
     /**
 	 * Setup canvas
@@ -61,14 +89,14 @@ var drawsignal = {
 	/**
 	 * Set player
 	 */
-	setPlayer: function(player) {
+	setPlayer: function (player) {
 		this._player = player;
 	},
 	
 	/**
 	 * get player
 	 */
-	getPlayer: function() {
+	getPlayer: function () {
 		return this._player;
 	},
 	
@@ -86,7 +114,8 @@ var drawsignal = {
 		me.drawCircle(centre, maxRadius);
 		me.drawCircle(centre, maxRadius - waveWidth);
 		//draw main circle
-		me.drawWaveCircle(centre, maxRadius - (waveWidth * 0.5), signals, waveWidth, duration);
+		me.drawWaveCircle(centre, maxRadius - (waveWidth * 0.5), signals,
+			waveWidth, duration);
 		//draw playback line
 		var coords = [centre[0], 0, centre[0], Math.pow(2 * Math.pow(waveWidth, 2), 0.5)];
 		me.playbackLine = new fabric.Line(coords, me.outlineSettings);
@@ -143,37 +172,46 @@ var drawsignal = {
 				//work out angle. Wave naturally starts at 135° so shift
 				angle = (Math.PI * 2) * (i / radius) - (Math.PI * 0.75);
 				x = Math.cos(angle) * (dco[0] - origin[0]) -
-					Math.sin(angle) * (dco[1] - origin[1]) + origin[0];
+				Math.sin(angle) * (dco[1] - origin[1]) + origin[0];
 				y = Math.sin(angle) * (dco[0] - origin[0]) +
-					Math.cos(angle) * (dco[1] - origin[1]) + origin[1];
-				pathCode += 'L ' + x + ' ' + y + ' ';
+				Math.cos(angle) * (dco[1] - origin[1]) + origin[1];
+				pathCode += 'L ' + x + ' ' + y;
 			}
 		}
-		
 		//draw path
 		var path = new fabric.Path(pathCode);
 		path.set(me.pathSettings);
+		me.canvas.add(path);
 		//rotate
-		me.rotateWave(path, duration);	
+		me.rotateWave(path, duration);
 	},
 	
 	/**
 	 * Rotate wave form
 	 * @private
 	 */
-	rotateWave: function(path, duration) {
+	rotateWave: function (path, duration) {
 		var me = this;
-		me.canvas.add(path);
-		var player = me.getPlayer();
-		player.on('ready', function() {
-			setTimeout(function() {
-				path.animate('angle', '-360' , {
+		var oldms = 0, diff, angle;
+		me.getPlayer().on('progress', function (ms) {
+			//there's some amount of delay between these progress updates and the actual audio...
+			setTimeout(function () {
+				//our previous prediction will be off, factor this error into
+				//next prediction so we stay in sync
+				var drift = ((-path.angle / 360) * duration) - oldms;
+				//adding all the drift in makes the rotation stuttery, make it smaller
+				drift = (drift / duration * 360) * 0.5;
+				angle = ((ms / duration) * 360) - drift;
+				angle = (angle > 360) ? 360 : angle;
+				diff = ms - oldms;
+				path.animate('angle', '' + (-angle) + '', {
 					onChange: me.canvas.renderAll.bind(me.canvas),
-					duration: duration,
+					duration: diff, //bit of leeway
 					//linear easing
 					easing: function (t, b, c, d) { return c * t / d + b; }
 				});
-			}, me.playbackDelay);
+				oldms = ms;
+			}, me.playbackDelay + (duration * 0.0005));
 		});
 	},
 
@@ -220,7 +258,7 @@ var drawsignal = {
 	calculateVal: function (signal, i, scaleFactor) {
 		var disp;
 		if (scaleFactor > 1) { //more samples than space, average
-			disp = Math.abs(dsputil.averageAmplitude(signal, i * scaleFactor,
+			disp = Math.abs(dsputil.windowedAmplitude(signal, i * scaleFactor,
 				(i + 1) * scaleFactor));
 		} else { //more space than samples, interpolate
 			disp = dsputil.interpolateBuffer(signal, i * scaleFactor);

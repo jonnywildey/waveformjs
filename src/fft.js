@@ -42,9 +42,9 @@ var fft = {
 	},
 	
 	/**
-	 * cfft in frames of size
+	 * perform fft transform on a signal
 	 */
-	frameCfft: function(amplitudes, frameSize, sampleRate) {
+	fftTransform: function(amplitudes, frameSize, sampleRate) {
 		if (!this.is2Exp(frameSize)) {
 			return;
 		}
@@ -56,6 +56,15 @@ var fft = {
 		}
 		return this.createMelWindow(frames, 26, frameSize, sampleRate);
 	},
+	
+	/**
+	 * perform mel-cepstrum transform
+	 */
+	melCepstrumTransfrom: function(amplitudes, frameSize, melBinCount, sampleRate) {
+		var ffts = this.fftTransform(amplitudes, frameSize, sampleRate);
+		return this.createMelWindow(ffts, melBinCount, frameSize, sampleRate);
+	},
+	
 	
 	/**
 	 * complex fft function
@@ -133,31 +142,26 @@ var fft = {
 		return fr;
 	},
 	
-	
+	/**
+	 * hertz to mels
+	 */
 	hertzToMel: function(hertz) {
 	  var f = hertz * 0.00142857142857 + 1; //1 / 700
 	  return 1127 * Math.log(f);
 	},
 	
+	/**
+	 * mel to hertz
+	 */
 	melToHertz: function(mel) {
 		var f = (math.pow(10, mel * 0.00038535645472) -1) // 1 / 2595
 		return f * 700;
 	},
 	
-	getMelRow: function(sampleRate, frameSize) {
-		var me = this;
-		var freqRow = this.getFreqRow(sampleRate, frameSize);
-		var melRow = [];
-		freqRow.forEach(function(freq) {
-			melRow.push(me.mel(freq));
-		})
-		return melRow;
-	},
-	
 	
 	/**
 	 * Calculates the frequencies (in hertz) that we 
-	 * would use for a mel filterbank
+	 * would be used for a mel filterbank
 	 */
 	createMelFilterBank: function(startFreq, endFreq, count) {
 		var bank = [];
@@ -175,7 +179,7 @@ var fft = {
 	},
 	
 	/**
-	 * Align frequencies to nearest fft bin
+	 * Align frequencies (from mel conversion) to nearest fft bin
 	 */
 	freqToBins: function(freqRows, frameSize, sampleRate) {
 		var bins = [];
@@ -187,6 +191,10 @@ var fft = {
 		return bins;
 	},
 	
+	/**
+	 * Basic window function. Linearly interpolates
+	 * a frequency between fft bins
+	 */
 	windowFunction: function(i, bins, linRows, k) {
 		var bl = linRows[bins[i - 1]];
 		var bp = linRows[bins[i + 1]];
@@ -212,7 +220,6 @@ var fft = {
 	 */
 	filterAmplitudes: function(frame, bins, linRows) {
 		var melFrame = [];
-		var ff;
 		var oVal; //original value
 		var fVal; //filter value
 		for (var i = 0; i < frame.length; i++) {
@@ -229,6 +236,9 @@ var fft = {
 		return melFrame;
 	},
 
+	/**
+	 * Create mel-cepstrum bins from an fft signal
+	 */
 	createMelWindow: function(amplitudes, filterCount, frameSize, sampleRate) {
 		debugger;
 		var me = this;
