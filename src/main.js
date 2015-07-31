@@ -47,6 +47,23 @@ var waveformjs = {
     },
     
     /**
+     * Draw spiral waveform
+     */
+    drawSpiral: function (audioFile, canvas) {
+        var me = this;
+        me.setup(audioFile, canvas);                    
+        //when array has been decoded, analyze
+        me.asset.decodeToBuffer(function (buffer) {
+            var channels = me.asset.format.channelsPerFrame;
+            var signals = dsputil.splitArraysByChannel(buffer, channels);
+            //          
+            drawsignal.signalToSpiral(signals, me.asset.duration, 100);  
+            //play
+            me.player.play();
+        });
+    },
+    
+    /**
      * Draw classic waveform
      */
     drawWave: function (audioFile, canvas) {
@@ -57,7 +74,7 @@ var waveformjs = {
             var channels = me.asset.format.channelsPerFrame;
             var signals = dsputil.splitArraysByChannel(buffer, channels);
             //          
-            drawsignal.signalToCanvas(signals, me.asset.duration);  
+            drawsignal.signalToSpiral(signals, me.asset.duration);  
             //play
             me.player.play();
         });
