@@ -19,13 +19,13 @@ var waveformjs = {
      * setup
      */
     setup: function (audioFile, canvas) {
-        //set up canvas        
-        drawsignal.setupCanvas(canvas);
         //create asset from file
         this.asset = AV.Asset.fromURL(audioFile);
         //due to the constructor from asset being broken, create separate player.
         this.player = AV.Player.fromURL(audioFile);
         this.player.volume = 20;
+        //set up canvas        
+        drawsignal.setupCanvas(canvas, this.player);
         drawsignal.setPlayer(this.player);
     },
 
@@ -58,8 +58,6 @@ var waveformjs = {
             var signals = dsputil.splitArraysByChannel(buffer, channels);
             //          
             drawsignal.signalToSpiral(signals, me.asset.duration, 100);  
-            //play
-            me.player.play();
         });
     },
     

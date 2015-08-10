@@ -9,27 +9,32 @@ var drawsignal = {
 	/**
 	 * Basic path settings
 	 */
-	pathSettings: { fill: 'blue', stroke: 'green', opacity: 0.5, fillRule: 'evenodd' },
+	pathSettings: { fill: 'blue', stroke: 'green', opacity: 0.5, fillRule: 'evenodd', selectable: false },
 	
 	/**
 	 * Basic path settings
 	 */
-	insideCircleSettings: { fill: 'white', stroke: 'grey', opacity: 0.45, fillRule: 'evenodd' },
+	insideCircleSettings: { fill: 'white', stroke: 'grey', opacity: 0.45, fillRule: 'evenodd', selectable: false },
 	
 	/**
 	 * Basic path settings
 	 */
-	spiralPlayheadSettings: { fill: 'red', stroke: '', opacity: 0.25, width: 30, height: 30,  },
+	spiralPlayheadSettings: { fill: 'red', stroke: '', opacity: 0.25, width: 30, height: 30,  selectable: false},
 	
 	/**
 	 * Settings for an outline
 	 */
-	outlineSettings: { fill: '', stroke: 'grey', opacity: 0.5 },
+	outlineSettings: { fill: '', stroke: 'grey', opacity: 0.5, selectable: false },
 	
 	/**
      * playback line added to canvas
      */
     playbackLine: null, 
+	
+	/**
+	 * Player
+	 */
+	player: null,
     
     /**
      * delay in ms for playback line
@@ -80,12 +85,13 @@ var drawsignal = {
     /**
 	 * Setup canvas
 	 */
-	setupCanvas: function (canvas) {
+	setupCanvas: function (canvas, player) {
 		fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 		this.canvas = canvas;
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 		this.canvas = new fabric.Canvas('canvas');
+		this.player = player;
 		//add removeAll
 		canvas.removeAll = function () {
 			var items = canvas.getObjects();
@@ -242,31 +248,24 @@ var drawsignal = {
 
 	signalToSpiral: function (signals, duration, waveWidth) {
 		var me = this;
-		debugger;
 		//waveWidth = (waveWidth) ? waveWidth : 100;
 		var canvas = me.canvas, height = canvas.height, width = canvas.width;
 		var centre = [width * 0.5, height * 0.5];
 		var maxLength = (height > width) ? centre[0] : centre[1];
 		//var maxRadius = Math.pow(Math.pow(maxLength, 2) * 0.5, 0.5);
-		debugger;
 		//turn every 1:00 or so
 		var totalTurns = Math.round(duration / 80000);
 		totalTurns = (totalTurns < 1) ? 1 : totalTurns;
 		var innerRadius = maxLength / 5;
 		//draw outline circles
-		//me.drawSpiral(centre, innerRadius, maxLength, totalTurns);
-		//me.drawSpiral(centre, maxLength - width);
 		me.drawWaveSpiral(centre, innerRadius, (maxLength * 0.9),
 			totalTurns, signals, duration);
-		//me.drawCircle(centre, maxRadius - waveWidth);
-		//rotate
-		
 	},
 
 	/**
 	 * Draw spiral
 	 */
-	drawSpiral: function (origin, innerRadius, outerRadius, totalTurns) {
+	drawSpiral: function (origin, innerRadius, outerRadius, totalTurns, signals, duration) {
 		var me = this;
 		var increasePerTurn = (outerRadius - innerRadius) / totalTurns;
 		//general equation
@@ -279,10 +278,25 @@ var drawsignal = {
 			tArray = me.polarToCart(r, a, origin);
 			pathCode += 'L ' + (tArray[0]) + ' ' + (tArray[1]);
 		}
-		//draw path
+		//draw path		
 		var path = new fabric.Path(pathCode);
 		path.set(me.outlineSettings);
-		me.canvas.add(path);
+
+		var pWidth = path.getWidth();
+		var pHeight = path.getHeight();
+		var max = (pWidth > pHeight) ? pWidth : pHeight;
+		
+		var group = new fabric.Group([path], {
+			left: origin[0],
+			top: origin[1],
+			width: max,
+			height: max
+		});
+		path.set({
+			left: (pWidth - pHeight) * 0.5,
+			top: (pHeight - pWidth) * 0.5
+		});
+		me.canvas.add(group);
 		//add circle
 		me.drawCircle(origin, innerRadius);
 	},
@@ -302,7 +316,6 @@ var drawsignal = {
 		//r = a + bø
 		var b = increasePerTurn / (2 * Math.PI);
 		var lineLength = me.lengthOfSpiral(innerRadius, b, totalTurns);
-		//lineLength =  outerRadius;
 		var resolution = 0.01;
 		var scaleFactor = signals[0].length / ((outerRadius - innerRadius));
 		//calculate length of spiral
@@ -341,13 +354,14 @@ var drawsignal = {
 		var pWidth = path.getWidth();
 		var pHeight = path.getHeight();
 		var max = (pWidth > pHeight) ? pWidth : pHeight;
+			
 		var group = new fabric.Group([path], {
 			left: origin[0],
 			top: origin[1],
 			width: max,
-			height: max
+			height: max,
+			selectable: false
 		});
-		debugger;
 		path.set({
 			left: (pWidth - pHeight) * 0.5,
 			top: (pHeight - pWidth) * 0.5
@@ -356,9 +370,12 @@ var drawsignal = {
 		path.set(me.pathSettings);
 		me.canvas.add(group);	
 		//add circle
-		me.drawCircle(origin, innerRadius - (amplification * Math.PI), me.insideCircleSettings);
+		me.drawCircle(origin, innerRadius , me.insideCircleSettings);
+		me.drawPlaybackTriangle(innerRadius, origin);
+		
 		//playback
-		me.drawSpiralPlaybackLine(duration, outerRadius, innerRadius, totalTurns, origin);
+		me.drawSpiralPlaybackLine(duration, outerRadius, 
+								  innerRadius, totalTurns, origin, pWidth / pHeight);
 		me.rotateSpiralWave(group, duration, totalTurns);
 	},
 
@@ -385,17 +402,75 @@ var drawsignal = {
 	/**
 	 * There is a delay in sending of playback events and playback
 	 */
-	drawSpiralPlaybackLine: function (duration, outerRadius, innerRadius, totalTurns, origin) {
+	drawSpiralPlaybackLine: function (duration, outerRadius, innerRadius, totalTurns, origin, skew) {
 		var me = this;
 		var oldms = 1;
 		var player = me.getPlayer();
 		player.on('progress', function (ms) {
 			setTimeout(function () {
-				me.writeSpiralPlaybackLine(ms, duration, oldms, outerRadius, innerRadius, totalTurns, origin);
+				me.writeSpiralPlaybackLine(ms, duration, oldms, outerRadius, 
+											innerRadius, totalTurns, origin, skew);
 				oldms = ms;
-			}, me.playbackDelay);
+			}, me.playbackDelay * 2);
 		});
 	},
+	
+	drawPlaybackTriangle: function(radius, origin) {
+		var innerRadius = radius * 0.5;
+		var me = this;
+		var triangle = new fabric.Triangle({ 
+			fill: '', 
+			stroke: 'grey', 
+			opacity: 0.65, 
+			width: innerRadius, 
+			height: innerRadius, 
+			left: origin[0],
+			top: origin[1],
+			angle: 90 });
+		triangle.on('selected', function() {
+			me.player.play();
+			me.canvas.remove(triangle);
+			me.drawPlaybackPause(radius, origin);
+		});		
+			
+		this.canvas.add(triangle);
+	},
+	
+	drawPlaybackPause: function(radius, origin) {
+		var innerRadius = radius * 0.5;
+		var me = this;
+		var r1 = new fabric.Rect({ 
+			fill: '', 
+			stroke: 'grey', 
+			opacity: 0.65, 
+			width: innerRadius * 0.2, 
+			height: innerRadius, 
+			left: 0,
+			top: 0});
+			
+		var r2 = new fabric.Rect({ 
+			fill: '', 
+			stroke: 'grey', 
+			opacity: 0.65, 
+			width: innerRadius * 0.2, 
+			height: innerRadius, 
+			left: innerRadius * 0.5,
+			top: 0});
+			
+		var group = new fabric.Group([r1, r2], {
+			width: innerRadius, 
+			height: innerRadius, 
+			left: origin[0],
+			top: origin[1]
+		});
+		group.on('selected', function() {
+			me.player.pause();
+			me.canvas.remove(group);
+			me.drawPlaybackTriangle(radius, origin);
+		});		
+		this.canvas.add(group);
+	},
+	
 	
 	/**
 	 * Draw a playback line based on play progress updates. 
@@ -403,21 +478,23 @@ var drawsignal = {
 	 * in roughly the same interval as the previous
 	 * @private
 	 */
-	writeSpiralPlaybackLine: function (ms, duration, oldms, outerRadius, innerRadius, totalTurns, origin) {
+	writeSpiralPlaybackLine: function (ms, duration, oldms, outerRadius, 
+									   innerRadius, totalTurns, origin, skew) {
 		var me = this, canvas = this.canvas;
 		//get rid of last playback line
 		canvas.remove(me.playbackLine);
+		//var mid = (1 - (ms / duration)) * ((outerRadius - innerRadius) / (totalTurns * 8));
 		var progress = (ms / duration) * (outerRadius - innerRadius);
-		
+		//var angle = (ms / duration) * totalTurns * 2 * Math.PI;
+		//create playback
 		var cCords = me.polarToCart(outerRadius - progress, 0, origin);
 		var triangle = new fabric.Triangle($.extend({
-			left: cCords[0], top: cCords[1]
+			left: cCords[0], top: cCords[1] 
 		}, me.spiralPlayheadSettings));
 		me.playbackLine = triangle;
 		//guess rate of events
 		var msdif = ms - oldms;
 		var pixelWidth = (msdif / duration) * (outerRadius - innerRadius);
-		//me.playbackLine = new fabric.Line(coords, me.playbackSettings);
 		me.canvas.add(me.playbackLine);
 		//animate
 		me.playbackLine.animate('left', '-=' + pixelWidth, {
@@ -455,7 +532,7 @@ var drawsignal = {
 					easing: me.linearEasing
 				});
 				oldms = ms;
-			}, me.playbackDelay + (duration * 0.0005));
+			}, me.playbackDelay + (duration * 0.0003));
 		});
 
 		me.getPlayer().on('end', function () {
