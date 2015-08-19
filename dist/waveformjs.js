@@ -1,4 +1,4 @@
-/*! waveformjs - v0.0.1 - 2015-08-11
+/*! waveformjs - v0.0.1 - 2015-08-19
 * https://github.com/jonnywildey/waveformjs
 * Copyright (c) 2015 Jonny Wildey; Licensed MIT */
 var drawsignal = {
@@ -313,7 +313,7 @@ var drawsignal = {
 		var me = this;
 		var increasePerTurn = (outerRadius - innerRadius) / totalTurns;
 		//rough guess for how big we want signal to be
-		var amplification = increasePerTurn / ((totalTurns < 2) ? 2: totalTurns) * 0.2;
+		var amplification = increasePerTurn / ((totalTurns < 2) ? 2: totalTurns) * 0.225;
 		//general equation
 		//r = a + bø
 		var b = increasePerTurn / (2 * Math.PI);
@@ -538,7 +538,7 @@ var drawsignal = {
 		});
 
 		me.getPlayer().on('end', function () {
-			path.animate('angle', '' + 360 + '', {
+			path.animate('angle', '' + (turns * 360) + '', {
 				onChange: me.canvas.renderAll.bind(me.canvas),
 				duration: 100, //bit of leeway
 				//linear easing
@@ -719,12 +719,12 @@ var dsputil = {
 		var splitArray = [];
 		//init
 		for (var i = 0; i < channels; i++) {
-			splitArray[i] = [];
+			splitArray[i] = new Float32Array(buffer.length * 0.5);
 		}
 		//split
 		for (var i = 0; i < channels; i++) {
 			for (var j = 0; j < buffer.length - 1; j++) {
-				splitArray[i].push(buffer[j + i]);
+				splitArray[i][Math.floor(j/ 2)] = buffer[j + i];
 			}
 		}
 		return splitArray;
@@ -1032,6 +1032,7 @@ var waveformjs = {
      */
     setup: function (audioFile, canvas) {
         //create asset from file
+        debugger;
         this.asset = AV.Asset.fromURL(audioFile);
         //due to the constructor from asset being broken, create separate player.
         this.player = AV.Player.fromURL(audioFile);
@@ -1065,11 +1066,13 @@ var waveformjs = {
         var me = this;
         me.setup(audioFile, canvas);                    
         //when array has been decoded, analyze
+        debugger;
         me.asset.decodeToBuffer(function (buffer) {
             var channels = me.asset.format.channelsPerFrame;
             var signals = dsputil.splitArraysByChannel(buffer, channels);
             //          
             drawsignal.signalToSpiral(signals, me.asset.duration, 100);  
+            debugger;
         });
     },
     

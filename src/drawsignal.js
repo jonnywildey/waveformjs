@@ -311,7 +311,7 @@ var drawsignal = {
 		var me = this;
 		var increasePerTurn = (outerRadius - innerRadius) / totalTurns;
 		//rough guess for how big we want signal to be
-		var amplification = increasePerTurn / ((totalTurns < 2) ? 2: totalTurns) * 0.2;
+		var amplification = increasePerTurn / ((totalTurns < 2) ? 2: totalTurns) * 0.225;
 		//general equation
 		//r = a + bø
 		var b = increasePerTurn / (2 * Math.PI);
@@ -536,7 +536,7 @@ var drawsignal = {
 		});
 
 		me.getPlayer().on('end', function () {
-			path.animate('angle', '' + 360 + '', {
+			path.animate('angle', '' + (turns * 360) + '', {
 				onChange: me.canvas.renderAll.bind(me.canvas),
 				duration: 100, //bit of leeway
 				//linear easing

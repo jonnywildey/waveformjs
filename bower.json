@@ -24,6 +24,6 @@
     "jquery": "~2.1.4",
     "fabric": "~1.5.0",
     "mathjs": "~1.7.1",
-    "aurora.js": "git://github.com/qzchenwl/aurora.js#~0.4.4"
+    "snap.svg": "~0.4.1"
   }
 }

@@ -1,20 +1,69 @@
+<head>
+
+<link rel="stylesheet" type="text/css" href="style/waveformjs.css">	
+	
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/fabric/dist/fabric.min.js"></script>
 <script src="bower_components/mathjs/dist/math.min.js"></script>
-<script src="bower_components/aurora.js/build/aurora.js"></script>
+<script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
 <!-- endbower -->
 <script src="dist/waveformjs.js"></script>
-<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
-<script type='text/javascript'>
-	$(document).ready(function () {
-		waveformjs.drawSpiral('/~Jonny/waveformjs/audio/long.wav', document.getElementById('canvas'));
-		});
-</script>
+<script src="bower_components/aurorajs/build/aurora.js"></script>
+
+</head>
+
 <body>
-	<div style="background-color: #BDCFF9">
-		<div style="height:100%;width:100%;overflow:hidden">
-			<canvas id="canvas" width="800" height="500" style="border:1px solid #ccc;" />
-		</div>
-	</div>
+	<object id="spiral" width="1000" type="image/svg+xml" data="/~Jonny/waveformjs/svg/test.wav.svg"></object>
+	<script>
+		window.onload = function(){
+		debugger;
+		var sun = Snap.select('#spiral');
+		var sunCircle = sun.select('#sp');
+		var pauseButton = sun.select('#pausestart');
+	
+	
+	var audio = document.createElement("AUDIO");
+        audio.setAttribute("src","audio/test.wav");
+	audio.play();
+	
+	pauseState = 'playing';
+	sunCircle.click(function() {
+		switch (pauseState) {
+			case 'playing':
+				audio.pause();
+				sunCircle.stop();
+				pauseState = 'paused';
+			break;
+			case 'paused': 
+				audio.play();
+				raysAnimation();
+				pauseState = 'playing';
+			break;
+		}
+		
+	});
+
+	var width = $('#spiral').width();
+	var height = $('#spiral').height();
+	var size = width;
+	
+	// Sun events
+	raysAnimation();
+	
+
+	// Infinite animation for the sun rays
+	function raysAnimation(){
+		sunCircle.stop().animate(
+			{ transform: 'r360,' + (size / 2) + ',' + (size / 2)}, // Basic rotation around a point. No frills.
+			10000, // Nice slow turning rays
+			function(){ 
+				sunCircle.attr({ transform: 'rotate(0 ' + (size / 2) + ' ' + (size / 2) + ')'}); // Reset the position of the rays.
+				raysAnimation(); // Repeat this animation so it appears infinite.
+			}
+		);
+	
+	}
+		};
+	</script>
 </body>
