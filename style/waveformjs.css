@@ -1,4 +1,68 @@
+
 #spiral:hover { 
 	
-    opacity: 0.9;
 }
+
+.loading {
+
+}
+
+.svg-wave {
+    fill: rgba(73, 166, 179, 0.63);
+    stroke-width: 1; 
+    stroke: rgba(53, 146, 159, 0.3);
+}
+
+.playback-head {
+    fill: rgb(141, 173, 171);
+}
+
+.spiral-player {
+    margin: auto;
+}
+
+.svg-object {
+    margin: auto;
+}
+
+.pausebutton, .playbutton {
+    fill: rgb(141, 173, 171);
+}
+
+@-webkit-keyframes blink {
+	0% {fill: rgba(245, 245, 245, 1);}
+    50% {fill: rgba(245, 245, 245, 0);}
+}
+
+.playsymbol {
+    animation: blink 2s step-end infinite;
+    -webkit-animation: blink 2s step-end infinite;
+}
+
+.pausesymbol, .playsymbol {
+    fill: rgb(141, 173, 171);
+    transition: all 0.2s ease;
+}
+
+.playbutton .playsymbol, .loading .playsymbol, .loading .pausebutton:hover .playsymbol  {
+    animation: none;
+    -webkit-animation: none;
+    display: none;
+}
+
+.pausebutton:hover .pausesymbol, .playbutton:hover .playsymbol {
+    fill: rgba(245, 245, 245, 0);
+    transition: all 0.2s ease;
+    animation: none;
+    -webkit-animation: none;
+    
+}
+
+.pausebutton:hover .playsymbol, .playbutton:hover .pausesymbol {
+    fill: rgba(245, 245, 245, 1);
+    transition: all 0.2s ease;
+    animation: none;
+    -webkit-animation: none;
+}
+
+

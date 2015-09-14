@@ -1,69 +1,51 @@
-<head>
+<!DOCTYPE html>
+<html lang="en">
 
-<link rel="stylesheet" type="text/css" href="style/waveformjs.css">	
-	
-<!-- bower:js -->
-<script src="bower_components/jquery/dist/jquery.js"></script>
-<script src="bower_components/fabric/dist/fabric.min.js"></script>
-<script src="bower_components/mathjs/dist/math.min.js"></script>
-<script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
-<!-- endbower -->
-<script src="dist/waveformjs.js"></script>
-<script src="bower_components/aurorajs/build/aurora.js"></script>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="../../favicon.ico">
+
+	<title>Alphabets Heaven</title>
+
+	<!-- Bootstrap core CSS -->
+	<link href="style/bootstrap.css" rel="stylesheet">
+	<link href="style/cover.css" rel="stylesheet">
+	<link href="style/waveformjs.css" rel="stylesheet">
 
 </head>
 
+
+
 <body>
-	<object id="spiral" width="1000" type="image/svg+xml" data="/~Jonny/waveformjs/svg/test.wav.svg"></object>
-	<script>
-		window.onload = function(){
-		debugger;
-		var sun = Snap.select('#spiral');
-		var sunCircle = sun.select('#sp');
-		var pauseButton = sun.select('#pausestart');
-	
-	
-	var audio = document.createElement("AUDIO");
-        audio.setAttribute("src","audio/test.wav");
-	audio.play();
-	
-	pauseState = 'playing';
-	sunCircle.click(function() {
-		switch (pauseState) {
-			case 'playing':
-				audio.pause();
-				sunCircle.stop();
-				pauseState = 'paused';
-			break;
-			case 'paused': 
-				audio.play();
-				raysAnimation();
-				pauseState = 'playing';
-			break;
-		}
-		
-	});
+	 
 
-	var width = $('#spiral').width();
-	var height = $('#spiral').height();
-	var size = width;
-	
-	// Sun events
-	raysAnimation();
+    <div class="container">
+		<div class="starter-template">
+					
+					<div style="width: 100%; margin: auto;" id="long"></div>
+					<h3 class="cover-heading" id='track-title'></h3>
+				</div>
+      
+
+    </div>
 	
 
-	// Infinite animation for the sun rays
-	function raysAnimation(){
-		sunCircle.stop().animate(
-			{ transform: 'r360,' + (size / 2) + ',' + (size / 2)}, // Basic rotation around a point. No frills.
-			10000, // Nice slow turning rays
-			function(){ 
-				sunCircle.attr({ transform: 'rotate(0 ' + (size / 2) + ' ' + (size / 2) + ')'}); // Reset the position of the rays.
-				raysAnimation(); // Repeat this animation so it appears infinite.
-			}
-		);
+	<!-- bower:js -->
+	<script src="bower_components/jquery/dist/jquery.js"></script>
+	<script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
+	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="bower_components/SoundManager2/script/soundmanager2.js"></script>
+	<!-- endbower -->
+	<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
+	<script src="dist/waveformjs.js"></script>
 	
-	}
-		};
-	</script>
+
+
 </body>
+
+</html>
