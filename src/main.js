@@ -22,6 +22,8 @@ var waveformjs = {
 	hasPlayedBefore: false,
 	
 	trackInfo: false,
+	
+	divId: null,
 
 	/**
 	 * Initialise
@@ -35,6 +37,10 @@ var waveformjs = {
 		this.pauseState = 'reset';
 	},
 	
+	getTrackInfo: function() {
+		return this.trackInfo;
+	},
+	
 	/**
 	 * Play
 	 */
@@ -45,15 +51,13 @@ var waveformjs = {
 			whileplaying: function() {
 				//too many whilePlaying events are fired
 				i++;
-				if (i % 10 == 0) {
+				if (i % 10 == 2) {
 					//sync
 					me.animate('sync')
 				}
 			},
-			onplay: function() {
-				me.animate('play');
-			}
 		});
+		me.animate('play');
 		this.pauseState = 'playing';
 		this.pauseButton.addClass("playbutton");
 		this.pauseButton.removeClass("pausebutton");
@@ -168,27 +172,43 @@ var waveformjs = {
 		});	
 		
 	},
-
-
-	run: function (id, sound, wav, trackInfo) {
-		var divId = $('#' + id);
+	
+	clear: function() {
+		if (this.divId != null) {
+			this.divId.empty();
+		}
+	},
+	
+	stop: function() {
+		if (this.audio != null) {
+			this.audio.stop();
+		}
+	},
+	
+	createHtml: function(id, trackInfo) {
+		this.divId = $('#' + id);
 		this.trackInfo = trackInfo;
 		//get smaller of height or width
 		var bHeight = $('body').height() * 0.9;
-		var length = (divId.width() > bHeight) ? bHeight : divId.width();
-		divId.height(length);
+		var length = (this.divId.width() > bHeight) ? bHeight : this.divId.width();
+		this.divId.height(length);
 		//create objects
 		var playerDiv = $('<div/>', {
 			'class': 'spiral-player',
 			'height': length,
 			'width': length,
 		});
-		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="/~Jonny/waveformjs/svg/' + wav +
+		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="/~Jonny/waveformjs/svg/' + trackInfo.svgId +
 			'.svg"></object>').appendTo(playerDiv);
-		playerDiv.appendTo(divId);
-		
+		playerDiv.appendTo(this.divId);
+	},
 
-		$.getJSON('json/' + wav + '.json', function (data) {
+
+	run: function (id, sound, trackInfo) {	
+		this.clear();		
+		this.stop();
+		this.createHtml(id, trackInfo);
+		$.getJSON('json/' + trackInfo.svgId + '.json', function (data) {
 			this.imageInfo = data;		
 			//setup audio
 			var obj = document.getElementById("svg-" + id);
@@ -201,43 +221,77 @@ var waveformjs = {
 	}
 };
 
-
-
 function Waveformjs() {
 	return $.extend({}, waveformjs)
 };
+
+var clientId = '84a4cf04866f2c6ce3cde18d76be4898';
+var lw = new Waveformjs();
+
+
+
+function playSound(id) {
+	//find sound
+	var sound;
+	scData.some(function(track) {
+		if (track.id == id) {
+			sound = track;
+			return true;
+		}
+	});
+	playAudio(sound);
+}
+
+
+
+function playAudio(track) {
+	//check if already playing
+	debugger;
+	if (lw.getTrackInfo().id == track.id) {
+		return;
+	}
+	
+	
+	//create url
+	var url = track.stream_url;
+	(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
+	url = url + 'client_id=' + clientId;
+	
+	var sound = soundManager.createSound({
+			// Give the sound an id and the SoundCloud stream url we created above.
+			id: track.id,
+			url: url
+		});
+	lw.run('long', sound, track);
+}
 
 
 $(function(){
 	// Wait for SoundManager2 to load properly
 	soundManager.onready(function() {
-		var tracks = {
-			'fornia.wav': '/tracks/78067275',
-			'atomic.wav': '/tracks/206005379'
-			
-		};
-		var clientId = '84a4cf04866f2c6ce3cde18d76be4898';
 		SC.initialize({
 		client_id: clientId
 			
 		});;
 		
-		SC.get("/users/alphabetsheaven/tracks", function(tracks) {	
-			var track = tracks[0];
-			//create url
-			var url = track.stream_url;
-			(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
-			url = url + 'client_id=' + clientId;
+			debugger;
+			//get all tracks with svgId
+			var tracks = [];
+			scData.forEach(function(track) {
+				if (track.svgId !== undefined) { //check if file exists?
+				  tracks.push(track);	
+				}
+			});
+			//create tracks table
+			var tStr = "";
+			var tFormat = '<div class="track-item"><a href="#" onclick="playSound({1})">{0}</a></div>';
+			tracks.forEach(function(track) {
+				tStr += tFormat.format(track.title, track.id);
+			});
+			$('#track-table').append(tStr);
 			
-			var sound = soundManager.createSound({
-					// Give the sound an id and the SoundCloud stream url we created above.
-					id: track.id,
-					url: url
-				});
-			var lw = new Waveformjs();
-			lw.run('long', sound, 'atomic.wav', track);
+			playAudio(tracks[0]);
 			
-		});
 	});
 });
 

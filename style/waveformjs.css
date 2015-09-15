@@ -4,7 +4,7 @@
 }
 
 .loading {
-
+    
 }
 
 .svg-wave {
@@ -23,6 +23,10 @@
 
 .svg-object {
     margin: auto;
+}
+
+.pausebutton {
+    cursor: pointer;
 }
 
 .pausebutton, .playbutton {
@@ -50,6 +54,10 @@
     display: none;
 }
 
+.loading .pausebutton {
+     cursor: wait;
+}
+
 .pausebutton:hover .pausesymbol, .playbutton:hover .playsymbol {
     fill: rgba(245, 245, 245, 0);
     transition: all 0.2s ease;
@@ -64,5 +72,7 @@
     animation: none;
     -webkit-animation: none;
 }
+
+
 
 

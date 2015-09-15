@@ -1,0 +1,61 @@
+#track-table {
+	height: 100%;
+	width: 100%;
+	margin: auto;
+	overflow: auto;
+	background: linear-gradient(to bottom, rgba(30, 28, 37, 0.5), rgba(30, 28, 37, 1));
+}
+#track-title {
+	opacity: 0.5;
+}	
+
+
+.track-table-container {
+	height: 250px;
+	margin-top: 5%;
+	float: right;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(141, 173, 171, 0);
+	
+	
+	 
+    z-index: 1000;
+    position: fixed;
+    right: 200px;
+	width: 0;
+    margin-right: -250px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+}
+
+.track-item {
+	width: 80%;
+	margin-top: 5%;
+	text-align: left;
+}
+
+.track-item a {
+	opacity: 0.5;
+}
+
+.track-item a:active,
+.track-item a:focus {
+
+    text-decoration: none;
+}
+
+.track-item a:hover {
+	opacity: 0.9;
+    text-decoration: none;
+}
+
+@media(min-width:1000px) { 
+	.track-table-container {
+    	width: 250px;
+	}
+}
