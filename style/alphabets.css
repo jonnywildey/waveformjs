@@ -1,24 +1,57 @@
 #track-table {
-	height: 100%;
+	height: 250px;
 	width: 100%;
 	margin: auto;
 	overflow: auto;
-	background: linear-gradient(to bottom, rgba(30, 28, 37, 0.5), rgba(30, 28, 37, 1));
+    text-overflow: ellipsis;
+    content: "";
+    position:relative;
 }
+
+.table-top-shadow {
+    position:relative;
+}
+
+.table-top-shadow:after {
+    content:'';
+    width: 100%;
+    height: 10%;
+    position:absolute;
+    left:0;
+    top:0;
+    background:linear-gradient(#1E1C25 0%, transparent 100%);
+}
+
+.table-bottom-shadow {
+    position:relative;
+}
+
+.table-bottom-shadow:after {
+    content:'';
+    width: 100%;
+    height: 20%;
+    position:absolute;
+    left:0;
+    bottom:0;
+    background:linear-gradient(transparent 0%, #1E1C25 100%);
+}
+
+
 #track-title {
 	opacity: 0.5;
 }	
 
 
 .track-table-container {
-	height: 250px;
+	height: 500px;
 	margin-top: 5%;
 	float: right;
 	border-style: solid;
 	border-width: 1px;
+    overflow: : auto;
 	border-color: rgba(141, 173, 171, 0);
 	
-	
+
 	 
     z-index: 1000;
     position: fixed;
@@ -53,6 +86,8 @@
 	opacity: 0.9;
     text-decoration: none;
 }
+
+
 
 @media(min-width:1000px) { 
 	.track-table-container {

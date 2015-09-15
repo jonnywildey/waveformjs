@@ -198,7 +198,7 @@ var waveformjs = {
 			'height': length,
 			'width': length,
 		});
-		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="/~Jonny/waveformjs/svg/' + trackInfo.svgId +
+		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
 			'.svg"></object>').appendTo(playerDiv);
 		playerDiv.appendTo(this.divId);
 	},
