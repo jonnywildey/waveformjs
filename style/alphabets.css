@@ -48,7 +48,7 @@
 	float: right;
 	border-style: solid;
 	border-width: 1px;
-    overflow: : auto;
+    overflow:  auto;
 	border-color: rgba(141, 173, 171, 0);
 	
 
@@ -88,9 +88,50 @@
 }
 
 
+.sc-powered-link {
+    position: absolute;
+    opacity: 0.5;
+    right: 20px;
+    bottom: 0px;
+}
+
+.item-link {
+    height: 42px;
+    opacity: 0.5;
+    display: table-cell;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  overflow-x: auto; 
+  display: table;
+  -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.footer-row {
+    position: relative;
+}
+
+.item-link a, .item-link img{
+    height: 100%;
+}
 
 @media(min-width:1000px) { 
 	.track-table-container {
     	width: 250px;
 	}
 }
+

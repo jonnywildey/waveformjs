@@ -1,4 +1,4 @@
-/*! waveformjs - v0.0.1 - 2015-09-15
+/*! waveformjs - v0.0.1 - 2015-09-16
 * https://github.com/jonnywildey/waveformjs
 * Copyright (c) 2015 Jonny Wildey; Licensed MIT */
 /* global fft */
@@ -200,7 +200,7 @@ var waveformjs = {
 			'height': length,
 			'width': length,
 		});
-		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="/~Jonny/waveformjs/svg/' + trackInfo.svgId +
+		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
 			'.svg"></object>').appendTo(playerDiv);
 		playerDiv.appendTo(this.divId);
 	},
