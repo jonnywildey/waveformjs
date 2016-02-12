@@ -1,6 +1,6 @@
-/*! waveformjs - v0.0.1 - 2015-09-16
+/*! waveformjs - v0.0.1 - 2016-02-12
 * https://github.com/jonnywildey/waveformjs
-* Copyright (c) 2015 Jonny Wildey; Licensed MIT */
+* Copyright (c) 2016 Jonny Wildey; Licensed MIT */
 /* global fft */
 /* global AV */
 /* global dsputil */
@@ -20,11 +20,11 @@ var waveformjs = {
 	playbackHead: null,
 
 	imageInfo: null,
-	
+
 	hasPlayedBefore: false,
-	
+
 	trackInfo: false,
-	
+
 	divId: null,
 
 	/**
@@ -38,11 +38,11 @@ var waveformjs = {
 		this.pauseButton.click(this.pauseClick.bind(this));
 		this.pauseState = 'reset';
 	},
-	
-	getTrackInfo: function() {
+
+	getTrackInfo: function () {
 		return this.trackInfo;
 	},
-	
+
 	/**
 	 * Play
 	 */
@@ -50,7 +50,7 @@ var waveformjs = {
 		var me = this;
 		var i = 0;
 		me.audio.play({
-			whileplaying: function() {
+			whileplaying: function () {
 				//too many whilePlaying events are fired
 				i++;
 				if (i % 10 == 2) {
@@ -64,7 +64,7 @@ var waveformjs = {
 		this.pauseButton.addClass("playbutton");
 		this.pauseButton.removeClass("pausebutton");
 	},
-	
+
 	/**
 	 * Pause
 	 */
@@ -92,8 +92,8 @@ var waveformjs = {
 			case 'reset':
 				this.loadAudio();
 			case 'loading':
-			//do nothing
-			break;
+				//do nothing
+				break;
 		}
 	},
 
@@ -102,7 +102,7 @@ var waveformjs = {
 	 */
 	animate: function (state) {
 		var duration = this.audio.duration,
-		    position = this.audio.position,
+			position = this.audio.position,
 			totalTurns = this.imageInfo.totalTurns * 360,
 			size = this.imageInfo.size,
 			transition = 100;
@@ -113,25 +113,25 @@ var waveformjs = {
 		var progress = (position / duration);
 		var currentAngle = progress * totalTurns,
 			currentDistance = progress * headShift,
-			msDur = (duration - position); //ms	
+			msDur = (duration - position); //ms
 		switch (state) {
 			case 'play':
-				this.animateObjects(totalTurns, headShift, hSize,  msDur);
+				this.animateObjects(totalTurns, headShift, hSize, msDur);
 				break;
 			case 'pause':
 				this.animateObjects(currentAngle, currentDistance, hSize, transition);
 				break;
 			case 'sync':
 				this.transformObjects(currentAngle, currentDistance, hSize);
-				this.animateObjects(totalTurns, headShift, hSize,  msDur);
+				this.animateObjects(totalTurns, headShift, hSize, msDur);
 				break;
 		}
 	},
-	
+
 	/**
 	 * Animate objects
 	 */
-	animateObjects: function(wAngle, pDistance, centre, duration) {
+	animateObjects: function (wAngle, pDistance, centre, duration) {
 		this.waveSpiral.stop().animate(
 			{ transform: 'r' + wAngle + ',' + centre + ',' + centre },
 			duration);
@@ -140,24 +140,24 @@ var waveformjs = {
 			duration
 			);
 	},
-	
+
 	/**
 	 * Transform objects
 	 */
-	transformObjects: function(wAngle, pDistance, centre) {
+	transformObjects: function (wAngle, pDistance, centre) {
 		this.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre);
-		this.playbackHead.stop().transform('t-' + pDistance + ',0' );
+		this.playbackHead.stop().transform('t-' + pDistance + ',0');
 	},
-	
+
 	/**
 	 * load audio
 	 */
-	loadAudio: function() {
+	loadAudio: function () {
 		var me = this;
 		me.pauseState = 'loading';
 		me.svgObj.addClass('loading');
 		$('#track-title').html('loading');
-		var suspendFunction = function() {
+		var suspendFunction = function () {
 			if (me.pauseState === 'loading') {
 				me.svgObj.removeClass('loading');
 				me.pauseState = 'loaded';
@@ -166,39 +166,39 @@ var waveformjs = {
 		}
 		me.audio.load({
 			onsuspend: suspendFunction,
-			whileloading: function() {
+			whileloading: function () {
 				if (me.pauseState === 'loading' && me.audio.bytesLoaded > 0.2) {
 					suspendFunction();
 				}
 			}
-		});	
-		
+		});
+
 	},
-	
-	clear: function() {
+
+	clear: function () {
 		if (this.divId != null) {
 			this.divId.empty();
 		}
 	},
-	
-	stop: function() {
+
+	stop: function () {
 		if (this.audio != null) {
 			this.audio.stop();
 		}
 	},
-	
-	createHtml: function(id, trackInfo) {
+
+	createHtml: function (id, trackInfo) {
 		this.divId = $('#' + id);
 		this.trackInfo = trackInfo;
 		//get smaller of height or width
-		var bHeight = $('body').height() * 0.9;
-		var length = (this.divId.width() > bHeight) ? bHeight : this.divId.width();
-		this.divId.height(length);
+		// var bHeight = $('body').height() * 0.9;
+		// var length = (this.divId.width() > bHeight) ? bHeight : this.divId.width();
+		// this.divId.height(length);
 		//create objects
 		var playerDiv = $('<div/>', {
 			'class': 'spiral-player',
-			'height': length,
-			'width': length,
+			// 'height': length,
+			// 'width': length,
 		});
 		$('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
 			'.svg"></object>').appendTo(playerDiv);
@@ -206,12 +206,12 @@ var waveformjs = {
 	},
 
 
-	run: function (id, sound, trackInfo) {	
-		this.clear();		
+	run: function (id, sound, trackInfo) {
+		this.clear();
 		this.stop();
 		this.createHtml(id, trackInfo);
 		$.getJSON('json/' + trackInfo.svgId + '.json', function (data) {
-			this.imageInfo = data;		
+			this.imageInfo = data;
 			//setup audio
 			var obj = document.getElementById("svg-" + id);
 			obj.addEventListener('load', function () {
@@ -235,7 +235,7 @@ var lw = new Waveformjs();
 function playSound(id) {
 	//find sound
 	var sound;
-	scData.some(function(track) {
+	scData.some(function (track) {
 		if (track.id == id) {
 			sound = track;
 			return true;
@@ -244,59 +244,62 @@ function playSound(id) {
 	playAudio(sound);
 }
 
+function populateTrackTable(tracks) {
+	//create tracks table
+	var tStr = "";
+	var tFormat = '<div class="track-item"><a href="#" onclick="playSound({1})">{0}</a></div>';
+	tracks.forEach(function (track) {
+		tStr += tFormat.format(track.title, track.id);
+	});
+	//add spacer
+	tStr += ' <div class="track-item-spacer"></div>';
+	$('#track-table').append(tStr);
+}
+
 
 
 function playAudio(track) {
 	//check if already playing
-	debugger;
 	if (lw.getTrackInfo().id == track.id) {
 		return;
 	}
-	
-	
 	//create url
 	var url = track.stream_url;
 	(url.indexOf("secret_token") == -1) ? url = url + '?' : url = url + '&';
 	url = url + 'client_id=' + clientId;
-	
+	//create
 	var sound = soundManager.createSound({
-			// Give the sound an id and the SoundCloud stream url we created above.
-			id: track.id,
-			url: url
-		});
+		// Give the sound an id and the SoundCloud stream url we created above.
+		id: track.id,
+		url: url
+	});
 	lw.run('long', sound, track);
 }
 
 
-$(function(){
+
+$(function () {
 	// Wait for SoundManager2 to load properly
-	soundManager.onready(function() {
+	soundManager.onready(function () {
 		SC.initialize({
-		client_id: clientId
-			
+			client_id: clientId
+
 		});;
-		
-			debugger;
-			//get all tracks with svgId
-			var tracks = [];
-			scData.forEach(function(track) {
-				if (track.svgId !== undefined) { //check if file exists?
-				  tracks.push(track);	
-				}
-			});
-			//create tracks table
-			var tStr = "";
-			var tFormat = '<div class="track-item"><a href="#" onclick="playSound({1})">{0}</a></div>';
-			tracks.forEach(function(track) {
-				tStr += tFormat.format(track.title, track.id);
-			});
-			$('#track-table').append(tStr);
-			
-			playAudio(tracks[0]);
-			
+
+		//get all tracks with svgId
+		var tracks = [];
+		scData.forEach(function (track) {
+			if (track.svgId !== undefined) { //check if file exists?
+				tracks.push(track);
+			}
+		});
+		populateTrackTable(tracks);
+
+		//preload
+		playAudio(tracks[0]);
+
 	});
 });
-
 
 var scData = [{"kind":"track","id":206005379, "svgId": "atomic.wav", "created_at":"2015/05/18 08:14:58 +0000","user_id":83918,"duration":255449,"commentable":true,"state":"finished","original_content_size":67567112,"last_modified":"2015/05/18 08:14:59 +0000","sharing":"public","tag_list":"Beat NoBeat","permalink":"atomic-alphabets-heaven-segilola","streamable":true,"embeddable_by":"all","downloadable":false,"purchase_url":null,"label_id":null,"purchase_title":null,"genre":"Cold","title":"Atomic (Alphabets Heaven & Segilola)","description":"Year Four\n\nhttp://store.kingdeluxe.ca/album/year-four","label_name":null,"release":null,"track_type":null,"key_signature":null,"isrc":null,"video_url":null,"bpm":null,"release_year":null,"release_month":null,"release_day":null,"original_format":"wav","license":"all-rights-reserved","uri":"https://api.soundcloud.com/tracks/206005379","user":{"id":83918,"kind":"user","permalink":"alphabetsheaven","username":"alphabetsheaven","last_modified":"2015/08/30 03:39:09 +0000","uri":"https://api.soundcloud.com/users/83918","permalink_url":"http://soundcloud.com/alphabetsheaven","avatar_url":"https://i1.sndcdn.com/avatars-000038829281-xikuam-large.jpg"},"permalink_url":"http://soundcloud.com/alphabetsheaven/atomic-alphabets-heaven-segilola","artwork_url":"https://i1.sndcdn.com/artworks-000117175595-0fahne-large.jpg","waveform_url":"https://w1.sndcdn.com/OUgPYC6J8X5C_m.png","stream_url":"https://api.soundcloud.com/tracks/206005379/stream","playback_count":2730,"download_count":0,"favoritings_count":135,"comment_count":8,"attachments_uri":"https://api.soundcloud.com/tracks/206005379/attachments","policy":"ALLOW","monetization_model":"NOT_APPLICABLE"},
 {"kind":"track","id":191084254,"created_at":"2015/02/14 11:32:30 +0000","user_id":83918,"duration":210880,"commentable":true,"state":"finished","original_content_size":55777872,"last_modified":"2015/04/09 01:19:21 +0000","sharing":"public","tag_list":"","permalink":"whats-up","streamable":true,"embeddable_by":"all","downloadable":false,"purchase_url":"https://alphabetsheaven.bandcamp.com/album/lovers","label_id":null,"purchase_title":null,"genre":"Bass","title":"Whats Up","description":"https://alphabetsheaven.bandcamp.com/\r\n\r\nFor the lovers. \r\n\r\nSelection of some of the sleek and soulful edits. Share with a friend.","label_name":"","release":"","track_type":null,"key_signature":null,"isrc":null,"video_url":null,"bpm":null,"release_year":2015,"release_month":2,"release_day":14,"original_format":"wav","license":"all-rights-reserved","uri":"https://api.soundcloud.com/tracks/191084254","user":{"id":83918,"kind":"user","permalink":"alphabetsheaven","username":"alphabetsheaven","last_modified":"2015/08/30 03:39:09 +0000","uri":"https://api.soundcloud.com/users/83918","permalink_url":"http://soundcloud.com/alphabetsheaven","avatar_url":"https://i1.sndcdn.com/avatars-000038829281-xikuam-large.jpg"},"permalink_url":"http://soundcloud.com/alphabetsheaven/whats-up","artwork_url":"https://i1.sndcdn.com/artworks-000106683903-0n2dh2-large.jpg","waveform_url":"https://w1.sndcdn.com/1KiSu4TxblcD_m.png","stream_url":"https://api.soundcloud.com/tracks/191084254/stream","playback_count":1554,"download_count":0,"favoritings_count":51,"comment_count":3,"attachments_uri":"https://api.soundcloud.com/tracks/191084254/attachments","policy":"ALLOW","monetization_model":"NOT_APPLICABLE"},
@@ -356,3 +359,6 @@ String.prototype.format = function(i, safe, arg) {
   return format;
 
 }();
+var videoData = [
+		{name: 'Birthday', embed: '<iframe src="https://player.vimeo.com/video/62144786" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/62144786">Alphabets Heaven - Birthday</a> from <a href="https://vimeo.com/diplodok493">diplodok493</a> on <a href="https://vimeo.com">Vimeo</a>.</p>'}
+];

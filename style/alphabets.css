@@ -8,6 +8,20 @@
     position:relative;
 }
 
+.video-scroller {
+	overflow-y: auto;
+	height: 600px;
+}
+
+.video-container {
+	margin-top: 5%;
+
+}
+
+.a-video {
+	margin-bottom: 4em;
+}
+
 .table-top-shadow {
     position:relative;
 }
@@ -36,10 +50,14 @@
     background:linear-gradient(transparent 0%, #1E1C25 100%);
 }
 
+.videos {
+    padding-top: 60px;
+}
+
 
 #track-title {
 	opacity: 0.5;
-}	
+}
 
 
 .track-table-container {
@@ -50,9 +68,9 @@
 	border-width: 1px;
     overflow:  auto;
 	border-color: rgba(141, 173, 171, 0);
-	
 
-	 
+
+
     z-index: 1000;
     position: fixed;
     right: 200px;
@@ -70,6 +88,13 @@
 	width: 80%;
 	margin-top: 5%;
 	text-align: left;
+}
+
+.track-item-spacer {
+    width: 80%;
+	margin-top: 5%;
+	text-align: left;
+    height: 30px;
 }
 
 .track-item a {
@@ -105,7 +130,6 @@
 
 body {
   /* Margin bottom by footer height */
-  margin-bottom: 60px;
 }
 .footer {
   position: absolute;
@@ -113,7 +137,7 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
-  overflow-x: auto; 
+  overflow-x: auto;
   display: table;
   -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -129,9 +153,13 @@ body {
     height: 100%;
 }
 
-@media(min-width:1000px) { 
+@media(min-width:1000px) {
 	.track-table-container {
     	width: 250px;
 	}
-}
 
+	.video-scroller {
+		height: 600px;
+	}
+
+}
