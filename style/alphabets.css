@@ -1,5 +1,5 @@
 #track-table {
-	height: 250px;
+	height: 260px;
 	width: 100%;
 	margin: auto;
 	overflow: auto;
@@ -11,6 +11,16 @@
 .video-scroller {
 	overflow-y: auto;
 	height: 600px;
+}
+
+.play {
+	background-image: url('../images/play.png');
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	margin-right: 20px;
+	float: left;
+	height: 30px;
+	width: 30px;
 }
 
 .video-container {
@@ -25,6 +35,8 @@
 .table-top-shadow {
     position:relative;
 }
+
+
 
 .table-top-shadow:after {
     content:'';
@@ -62,6 +74,7 @@
 
 .track-table-container {
 	height: 500px;
+	width: 400px;
 	margin-top: 5%;
 	float: right;
 	border-style: solid;

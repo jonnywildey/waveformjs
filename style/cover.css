@@ -7,6 +7,7 @@ a,
 a:focus,
 a:hover {
   color: #fff;
+  opacity: 0.5;
 }
 
 /* Custom default button */
@@ -20,7 +21,7 @@ a:hover {
 }
 
 .cover-heading {
- margin: 0 0 0 0; 
+ margin: 0 0 0 0;
 }
 
 /*
@@ -31,6 +32,9 @@ html,
 body {
   height: 100%;
   background-color: #1E1C25;
+  background-repeat: no-repeat;
+
+
 }
 body {
   color: #fff;
