@@ -10,7 +10,7 @@
 
 .video-scroller {
 	overflow-y: auto;
-	height: 600px;
+	height: 400px;
 }
 
 .play {
@@ -180,7 +180,7 @@ padding-left: 15px;
 			width: 500px;
 			height: 250px;
 		}
-	
+
 	.track-table-container {
     	width: 250px;
 	}
