@@ -30,6 +30,12 @@
 
 .a-video {
 	margin-bottom: 4em;
+
+}
+
+iframe {
+	width: 300px;
+	height: 200px;
 }
 
 .table-top-shadow {
@@ -169,6 +175,12 @@ padding-left: 15px;
 }
 
 @media(min-width:1000px) {
+
+		iframe {
+			width: 500px;
+			height: 250px;
+		}
+	
 	.track-table-container {
     	width: 250px;
 	}
