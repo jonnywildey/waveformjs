@@ -67,7 +67,7 @@
 }
 
 
-#track-title {
+.track-title {
 	opacity: 0.5;
 }
 
@@ -150,6 +150,8 @@ body {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
+	padding-right: 15px;
+padding-left: 15px;
   overflow-x: auto;
   display: table;
   -webkit-transition: all 0.5s ease;

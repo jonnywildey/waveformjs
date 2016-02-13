@@ -154,12 +154,12 @@ var waveformjs = {
 		var me = this;
 		me.pauseState = 'loading';
 		me.svgObj.addClass('loading');
-		$('#track-title').html('loading');
+		$('.track-title').html('loading');
 		var suspendFunction = function () {
 			if (me.pauseState === 'loading') {
 				me.svgObj.removeClass('loading');
 				me.pauseState = 'loaded';
-				$('#track-title').html(me.trackInfo.title);
+				$('.track-title').html(me.trackInfo.title);
 			}
 		}
 		me.audio.load({
