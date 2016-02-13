@@ -251,7 +251,7 @@ function populateTrackTable(tracks) {
 	});
 	//add spacer
 	tStr += ' <div class="track-item-spacer"></div>';
-	$('#track-table').append(tStr);
+	$('.track-table').append(tStr);
 }
 
 
