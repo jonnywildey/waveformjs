@@ -1,3 +1,37 @@
+.content-container {
+	padding: 0;
+	position: relative;
+	background: url('../images/stories.png') no-repeat center;
+	background-size: cover;
+	height: 100%;
+	min-height: 600px;
+}
+
+.navbar {
+	padding: 0 20px;
+}
+
+.track-player {
+	margin: auto;
+	max-width: 600px;
+	position: relative;
+}
+
+.navbar-right {
+	margin-right: 0px;
+}
+
+
+.dropdown-toggle {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.dark-blue {
+	color: #0c2540;
+}
+
+
 #track-table {
 	height: 260px;
 	width: 100%;
@@ -73,12 +107,6 @@ iframe {
     padding-top: 60px;
 }
 
-
-.track-title {
-	opacity: 0.5;
-}
-
-
 .track-table-container {
 	height: 500px;
 	width: 400px;
@@ -86,39 +114,39 @@ iframe {
 	float: right;
 	border-style: solid;
 	border-width: 1px;
-    overflow:  auto;
+  overflow:  auto;
 	border-color: rgba(141, 173, 171, 0);
-
-
-
-    z-index: 1000;
-    position: fixed;
-    right: 200px;
+  z-index: 1000;
+  position: fixed;
+  right: 200px;
 	width: 0;
-    margin-right: -250px;
-    overflow-y: auto;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+  margin-right: -250px;
+  overflow-y: auto;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 
 }
 
 .track-item {
-	width: 80%;
-	margin-top: 5%;
-	text-align: left;
+	width: 100%;
+	line-height: 1.5;
+	text-align: center;
+	display: block;
+	cursor: pointer;
 }
 
 .track-item-spacer {
-    width: 80%;
+  width: 80%;
 	margin-top: 5%;
 	text-align: left;
-    height: 30px;
+  height: 30px;
+	display: block;
 }
 
 .track-item a {
-	opacity: 0.5;
+	opacity: 0.8;
 }
 
 .track-item a:active,
@@ -135,14 +163,14 @@ iframe {
 
 .sc-powered-link {
     position: absolute;
-    opacity: 0.5;
+    opacity: 0.8;
     right: 20px;
-    bottom: 0px;
+    bottom: 3px;
 }
 
 .item-link {
     height: 42px;
-    opacity: 0.5;
+    opacity: 0.8;
     display: table-cell;
     padding-left: 5px;
     padding-right: 5px;
@@ -168,7 +196,9 @@ padding-left: 15px;
 }
 
 .footer-row {
-    position: relative;
+	position: absolute;
+  width: 100%;
+	bottom: 0;
 }
 
 .item-link a, .item-link img{

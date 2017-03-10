@@ -247,7 +247,7 @@ function playSound(id) {
 function populateTrackTable(tracks) {
 	//create tracks table
 	var tStr = "";
-	var tFormat = '<div class="track-item"><a href="#" onclick="playSound({1})">{0}</a></div>';
+	var tFormat = '<a class="track-item" onclick="playSound({1})"><p>{0}</p></a>';
 	tracks.forEach(function (track) {
 		tStr += tFormat.format(track.title, track.id);
 	});
@@ -334,7 +334,7 @@ var scData = [{"kind":"track","id":206005379, "svgId": "atomic.wav", "created_at
 {"kind":"track","id":550527,"created_at":"2009/08/30 09:27:27 +0000","user_id":83918,"duration":263235,"commentable":true,"state":"finished","original_content_size":14184553,"last_modified":"2012/05/09 17:38:23 +0000","sharing":"public","tag_list":"Dub 2-step","permalink":"02-kaxa","streamable":true,"embeddable_by":"all","downloadable":false,"purchase_url":null,"label_id":null,"purchase_title":null,"genre":"Dubstep","title":"Kaxa","description":"Jo Donnelly on the Mic","label_name":"","release":"","track_type":"original","key_signature":"Em","isrc":"","video_url":null,"bpm":140,"release_year":null,"release_month":null,"release_day":null,"original_format":"mp3","license":"all-rights-reserved","uri":"https://api.soundcloud.com/tracks/550527","user":{"id":83918,"kind":"user","permalink":"alphabetsheaven","username":"alphabetsheaven","last_modified":"2015/08/30 03:39:09 +0000","uri":"https://api.soundcloud.com/users/83918","permalink_url":"http://soundcloud.com/alphabetsheaven","avatar_url":"https://i1.sndcdn.com/avatars-000038829281-xikuam-large.jpg"},"permalink_url":"http://soundcloud.com/alphabetsheaven/02-kaxa","artwork_url":"https://i1.sndcdn.com/artworks-000000566157-gbzmcb-large.jpg","waveform_url":"https://w1.sndcdn.com/54pzD558Qzp9_m.png","stream_url":"https://api.soundcloud.com/tracks/550527/stream","playback_count":2722,"download_count":0,"favoritings_count":43,"comment_count":20,"attachments_uri":"https://api.soundcloud.com/tracks/550527/attachments","policy":"ALLOW","monetization_model":"NOT_APPLICABLE"},
 {"kind":"track","id":550526,"created_at":"2009/08/30 09:27:27 +0000","user_id":83918,"duration":139885,"commentable":true,"state":"finished","original_content_size":9250548,"last_modified":"2012/12/06 16:29:09 +0000","sharing":"public","tag_list":"Boom Bap","permalink":"01-susanne","streamable":true,"embeddable_by":"all","downloadable":false,"purchase_url":null,"label_id":null,"purchase_title":null,"genre":"Lo-Fi","title":"Susanne","description":"And she feeds you tea and oranges that come all the way from China...","label_name":"","release":"","track_type":"original","key_signature":"Fm","isrc":"","video_url":null,"bpm":null,"release_year":null,"release_month":null,"release_day":null,"original_format":"mp3","license":"all-rights-reserved","uri":"https://api.soundcloud.com/tracks/550526","user":{"id":83918,"kind":"user","permalink":"alphabetsheaven","username":"alphabetsheaven","last_modified":"2015/08/30 03:39:09 +0000","uri":"https://api.soundcloud.com/users/83918","permalink_url":"http://soundcloud.com/alphabetsheaven","avatar_url":"https://i1.sndcdn.com/avatars-000038829281-xikuam-large.jpg"},"permalink_url":"http://soundcloud.com/alphabetsheaven/01-susanne","artwork_url":"https://i1.sndcdn.com/artworks-000000566149-byqvax-large.jpg","waveform_url":"https://w1.sndcdn.com/jPUlaKqHzIcA_m.png","stream_url":"https://api.soundcloud.com/tracks/550526/stream","playback_count":2937,"download_count":0,"favoritings_count":41,"comment_count":23,"attachments_uri":"https://api.soundcloud.com/tracks/550526/attachments","policy":"ALLOW","monetization_model":"NOT_APPLICABLE"}]
 // Inspired by http://bit.ly/juSAWl
-// Augment String.prototype to allow for easier formatting.  This implementation 
+// Augment String.prototype to allow for easier formatting.  This implementation
 // doesn't completely destroy any existing String.prototype.format functions,
 // and will stringify objects/arrays.
 String.prototype.format = function(i, safe, arg) {
@@ -342,7 +342,7 @@ String.prototype.format = function(i, safe, arg) {
   function format() {
     var str = this, len = arguments.length+1;
 
-    // For each {0} {1} {n...} replace with the argument in that position.  If 
+    // For each {0} {1} {n...} replace with the argument in that position.  If
     // the argument is an object or an array it will be stringified to JSON.
     for (i=0; i < len; arg = arguments[i++]) {
       safe = typeof arg === 'object' ? JSON.stringify(arg) : arg;
@@ -351,7 +351,7 @@ String.prototype.format = function(i, safe, arg) {
     return str;
   }
 
-  // Save a reference of what may already exist under the property native.  
+  // Save a reference of what may already exist under the property native.
   // Allows for doing something like: if("".format.native) { /* use native */ }
   format.native = String.prototype.format;
 

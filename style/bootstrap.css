@@ -1097,12 +1097,12 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #337ab7;
+  opacity: 0.8;
   text-decoration: none;
 }
 a:hover,
 a:focus {
-  color: #23527c;
+  opacity: 1;
   text-decoration: underline;
 }
 a:focus {
@@ -4036,7 +4036,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  cursor: pointer;
 }
 .nav > li.disabled > a {
   color: #777;
@@ -4051,7 +4051,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eee;
   border-color: #337ab7;
 }
 .nav .nav-divider {
@@ -4361,7 +4360,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   width: 22px;
   height: 2px;
   border-radius: 1px;
-  background-color: rgba(73, 166, 179, 0.63);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 .navbar-toggle .icon-bar + .icon-bar {
   margin-top: 4px;

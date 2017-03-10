@@ -1,109 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="icon" href="../../favicon.ico">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="../../favicon.ico">
 
-	<title>Alphabets Heaven</title>
+		<title>Alphabets Heaven</title>
 
-	<!-- Bootstrap core CSS -->
-	<link href="style/bootstrap.css" rel="stylesheet">
-	<link href="style/simple-sidebar.css" rel="stylesheet">
-	<link href="style/cover.css" rel="stylesheet">
-	<link href="style/alphabets.css" rel="stylesheet">
-	<link href="style/waveformjs.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="style/bootstrap.css" rel="stylesheet">
+		<link href="style/simple-sidebar.css" rel="stylesheet">
+		<link href="style/cover.css" rel="stylesheet">
+		<link href="style/alphabets.css" rel="stylesheet">
+		<link href="style/waveformjs.css" rel="stylesheet">
+	</head>
 
+	<body>
+		<div class="container content-container">
+			<nav class="navbar navbar-static-top">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	        </div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <ul class="nav navbar-nav">
+	            <li class="active"><a href="#">Audio</a></li>
+	            <li><a href="video.html">Video</a></li>
+							<li><a href="releases.html">Releases</a></li>
 
-</head>
+	          </ul>
+	          <ul class="nav navbar-nav navbar-right">
+							<li class="dropdown">
+	              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+									<span class=track-title> </span>
+									<span class="caret"></span></a>
+	              <ul class="dropdown-menu">
+									<div class='track-table'>
+										<!-- Track Titles !-->
+									</div>
+	              </ul>
+	            </li>
+	          </ul>
+	        </div><!--/.nav-collapse -->
+	    </nav>
 
-
-
-<body>
-
-
-
-
-	<div class="container">
-
-		<nav class="navbar navbar-static-top">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Alphabets Heaven</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Audio</a></li>
-            <li><a href="video.html">Video</a></li>
-						<li><a href="releases.html">Releases</a></li>
-
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-								<p class=track-title style="opacity: 1"> </p>
-								<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-								<div class='track-table'>
-									<!-- Track Titles !-->
-								</div>
-              </ul>
-            </li>
-          </ul>
-        </div><!--/.nav-collapse -->
-    </nav>
-
-
-
-
-		<div class="starter-template">
-
-
-			<div style="width: 60%; margin: auto;" id="long"></div>
-			<h3 class="cover-heading track-title"></h3>
-
-		</div>
-	</div>
-
-	<div class="container">
-
-		<div class='footer-row'>
-			<div class='sc-powered-link'>
-				<a href="http://www.soundcloud.com"><img src='images/sc.png'> </img>
-				</a>
+			<div class="starter-template">
+				<div class="track-player" id="long"></div>
+				<h3 class="cover-heading track-title"></h3>
 			</div>
-			<div class='item-link'>
-				<a href="http://www.twitter.com/alphabetsheaven">
-					<img src='images/twitter.png'> </img>
-				</a>
-			</div>
-			<div class='item-link'>
-				<a href="http://www.soundcloud.com/alphabetsheaven">
-					<img src='images/sc2.png'> </img>
-				</a>
-			</div>
-		</div>
-	</footer>
 
-	<!-- bower:js -->
-	<script src="bower_components/jquery/dist/jquery.js"></script>
-	<script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
-	<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-	<script src="bower_components/SoundManager2/script/soundmanager2.js"></script>
-	<!-- endbower -->
-	<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
-	<script src="dist/waveformjs.js"></script>
+			<div class='footer-row'>
+				<div class='sc-powered-link'>
+					<a href="http://www.soundcloud.com"><img src='images/sc.png'> </img>
+					</a>
+				</div>
+				<div class='item-link'>
+					<a href="http://www.twitter.com/alphabetsheaven">
+						<img src='images/twitter.png'> </img>
+					</a>
+				</div>
+				<div class='item-link'>
+					<a href="http://www.soundcloud.com/alphabetsheaven">
+						<img src='images/sc2.png'> </img>
+					</a>
+				</div>
+			</div>
 
-</body>
+	  </div>
+		</footer>
+
+		<!-- bower:js -->
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="bower_components/SoundManager2/script/soundmanager2.js"></script>
+		<!-- endbower -->
+		<script src="//connect.soundcloud.com/sdk-2.0.0.js"></script>
+		<script src="dist/waveformjs.js"></script>
+
+	</body>
 
 </html>

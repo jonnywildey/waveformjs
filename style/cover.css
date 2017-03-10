@@ -3,25 +3,25 @@
  */
 
 /* Links */
-a,
+a {
+  color: #fff;
+  opacity: 0.9;
+}
 a:focus,
 a:hover {
-  color: #fff;
-  opacity: 0.5;
+  opacity: 1;
+  background: none;
 }
 
-/* Custom default button */
-.btn-default,
-.btn-default:hover,
-.btn-default:focus {
-  color: #1E1C25;
-  text-shadow: none; /* Prevent inheritence from `body` */
-  background-color: #fff;
-  border: 1px solid #fff;
+.navbar-brand {
+  opacity: 0.8;
 }
 
 .cover-heading {
  margin: 0 0 0 0;
+ padding-bottom: 20px;
+ opacity: 0.8;
+ color: #FFF;
 }
 
 /*
