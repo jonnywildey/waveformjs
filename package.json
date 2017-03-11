@@ -25,19 +25,33 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --history-api-fallback"
   },
   "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.4.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "eslint": "^3.17.1",
+    "eslint-config-google": "^0.7.1",
+    "eslint-config-standard": "^7.0.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.1.1",
     "grunt": "~0.4.5",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-jshint": "~0.6.0",
     "grunt-contrib-nodeunit": "~0.2.0",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-watch": "~0.4.0",
-    "grunt-wiredep": "^2.0.0"
+    "imports-loader": "^0.7.1",
+    "snapsvg": "^0.4.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
   },
   "keywords": [],
   "dependencies": {
+    "av": "^0.4.9",
+    "mp3": "^0.1.0",
     "snapsvg": "^0.4.0"
   }
 }

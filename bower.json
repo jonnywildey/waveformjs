@@ -19,9 +19,6 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-    "snap.svg": "~0.4.1",
-    "bootstrap": "~3.3.5",
-    "SoundManager2": "git://github.com/scottschiller/SoundManager2/"
   },
   "homepage": "https://github.com/jonnywildey/waveformjs"
 }
