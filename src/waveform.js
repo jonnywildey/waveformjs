@@ -65,7 +65,7 @@ class Waveform {
     const hSize = size * 0.5
     // relative distance to where head should eventually end
     // const headStart = this.imageInfo.playbackStartMagnitude
-    const headEnd = hSize - (this.imageInfo.innerLabelRadius * 3)
+    const headEnd = this.imageInfo.playbackDistance
     // calculate current angle
     const currentAngle = position * totalRotation
     const currentDistance = position * headEnd

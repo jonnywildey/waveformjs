@@ -18,5 +18,5 @@ window.playAudio = (trackUrl) => {
 
 $(function () {
   populateTrackTable(window.scData)
-  window.playAudio(window.scData[1].url)
+  window.playAudio(window.scData[0].url)
 })
