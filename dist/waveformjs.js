@@ -96,9 +96,7 @@ const Waveform = __webpack_require__(7)
 
 function populateTrackTable (tracks) {
   // create tracks table
-  let tStr = tracks.reduce((str, track) => `${str}<div class="track-item"><a href="#" onclick="playAudio('${track.url}')">${track.title}</a></div>`, '')
-  // add spacer
-  tStr += ' <div class="track-item-spacer"></div>'
+  let tStr = tracks.reduce((str, track) => `${str}<a href="#" onclick="playAudio('${track.url}')"><div class="track-item">${track.title}</div></a>`, '')
   $('.track-table').append(tStr)
 }
 
@@ -8649,10 +8647,12 @@ class Waveform {
    * Stop audio if it is playing
    */
   stop () {
-    if (this.source && this.source.buffer) {
+    try {
       this.source.stop(0)
       this.startedAt = 0
       this.pausedAt = 0
+    } catch (err) {
+      // do nothing
     }
   }
 

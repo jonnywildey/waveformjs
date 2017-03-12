@@ -16,10 +16,6 @@
 	position: relative;
 }
 
-.navbar-right {
-	margin-right: 0px;
-}
-
 
 .dropdown-toggle {
 	padding-left: 0 !important;
@@ -31,7 +27,7 @@
 }
 
 .fx-controls {
-	padding: 0 50px;
+	padding: 50px 50px 0;
 }
 
 label {
@@ -192,41 +188,48 @@ iframe {
 }
 
 .track-table-container {
-	height: 500px;
-	width: 400px;
-	margin-top: 5%;
-	float: right;
-	border-style: solid;
-	border-width: 1px;
-  overflow:  auto;
-	border-color: rgba(141, 173, 171, 0);
-  z-index: 1000;
-  position: fixed;
-  right: 200px;
-	width: 0;
-  margin-right: -250px;
-  overflow-y: auto;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-
+	max-height: 230px;
+	border: none;
+	overflow-y: scroll;
+	padding: 0;
+	margin-right: 0;
+	background-color: rgba(0, 0, 0, 0.6) !important;
 }
+
+.track-item:before {
+	content: '\25BA';
+	float: left;
+}
+
+.track-selector {
+	padding-right: 20px;
+	min-width: 200px;
+	width: 100%;
+	float: left;
+	background-color: rgba(12, 37, 64, 1) !important;
+	line-height: 2.5
+}
+
+.track-selector:before {
+	content: '\25BA';
+  padding-left: 10px;
+	float:left;
+}
+
 
 .track-item {
 	width: 100%;
+	min-width: 200px;
+	margin: 0 auto;
 	line-height: 1.5;
 	text-align: center;
 	display: block;
 	cursor: pointer;
+	padding: 10px;
 }
 
-.track-item-spacer {
-  width: 80%;
-	margin-top: 5%;
-	text-align: left;
-  height: 30px;
-	display: block;
+.track-item:hover {
+	background-color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .track-item a {
@@ -291,14 +294,14 @@ padding-left: 15px;
 
 @media(min-width:1000px) {
 
+	.track-table-container {
+		max-height: 400px;
+	}
+
 		iframe {
 			width: 500px;
 			height: 250px;
 		}
-
-	.track-table-container {
-    	width: 250px;
-	}
 
 	.video-scroller {
 		height: 660px;

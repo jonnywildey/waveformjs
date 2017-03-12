@@ -3,9 +3,7 @@ const Waveform = require('./waveform')
 
 function populateTrackTable (tracks) {
   // create tracks table
-  let tStr = tracks.reduce((str, track) => `${str}<div class="track-item"><a href="#" onclick="playAudio('${track.url}')">${track.title}</a></div>`, '')
-  // add spacer
-  tStr += ' <div class="track-item-spacer"></div>'
+  let tStr = tracks.reduce((str, track) => `${str}<a href="#" onclick="playAudio('${track.url}')"><div class="track-item">${track.title}</div></a>`, '')
   $('.track-table').append(tStr)
 }
 

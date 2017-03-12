@@ -167,10 +167,12 @@ class Waveform {
    * Stop audio if it is playing
    */
   stop () {
-    if (this.source && this.source.buffer) {
+    try {
       this.source.stop(0)
       this.startedAt = 0
       this.pausedAt = 0
+    } catch (err) {
+      // do nothing
     }
   }
 
