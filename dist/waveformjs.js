@@ -63,17 +63,36 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+class FxUnit {
+  get output () {
+    return this._output
+  }
+
+  set source (source) {
+    this._source = source
+  }
+
+  get source () {
+    return this._source
+  }
+}
+
+module.exports = FxUnit
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-const Waveform = __webpack_require__(4)
-// var clientId = '84a4cf04866f2c6ce3cde18d76be4898';
-window.lw = new Waveform()
+const Waveform = __webpack_require__(7)
 
 function populateTrackTable (tracks) {
   // create tracks table
@@ -85,17 +104,18 @@ function populateTrackTable (tracks) {
 
 window.playAudio = (trackUrl) => {
   const track = window.scData.find(tr => tr.url === trackUrl)
-  window.lw.run('long', track)
+  window.lw.run(track)
 }
 
 $(function () {
+  window.lw = new Waveform('long')
   populateTrackTable(window.scData)
   window.playAudio(window.scData[0].url)
 })
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports) {
 
 window.scData = [
@@ -115,7 +135,7 @@ window.scData = [
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 window.videoData = [
@@ -124,7 +144,7 @@ window.videoData = [
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_LOCAL_MODULE_0__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -8306,47 +8326,219 @@ return Snap;
 }.call(window));
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const Snap = __webpack_require__(3)
+const FxUnit = __webpack_require__(0)
+class DelayFx extends FxUnit {
+  constructor (context) {
+    super()
+    this.context = context
+    this.setupNodes(context)
+    this.setupMappings(context)
+  }
+
+  setupNodes (context) {
+    // send gain
+    this.send = context.createGain()
+    this.send.gain.value = 0
+    // delay line
+    this.delay = context.createDelay(1.5)
+    this.delay.delayTime.value = 0.35
+    // feedback gain
+    this.feedback = context.createGain()
+    this.feedback.gain.value = 0.4
+    // Lowpass like them analog delays
+    this.lowpass = context.createBiquadFilter()
+    this.lowpass.type = 'lowpass'
+    this.lowpass.gain.value = -6
+    this.lowpass.Q.value = 3
+    this.lowpass.frequency.value = 2000
+    // high pass to get rid of lame low hz feedback
+    this.hipass = context.createBiquadFilter()
+    this.hipass.type = 'highpass'
+    this.hipass.gain.value = -6
+    this.hipass.Q.value = 1
+    this.hipass.frequency.value = 150
+    // compression to make it sound more legit
+    this.compressor = context.createDynamicsCompressor()
+    this.compressor.threshold.value = -30
+    this.compressor.knee.value = 40
+    this.compressor.ratio.value = 4
+    this.compressor.attack.value = 0.015
+    this.compressor.release.value = 0.078
+    // inner connections
+    this.send.connect(this.lowpass)
+    this.lowpass.connect(this.delay)
+    this.delay.connect(this.feedback)
+    this.feedback.connect(this.hipass)
+    this.hipass.connect(this.compressor)
+    this.compressor.connect(this.lowpass)
+    this._output = this.delay
+  }
+
+  setupMappings (context) {
+    const delayTime = $('#delay-time')
+    delayTime.on('input', () => {
+      const time = delayTime.val()
+      console.log('delay-time', time)
+      this.delay.delayTime.value = time
+    })
+
+    const delayFeedback = $('#delay-feedback')
+    delayFeedback.on('input', () => {
+      const feed = delayFeedback.val()
+      console.log('delay-feed', feed)
+      this.feedback.gain.value = feed
+    })
+
+    const delaySend = $('#delay-send')
+    delaySend.on('input', () => {
+      const val = delaySend.val()
+      console.log('delay-send', val)
+      this.send.gain.value = val
+    })
+  }
+
+  set source (source) {
+    super.source = source
+    source.connect(this.send)
+  }
+
+  get source () {
+    return super.source
+  }
+}
+
+module.exports = DelayFx
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const FxUnit = __webpack_require__(0)
+
+class MixerFx extends FxUnit {
+  constructor (context) {
+    super()
+    this.context = context
+    this.setupNodes(context)
+    this.setupMappings(context)
+  }
+
+  setupNodes (context) {
+    // fader
+    this.gain = context.createGain()
+    // filter
+    this.lopass = context.createBiquadFilter()
+    this.lopass.type = 'lowpass'
+    this.lopass.gain.value = 0
+    this.lopass.Q.value = 10
+    this.lopass.frequency.value = 20000
+    this.lopass.connect(this.gain)
+    this._output = this.gain
+  }
+
+  setupMappings (context) {
+    const volume = $('#volume')
+    volume.on('input', () => {
+      const vol = volume.val()
+      console.log('gain', vol)
+      this.gain.gain.value = vol
+    })
+    const lowpass = $('#filter')
+    lowpass.on('input', () => {
+      const minlval = Math.log(100)
+      const maxlval = Math.log(20000)
+      const scale = (maxlval - minlval)
+      const freqMag = lowpass.val()
+      const freq = Math.exp((freqMag) * scale + minlval)
+      console.log('freq', freq)
+      this.lopass.frequency.value = freq
+    })
+  }
+
+  get output () {
+    return super.output
+  }
+
+  set source (source) {
+    super.source = source
+    source.connect(this.lopass)
+  }
+
+  get source () {
+    return super.source
+  }
+}
+
+module.exports = MixerFx
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Snap = __webpack_require__(4)
+const MixerFx = __webpack_require__(6)
+const DelayFx = __webpack_require__(5)
+const WaveformAnimation = __webpack_require__(8)
 
 class Waveform {
-  constructor () {
-    this.context = null
-    this.buffer = null
-    this.source = null
-    this.svgObj = null
-    this.pauseButton = null
-    this.waveSpiral = null
-    this.pauseState = null
-    this.playbackHead = null
-    this.imageInfo = null
-    this.hasPlayedBefore = false
-    this.trackInfo = false
-    this.divId = null
-    this.startedAt = 0
-    this.pausedAt = 0
+  constructor (id) {
+    this.id = id
+    this.context = this.getContext() // audio context
+    this.source = null // audio source, set via run
+    this.imageInfo = null // info allowing svg to sync with audio
+    this.trackInfo = false // general info about track, name etc.
+    // svg
+    this.divId = null // div to insert svg into
+    this.svgObj = null // svg waveform object
+    this.pauseButton = null // pause button from svg
+    this.waveSpiral = null // wave image from svg
+    this.playbackHead = null // head object from svg
+    // playback
+    this.pauseState = 'reset' // current pause / playback state
+    this.startedAt = 0 // time we started
+    this.pausedAt = 0 // time we paused
+    this.setupNodes()
+    this.waveformAnimation = new WaveformAnimation(this)
   }
 
   /**
-   * Initialise
+   * Setup audio nodes
    */
-  init (id) {
-    this.svgObj = Snap.select('#svg-' + id)
-    this.waveSpiral = this.svgObj.select('#sp')
-    this.pauseButton = this.svgObj.select('#pausebutton')
-    this.playbackHead = this.svgObj.select('#playback-head')
-    this.pauseButton.click(this.pauseClick.bind(this))
-    this.pauseState = 'reset'
+  setupNodes () {
+    this.delay = new DelayFx(this.context)
+    this.mixer = new MixerFx(this.context)
+    this.mixer.output.connect(this.context.destination)
+    // attach delay to mixer
+    this.delay.source = this.mixer.output
+    this.delay.output.connect(this.context.destination)
   }
 
+  getContext () {
+    const AudioContext = window.AudioContext || window.webkitAudioContext || null
+    if (AudioContext) {
+      return new AudioContext()
+    }
+    alert('Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox')
+  }
+
+  animate (state) {
+    return this.waveformAnimation.animate(state)
+  }
+
+  /**
+   * Return track info
+   */
   getTrackInfo () {
     return this.trackInfo
   }
 
   /**
-   * When pause button is clicked
+   * When pause button is clicked, action will be dependent on current state
    */
   pauseClick () {
     switch (this.pauseState) {
@@ -8363,25 +8555,180 @@ class Waveform {
     }
   }
 
+  setPlaybackRate (speed) {
+    this.source.playbackRate.value = speed
+  }
+
+  get position () {
+    switch (this._waveformpauseState) {
+      case 'paused':
+        return this._waveformpausedAt / this._waveformbuffer.duration
+      case 'playing':
+        return (this._waveformcontext.currentTime - this._waveformstartedAt) / this._waveformbuffer.duration
+      case 'loaded':
+      case 'reset':
+      default:
+        return 0
+    }
+  }
+  /**
+   * Play
+   */
+  play () {
+    // set new audio source
+    this.source = this.context.createBufferSource() // creates a sound source
+    this.source.buffer = this.buffer
+    // attach source to fx
+    this.mixer.source = this.source
+    // play
+    this.startedAt = this.context.currentTime
+    this.source.start(0, this.pausedAt)
+    // add ended call
+    this.source.onended = () => this.ended()
+    // set state
+    this.pauseState = 'playing'
+    this.pauseButton.addClass('playbutton')
+    this.pauseButton.removeClass('pausebutton')
+    this.animate('play')
+  }
+
+  ended () {
+    if (this.pauseState !== 'paused') {
+      console.log('has ended')
+      this.animate('end')
+      this.pauseState = 'reset'
+      this.pausedAt = null
+      this.pauseButton.addClass('pausebutton')
+      this.pauseButton.removeClass('playbutton')
+    }
+  }
+
+  /**
+   * Pause
+   */
+  pause () {
+    this.pausedAt = this.context.currentTime
+    // stop animation
+    this.pauseState = 'paused'
+    this.pauseButton.addClass('pausebutton')
+    this.pauseButton.removeClass('playbutton')
+    this.source.stop(0)
+    this.animate('pause')
+  }
+
+  run (trackInfo) {
+    this.track = trackInfo
+    this.clear() // remove svg
+    this.stop() // stop audio if it is playing
+    this.createHtml(this.id, trackInfo) // create new svg
+    $.getJSON('json/' + trackInfo.svgId + '.json', (data) => { // get imageInfo
+      this.imageInfo = data
+      // set svg objects
+      this.svgObj = document.getElementById('svg-' + this.id)
+      this.svgObj.addEventListener('load', () => {
+        this.svgObj = Snap.select('#svg-' + this.id)
+        this.waveSpiral = this.svgObj.select('#sp')
+        this.pauseButton = this.svgObj.select('#pausebutton')
+        this.playbackHead = this.svgObj.select('#playback-head')
+        this.pauseButton.click(this.pauseClick.bind(this))
+        this.pauseState = 'reset'
+        // load audio
+        this.loadAudio()
+      })
+    })
+  }
+
+  // remove previous svg if it exists
+  clear () {
+    if (this.divId != null) {
+      this.divId.empty()
+    }
+  }
+
+  /**
+   * Stop audio if it is playing
+   */
+  stop () {
+    if (this.source && this.source.buffer) {
+      this.source.stop(0)
+      this.startedAt = 0
+      this.pausedAt = 0
+    }
+  }
+
+  /**
+   * get audio from url
+   */
+  _requestAudio (url, cb) {
+    const request = new XMLHttpRequest()
+    request.open('GET', url, true)
+    request.responseType = 'arraybuffer'
+    // Decode asynchronously
+    request.onload = () => {
+      this.context.decodeAudioData(request.response, cb, (err) => { console.err(err) })
+    }
+    request.send()
+  }
+
+  /**
+   * Create waveform html
+   */
+  createHtml (id, trackInfo) {
+    this.divId = $('#' + id)
+    this.trackInfo = trackInfo
+    // create objects
+    const playerDiv = $('<div/>', {
+      'class': 'spiral-player'
+    })
+    $('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
+      '.svg"></object>').appendTo(playerDiv)
+    playerDiv.appendTo(this.divId)
+  }
+
+  /**
+   * load audio
+   */
+  loadAudio () {
+    this._requestAudio(this.track.url, (buffer) => {
+      this.buffer = buffer
+      if (this.pauseState === 'loading') {
+        this.svgObj.removeClass('loading')
+        this.pauseState = 'loaded'
+        $('.track-title').html(this.trackInfo.title)
+      }
+    })
+    this.pauseState = 'loading'
+    this.svgObj.addClass('loading')
+    $('.track-title').html('loading')
+  }
+}
+
+module.exports = Waveform
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+class WaveformAnimation {
+  constructor (opts) {
+    this._waveform = opts
+  }
   /**
    * Animate (or stop animating) the svg
    */
   animate (state) {
-    // clearInterval(this.syncFunc)
-    const position = this.getPosition()
-    console.log('progress', position)
+    const position = this._waveform.position
     // progress
-    const totalRotation = this.imageInfo.totalTurns * 360
-    const size = this.imageInfo.size
+    const totalRotation = this._waveform.imageInfo.totalTurns * 360
+    const size = this._waveform.imageInfo.size
     const hSize = size * 0.5
     // relative distance to where head should eventually end
-    // const headStart = this.imageInfo.playbackStartMagnitude
-    const headEnd = this.imageInfo.playbackDistance
+    const headEnd = this._waveform.imageInfo.playbackDistance
     // calculate current angle
     const currentAngle = position * totalRotation
     const currentDistance = position * headEnd
-    const msDur = (this.buffer.duration - position) * 1000 // ms
-    console.log('ms', msDur)
+    const msDur = (this._waveform.buffer.duration - position) * 1000 // ms
     switch (state) {
       case 'play':
         this.animateObjects(totalRotation, headEnd, hSize, msDur)
@@ -8402,173 +8749,40 @@ class Waveform {
    * Animate objects
    */
   animateObjects (wAngle, pDistance, centre, duration) {
-    this.waveSpiral.stop().animate(
+    this._waveform.waveSpiral.stop().animate(
       { transform: 'r' + wAngle + ',' + centre + ',' + centre },
       duration)
-    this.playbackHead.stop().animate(
+    this._waveform.playbackHead.stop().animate(
       { transform: 't-' + pDistance + ',0' },
       duration
       )
   }
 
   stopAnimation () {
-    this.waveSpiral.stop()
-    this.playbackHead.stop()
+    this._waveform.waveSpiral.stop()
+    this._waveform.playbackHead.stop()
   }
 
   /**
    * Transform objects
    */
   transformObjects (wAngle, pDistance, centre) {
-    this.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre)
-    this.playbackHead.stop().transform('t-' + pDistance + ',0')
-  }
-
-  setPlaybackRate (speed) {
-    this.source.playbackRate.value = speed
-  }
-
-  playSound () {
-    this.source = this.context.createBufferSource() // creates a sound source
-    this.source.buffer = this.buffer                    // tell the source which sound to play
-    this.source.connect(this.context.destination)       // connect the source to the context's destination (the speakers)
-    this.startedAt = this.context.currentTime
-    this.source.start(0, this.pausedAt)
-
-    this.source.onended = () => this.ended()
-  }
-
-  /**
-   * Play
-   */
-  play () {
-    this.playSound()
-    this.pauseState = 'playing'
-    this.pauseButton.addClass('playbutton')
-    this.pauseButton.removeClass('pausebutton')
-    this.animate('play')
-  }
-
-  /**
-   * Pause
-   */
-  pause () {
-    this.pausedAt = this.context.currentTime
-    // stop animation
-    this.pauseState = 'paused'
-    this.pauseButton.addClass('pausebutton')
-    this.pauseButton.removeClass('playbutton')
-    this.source.stop(0)
-    this.animate('pause')
-  }
-
-  getPosition () {
-    switch (this.pauseState) {
-      case 'paused':
-        return this.pausedAt / this.buffer.duration
-      case 'playing':
-        return (this.context.currentTime - this.startedAt) / this.buffer.duration
-      case 'loaded':
-      case 'reset':
-      default:
-        return 0
-    }
-  }
-
-  ended () {
-    if (this.pauseState !== 'paused') {
-      console.log('has ended')
-      this.animate('end')
-      this.pauseState = 'reset'
-      this.pausedAt = null
-      this.pauseButton.addClass('pausebutton')
-      this.pauseButton.removeClass('playbutton')
-    }
-  }
-
-  requestAudio (url, cb) {
-    const request = new XMLHttpRequest()
-    request.open('GET', url, true)
-    request.responseType = 'arraybuffer'
-    // Decode asynchronously
-    request.onload = () => {
-      this.context.decodeAudioData(request.response, cb, (err) => { console.err(err) })
-    }
-    request.send()
-  }
-
-  /**
-   * load audio
-   */
-  loadAudio () {
-    this.requestAudio(this.track.url, (buffer) => {
-      this.buffer = buffer
-      if (this.pauseState === 'loading') {
-        this.svgObj.removeClass('loading')
-        this.pauseState = 'loaded'
-        $('.track-title').html(this.trackInfo.title)
-      }
-    })
-    this.pauseState = 'loading'
-    this.svgObj.addClass('loading')
-    $('.track-title').html('loading')
-  }
-
-  clear () {
-    if (this.divId != null) {
-      this.divId.empty()
-    }
-  }
-
-  stop () {
-    if (this.source) {
-      this.source.stop(0)
-      this.startedAt = 0
-      this.pausedAt = 0
-    }
-  }
-
-  createHtml (id, trackInfo) {
-    this.divId = $('#' + id)
-    this.trackInfo = trackInfo
-    // create objects
-    const playerDiv = $('<div/>', {
-      'class': 'spiral-player'
-    })
-    $('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
-      '.svg"></object>').appendTo(playerDiv)
-    playerDiv.appendTo(this.divId)
-  }
-
-  run (id, trackInfo) {
-    this.clear()
-    this.stop()
-    this.createHtml(id, trackInfo)
-    $.getJSON('json/' + trackInfo.svgId + '.json', (data) => {
-      this.imageInfo = data
-      // setup audio
-      const svg = document.getElementById('svg-' + id)
-      svg.addEventListener('load', () => {
-        this.init(id)
-        this.context = new AudioContext()
-        this.track = trackInfo
-        this.loadAudio()
-      })
-    })
+    this._waveform.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre)
+    this._waveform.playbackHead.stop().transform('t-' + pDistance + ',0')
   }
 }
 
-module.exports = Waveform
+module.exports = WaveformAnimation
 
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1)
 __webpack_require__(2)
+__webpack_require__(3)
 
-__webpack_require__(0)
+__webpack_require__(1)
 
 
 /***/ })

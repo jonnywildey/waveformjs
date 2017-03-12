@@ -25,6 +25,7 @@
 
 .svg-object {
   margin: auto;
+  width: 100%;
 }
 
 .pausebutton, .playbutton {

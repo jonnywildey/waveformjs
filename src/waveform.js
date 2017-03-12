@@ -1,41 +1,62 @@
 const Snap = require(`imports-loader?this=>window,fix=>module.exports=0!snapsvg/dist/snap.svg.js`)
+const MixerFx = require('./fx/mixerFx')
+const DelayFx = require('./fx/delayFx')
+const WaveformAnimation = require('./waveformAnimation')
 
 class Waveform {
-  constructor () {
-    this.context = null
-    this.buffer = null
-    this.source = null
-    this.svgObj = null
-    this.pauseButton = null
-    this.waveSpiral = null
-    this.pauseState = null
-    this.playbackHead = null
-    this.imageInfo = null
-    this.hasPlayedBefore = false
-    this.trackInfo = false
-    this.divId = null
-    this.startedAt = 0
-    this.pausedAt = 0
+  constructor (id) {
+    this.id = id
+    this.context = this.getContext() // audio context
+    this.source = null // audio source, set via run
+    this.imageInfo = null // info allowing svg to sync with audio
+    this.trackInfo = false // general info about track, name etc.
+    // svg
+    this.divId = null // div to insert svg into
+    this.svgObj = null // svg waveform object
+    this.pauseButton = null // pause button from svg
+    this.waveSpiral = null // wave image from svg
+    this.playbackHead = null // head object from svg
+    // playback
+    this.pauseState = 'reset' // current pause / playback state
+    this.startedAt = 0 // time we started
+    this.pausedAt = 0 // time we paused
+    this.setupNodes()
+    this.waveformAnimation = new WaveformAnimation(this)
   }
 
   /**
-   * Initialise
+   * Setup audio nodes
    */
-  init (id) {
-    this.svgObj = Snap.select('#svg-' + id)
-    this.waveSpiral = this.svgObj.select('#sp')
-    this.pauseButton = this.svgObj.select('#pausebutton')
-    this.playbackHead = this.svgObj.select('#playback-head')
-    this.pauseButton.click(this.pauseClick.bind(this))
-    this.pauseState = 'reset'
+  setupNodes () {
+    this.delay = new DelayFx(this.context)
+    this.mixer = new MixerFx(this.context)
+    this.mixer.output.connect(this.context.destination)
+    // attach delay to mixer
+    this.delay.source = this.mixer.output
+    this.delay.output.connect(this.context.destination)
   }
 
+  getContext () {
+    const AudioContext = window.AudioContext || window.webkitAudioContext || null
+    if (AudioContext) {
+      return new AudioContext()
+    }
+    alert('Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox')
+  }
+
+  animate (state) {
+    return this.waveformAnimation.animate(state)
+  }
+
+  /**
+   * Return track info
+   */
   getTrackInfo () {
     return this.trackInfo
   }
 
   /**
-   * When pause button is clicked
+   * When pause button is clicked, action will be dependent on current state
    */
   pauseClick () {
     switch (this.pauseState) {
@@ -52,90 +73,52 @@ class Waveform {
     }
   }
 
-  /**
-   * Animate (or stop animating) the svg
-   */
-  animate (state) {
-    // clearInterval(this.syncFunc)
-    const position = this.getPosition()
-    console.log('progress', position)
-    // progress
-    const totalRotation = this.imageInfo.totalTurns * 360
-    const size = this.imageInfo.size
-    const hSize = size * 0.5
-    // relative distance to where head should eventually end
-    // const headStart = this.imageInfo.playbackStartMagnitude
-    const headEnd = this.imageInfo.playbackDistance
-    // calculate current angle
-    const currentAngle = position * totalRotation
-    const currentDistance = position * headEnd
-    const msDur = (this.buffer.duration - position) * 1000 // ms
-    console.log('ms', msDur)
-    switch (state) {
-      case 'play':
-        this.animateObjects(totalRotation, headEnd, hSize, msDur)
-        break
-      case 'pause':
-        this.stopAnimation()
-        break
-      case 'sync':
-        this.transformObjects(currentAngle, currentDistance, hSize)
-        this.animateObjects(totalRotation, headEnd, hSize, msDur)
-        break
-      case 'end':
-        this.animateObjects(-totalRotation, -headEnd, hSize, 3000)
-    }
-  }
-
-  /**
-   * Animate objects
-   */
-  animateObjects (wAngle, pDistance, centre, duration) {
-    this.waveSpiral.stop().animate(
-      { transform: 'r' + wAngle + ',' + centre + ',' + centre },
-      duration)
-    this.playbackHead.stop().animate(
-      { transform: 't-' + pDistance + ',0' },
-      duration
-      )
-  }
-
-  stopAnimation () {
-    this.waveSpiral.stop()
-    this.playbackHead.stop()
-  }
-
-  /**
-   * Transform objects
-   */
-  transformObjects (wAngle, pDistance, centre) {
-    this.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre)
-    this.playbackHead.stop().transform('t-' + pDistance + ',0')
-  }
-
   setPlaybackRate (speed) {
     this.source.playbackRate.value = speed
   }
 
-  playSound () {
-    this.source = this.context.createBufferSource() // creates a sound source
-    this.source.buffer = this.buffer                    // tell the source which sound to play
-    this.source.connect(this.context.destination)       // connect the source to the context's destination (the speakers)
-    this.startedAt = this.context.currentTime
-    this.source.start(0, this.pausedAt)
-
-    this.source.onended = () => this.ended()
+  get position () {
+    switch (this._waveformpauseState) {
+      case 'paused':
+        return this._waveformpausedAt / this._waveformbuffer.duration
+      case 'playing':
+        return (this._waveformcontext.currentTime - this._waveformstartedAt) / this._waveformbuffer.duration
+      case 'loaded':
+      case 'reset':
+      default:
+        return 0
+    }
   }
-
   /**
    * Play
    */
   play () {
-    this.playSound()
+    // set new audio source
+    this.source = this.context.createBufferSource() // creates a sound source
+    this.source.buffer = this.buffer
+    // attach source to fx
+    this.mixer.source = this.source
+    // play
+    this.startedAt = this.context.currentTime
+    this.source.start(0, this.pausedAt)
+    // add ended call
+    this.source.onended = () => this.ended()
+    // set state
     this.pauseState = 'playing'
     this.pauseButton.addClass('playbutton')
     this.pauseButton.removeClass('pausebutton')
     this.animate('play')
+  }
+
+  ended () {
+    if (this.pauseState !== 'paused') {
+      console.log('has ended')
+      this.animate('end')
+      this.pauseState = 'reset'
+      this.pausedAt = null
+      this.pauseButton.addClass('pausebutton')
+      this.pauseButton.removeClass('playbutton')
+    }
   }
 
   /**
@@ -151,31 +134,50 @@ class Waveform {
     this.animate('pause')
   }
 
-  getPosition () {
-    switch (this.pauseState) {
-      case 'paused':
-        return this.pausedAt / this.buffer.duration
-      case 'playing':
-        return (this.context.currentTime - this.startedAt) / this.buffer.duration
-      case 'loaded':
-      case 'reset':
-      default:
-        return 0
+  run (trackInfo) {
+    this.track = trackInfo
+    this.clear() // remove svg
+    this.stop() // stop audio if it is playing
+    this.createHtml(this.id, trackInfo) // create new svg
+    $.getJSON('json/' + trackInfo.svgId + '.json', (data) => { // get imageInfo
+      this.imageInfo = data
+      // set svg objects
+      this.svgObj = document.getElementById('svg-' + this.id)
+      this.svgObj.addEventListener('load', () => {
+        this.svgObj = Snap.select('#svg-' + this.id)
+        this.waveSpiral = this.svgObj.select('#sp')
+        this.pauseButton = this.svgObj.select('#pausebutton')
+        this.playbackHead = this.svgObj.select('#playback-head')
+        this.pauseButton.click(this.pauseClick.bind(this))
+        this.pauseState = 'reset'
+        // load audio
+        this.loadAudio()
+      })
+    })
+  }
+
+  // remove previous svg if it exists
+  clear () {
+    if (this.divId != null) {
+      this.divId.empty()
     }
   }
 
-  ended () {
-    if (this.pauseState !== 'paused') {
-      console.log('has ended')
-      this.animate('end')
-      this.pauseState = 'reset'
-      this.pausedAt = null
-      this.pauseButton.addClass('pausebutton')
-      this.pauseButton.removeClass('playbutton')
+  /**
+   * Stop audio if it is playing
+   */
+  stop () {
+    if (this.source && this.source.buffer) {
+      this.source.stop(0)
+      this.startedAt = 0
+      this.pausedAt = 0
     }
   }
 
-  requestAudio (url, cb) {
+  /**
+   * get audio from url
+   */
+  _requestAudio (url, cb) {
     const request = new XMLHttpRequest()
     request.open('GET', url, true)
     request.responseType = 'arraybuffer'
@@ -187,36 +189,8 @@ class Waveform {
   }
 
   /**
-   * load audio
+   * Create waveform html
    */
-  loadAudio () {
-    this.requestAudio(this.track.url, (buffer) => {
-      this.buffer = buffer
-      if (this.pauseState === 'loading') {
-        this.svgObj.removeClass('loading')
-        this.pauseState = 'loaded'
-        $('.track-title').html(this.trackInfo.title)
-      }
-    })
-    this.pauseState = 'loading'
-    this.svgObj.addClass('loading')
-    $('.track-title').html('loading')
-  }
-
-  clear () {
-    if (this.divId != null) {
-      this.divId.empty()
-    }
-  }
-
-  stop () {
-    if (this.source) {
-      this.source.stop(0)
-      this.startedAt = 0
-      this.pausedAt = 0
-    }
-  }
-
   createHtml (id, trackInfo) {
     this.divId = $('#' + id)
     this.trackInfo = trackInfo
@@ -229,21 +203,21 @@ class Waveform {
     playerDiv.appendTo(this.divId)
   }
 
-  run (id, trackInfo) {
-    this.clear()
-    this.stop()
-    this.createHtml(id, trackInfo)
-    $.getJSON('json/' + trackInfo.svgId + '.json', (data) => {
-      this.imageInfo = data
-      // setup audio
-      const svg = document.getElementById('svg-' + id)
-      svg.addEventListener('load', () => {
-        this.init(id)
-        this.context = new AudioContext()
-        this.track = trackInfo
-        this.loadAudio()
-      })
+  /**
+   * load audio
+   */
+  loadAudio () {
+    this._requestAudio(this.track.url, (buffer) => {
+      this.buffer = buffer
+      if (this.pauseState === 'loading') {
+        this.svgObj.removeClass('loading')
+        this.pauseState = 'loaded'
+        $('.track-title').html(this.trackInfo.title)
+      }
     })
+    this.pauseState = 'loading'
+    this.svgObj.addClass('loading')
+    $('.track-title').html('loading')
   }
 }
 

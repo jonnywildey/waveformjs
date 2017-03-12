@@ -1,7 +1,5 @@
 
 const Waveform = require('./waveform')
-// var clientId = '84a4cf04866f2c6ce3cde18d76be4898';
-window.lw = new Waveform()
 
 function populateTrackTable (tracks) {
   // create tracks table
@@ -13,10 +11,11 @@ function populateTrackTable (tracks) {
 
 window.playAudio = (trackUrl) => {
   const track = window.scData.find(tr => tr.url === trackUrl)
-  window.lw.run('long', track)
+  window.lw.run(track)
 }
 
 $(function () {
+  window.lw = new Waveform('long')
   populateTrackTable(window.scData)
   window.playAudio(window.scData[0].url)
 })

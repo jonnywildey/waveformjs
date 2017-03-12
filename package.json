@@ -25,7 +25,8 @@
     "node": ">= 0.10.0"
   },
   "scripts": {
-    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --history-api-fallback"
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --history-api-fallback",
+    "fix": "./node_modules/.bin/eslint src --fix"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
@@ -46,12 +47,10 @@
     "imports-loader": "^0.7.1",
     "snapsvg": "^0.4.0",
     "webpack": "^2.2.1",
-    "webpack-dev-server": "^2.4.1"
-  },
-  "keywords": [],
-  "dependencies": {
+    "webpack-dev-server": "^2.4.1",
     "av": "^0.4.9",
     "mp3": "^0.1.0",
     "snapsvg": "^0.4.0"
-  }
+  },
+  "keywords": []
 }
