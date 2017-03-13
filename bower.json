@@ -1,15 +1,14 @@
 {
   "name": "waveformjs",
-  "version": "0.0.1",
-  "authors": [
-    "Jonny Wildey <jonnywildey@gmail.com>"
-  ],
   "description": "draw waveforms in javascript",
-  "main": "main.js",
-  "moduleType": [
-    "node"
+  "main": "dist/waveformjs",
+  "authors": [
+    "[object Object]"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/jonnywildey/waveformjs",
+  "moduleType": [],
+  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -19,6 +18,6 @@
   ],
   "dependencies": {
     "jquery": "~2.1.4",
-  },
-  "homepage": "https://github.com/jonnywildey/waveformjs"
+    "bootstrap": "~3.3.7"
+  }
 }

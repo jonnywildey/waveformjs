@@ -68,81 +68,638 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-class FxUnit {
-  get output () {
-    return this._output
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FxUnit = function () {
+  function FxUnit() {
+    _classCallCheck(this, FxUnit);
   }
 
-  set source (source) {
-    this._source = source
-  }
+  _createClass(FxUnit, [{
+    key: "output",
+    get: function get() {
+      return this._output;
+    }
+  }, {
+    key: "source",
+    set: function set(source) {
+      this._source = source;
+    },
+    get: function get() {
+      return this._source;
+    }
+  }]);
 
-  get source () {
-    return this._source
-  }
-}
+  return FxUnit;
+}();
 
-module.exports = FxUnit
-
+module.exports = FxUnit;
 
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
 
-const Waveform = __webpack_require__(7)
 
-function populateTrackTable (tracks) {
+var Waveform = __webpack_require__(6);
+
+function populateTrackTable(tracks) {
   // create tracks table
-  let tStr = tracks.reduce((str, track) => `${str}<a href="#" onclick="playAudio('${track.url}')"><div class="track-item">${track.title}</div></a>`, '')
-  $('.track-table').append(tStr)
+  var tStr = tracks.reduce(function (str, track) {
+    return str + '<a href="#" onclick="playAudio(\'' + track.url + '\')"><div class="track-item">' + track.title + '</div></a>';
+  }, '');
+  $('.track-table').append(tStr);
 }
 
-window.playAudio = (trackUrl) => {
-  const track = window.scData.find(tr => tr.url === trackUrl)
-  window.lw.run(track)
-}
+window.playAudio = function (trackUrl) {
+  var track = window.scData.find(function (tr) {
+    return tr.url === trackUrl;
+  });
+  window.lw.run(track);
+};
 
 $(function () {
-  window.lw = new Waveform('long')
-  populateTrackTable(window.scData)
-  window.playAudio(window.scData[0].url)
-})
-
+  window.lw = new Waveform('long');
+  populateTrackTable(window.scData);
+  window.playAudio(window.scData[0].url);
+});
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-window.scData = [
-  { url: 'audio/stories/oats.mp3', svgId: 'stories/oats.mp3', title: 'Oats' },
-  { url: 'audio/stories/deep-blue.mp3', svgId: 'stories/deep-blue.mp3', title: 'Deep Blue' },
-  { url: 'audio/stories/pho.mp3', svgId: 'stories/pho.mp3', title: 'Pho' },
-  { url: 'audio/stories/degree.mp3', svgId: 'stories/degree.mp3', title: '°' },
-  { url: 'audio/stories/tonise.mp3', svgId: 'stories/tonise.mp3', title: 'Tonise' },
-  { url: 'audio/stories/terbeat.mp3', svgId: 'stories/terbeat.mp3', title: 'Terbeat' },
-  { url: 'audio/stories/world.mp3', svgId: 'stories/world.mp3', title: 'World' },
-  { url: 'audio/stories/blindlight.mp3', svgId: 'stories/blindlight.mp3', title: 'Blindlight' },
-  { url: 'audio/stories/far-beyond.mp3', svgId: 'stories/far-beyond.mp3', title: 'Far Beyond' },
-  { url: 'audio/stories/heart.mp3', svgId: 'stories/heart.mp3', title: 'Heart' },
-  { url: 'audio/stories/caravan.mp3', svgId: 'stories/caravan.mp3', title: 'Caravan' },
-  { url: 'audio/stories/koko.mp3', svgId: 'stories/koko.mp3', title: 'Koko' }
-]
+"use strict";
 
+
+window.scData = [{ url: 'audio/stories/oats.mp3', svgId: 'stories/oats.mp3', title: 'Oats' }, { url: 'audio/stories/deep-blue.mp3', svgId: 'stories/deep-blue.mp3', title: 'Deep Blue' }, { url: 'audio/stories/pho.mp3', svgId: 'stories/pho.mp3', title: 'Pho' }, { url: 'audio/stories/degree.mp3', svgId: 'stories/degree.mp3', title: '°' }, { url: 'audio/stories/tonise.mp3', svgId: 'stories/tonise.mp3', title: 'Tonise' }, { url: 'audio/stories/terbeat.mp3', svgId: 'stories/terbeat.mp3', title: 'Terbeat' }, { url: 'audio/stories/world.mp3', svgId: 'stories/world.mp3', title: 'World' }, { url: 'audio/stories/blindlight.mp3', svgId: 'stories/blindlight.mp3', title: 'Blindlight' }, { url: 'audio/stories/far-beyond.mp3', svgId: 'stories/far-beyond.mp3', title: 'Far Beyond' }, { url: 'audio/stories/heart.mp3', svgId: 'stories/heart.mp3', title: 'Heart' }, { url: 'audio/stories/caravan.mp3', svgId: 'stories/caravan.mp3', title: 'Caravan' }, { url: 'audio/stories/koko.mp3', svgId: 'stories/koko.mp3', title: 'Koko' }];
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-window.videoData = [
-    {name: 'Birthday', embed: '<iframe src="https://player.vimeo.com/video/62144786" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/62144786">Alphabets Heaven - Birthday</a> from <a href="https://vimeo.com/diplodok493">diplodok493</a> on <a href="https://vimeo.com">Vimeo</a>.</p>'}
-]
+"use strict";
 
+
+window.videoData = [{ name: 'Birthday', embed: '<iframe src="https://player.vimeo.com/video/62144786" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/62144786">Alphabets Heaven - Birthday</a> from <a href="https://vimeo.com/diplodok493">diplodok493</a> on <a href="https://vimeo.com">Vimeo</a>.</p>' }];
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FxUnit = __webpack_require__(0);
+
+var DelayFx = function (_FxUnit) {
+  _inherits(DelayFx, _FxUnit);
+
+  function DelayFx(context) {
+    _classCallCheck(this, DelayFx);
+
+    var _this = _possibleConstructorReturn(this, (DelayFx.__proto__ || Object.getPrototypeOf(DelayFx)).call(this));
+
+    _this.context = context;
+    _this.setupNodes(context);
+    _this.setupMappings(context);
+    return _this;
+  }
+
+  _createClass(DelayFx, [{
+    key: 'setupNodes',
+    value: function setupNodes(context) {
+      // send gain
+      this.send = context.createGain();
+      this.send.gain.value = 0;
+      // delay line
+      this.delay = context.createDelay(1.5);
+      this.delay.delayTime.value = 0.35;
+      // feedback gain
+      this.feedback = context.createGain();
+      this.feedback.gain.value = 0.4;
+      // Lowpass like them analog delays
+      this.lowpass = context.createBiquadFilter();
+      this.lowpass.type = 'lowpass';
+      this.lowpass.gain.value = -6;
+      this.lowpass.Q.value = 3;
+      this.lowpass.frequency.value = 2000;
+      // high pass to get rid of lame low hz feedback
+      this.hipass = context.createBiquadFilter();
+      this.hipass.type = 'highpass';
+      this.hipass.gain.value = -6;
+      this.hipass.Q.value = 1;
+      this.hipass.frequency.value = 150;
+      // compression to make it sound more legit
+      this.compressor = context.createDynamicsCompressor();
+      this.compressor.threshold.value = -30;
+      this.compressor.knee.value = 40;
+      this.compressor.ratio.value = 4;
+      this.compressor.attack.value = 0.015;
+      this.compressor.release.value = 0.078;
+      // inner connections
+      this.send.connect(this.lowpass);
+      this.lowpass.connect(this.delay);
+      this.delay.connect(this.feedback);
+      this.feedback.connect(this.hipass);
+      this.hipass.connect(this.compressor);
+      this.compressor.connect(this.lowpass);
+      this._output = this.delay;
+    }
+  }, {
+    key: 'setupMappings',
+    value: function setupMappings(context) {
+      var _this2 = this;
+
+      var delayTime = $('#delay-time');
+      delayTime.on('input', function () {
+        var time = delayTime.val();
+        console.log('delay-time', time);
+        _this2.delay.delayTime.value = time;
+      });
+
+      var delayFeedback = $('#delay-feedback');
+      delayFeedback.on('input', function () {
+        var feed = delayFeedback.val();
+        console.log('delay-feed', feed);
+        _this2.feedback.gain.value = feed;
+      });
+
+      var delaySend = $('#delay-send');
+      delaySend.on('input', function () {
+        var val = delaySend.val();
+        console.log('delay-send', val);
+        _this2.send.gain.value = val;
+      });
+    }
+  }, {
+    key: 'source',
+    set: function set(source) {
+      _set(DelayFx.prototype.__proto__ || Object.getPrototypeOf(DelayFx.prototype), 'source', source, this);
+      source.connect(this.send);
+    },
+    get: function get() {
+      return _get(DelayFx.prototype.__proto__ || Object.getPrototypeOf(DelayFx.prototype), 'source', this);
+    }
+  }]);
+
+  return DelayFx;
+}(FxUnit);
+
+module.exports = DelayFx;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _set = function set(object, property, value, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent !== null) { set(parent, property, value, receiver); } } else if ("value" in desc && desc.writable) { desc.value = value; } else { var setter = desc.set; if (setter !== undefined) { setter.call(receiver, value); } } return value; };
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FxUnit = __webpack_require__(0);
+
+var MixerFx = function (_FxUnit) {
+  _inherits(MixerFx, _FxUnit);
+
+  function MixerFx(context) {
+    _classCallCheck(this, MixerFx);
+
+    var _this = _possibleConstructorReturn(this, (MixerFx.__proto__ || Object.getPrototypeOf(MixerFx)).call(this));
+
+    _this.context = context;
+    _this.setupNodes(context);
+    _this.setupMappings(context);
+    return _this;
+  }
+
+  _createClass(MixerFx, [{
+    key: 'setupNodes',
+    value: function setupNodes(context) {
+      // fader
+      this.gain = context.createGain();
+      // filter
+      this.lopass = context.createBiquadFilter();
+      this.lopass.type = 'lowpass';
+      this.lopass.gain.value = 0;
+      this.lopass.Q.value = 10;
+      this.lopass.frequency.value = 20000;
+      this.lopass.connect(this.gain);
+      this._output = this.gain;
+    }
+  }, {
+    key: 'setupMappings',
+    value: function setupMappings(context) {
+      var _this2 = this;
+
+      var volume = $('#volume');
+      volume.on('input', function () {
+        var vol = volume.val();
+        console.log('gain', vol);
+        _this2.gain.gain.value = vol;
+      });
+      var lowpass = $('#filter');
+      lowpass.on('input', function () {
+        var minlval = Math.log(100);
+        var maxlval = Math.log(20000);
+        var scale = maxlval - minlval;
+        var freqMag = lowpass.val();
+        var freq = Math.exp(freqMag * scale + minlval);
+        console.log('freq', freq);
+        _this2.lopass.frequency.value = freq;
+      });
+    }
+  }, {
+    key: 'output',
+    get: function get() {
+      return _get(MixerFx.prototype.__proto__ || Object.getPrototypeOf(MixerFx.prototype), 'output', this);
+    }
+  }, {
+    key: 'source',
+    set: function set(source) {
+      _set(MixerFx.prototype.__proto__ || Object.getPrototypeOf(MixerFx.prototype), 'source', source, this);
+      source.connect(this.lopass);
+    },
+    get: function get() {
+      return _get(MixerFx.prototype.__proto__ || Object.getPrototypeOf(MixerFx.prototype), 'source', this);
+    }
+  }]);
+
+  return MixerFx;
+}(FxUnit);
+
+module.exports = MixerFx;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Snap = __webpack_require__(8);
+var MixerFx = __webpack_require__(5);
+var DelayFx = __webpack_require__(4);
+var WaveformAnimation = __webpack_require__(7);
+
+var Waveform = function () {
+  function Waveform(id) {
+    _classCallCheck(this, Waveform);
+
+    this.id = id;
+    this.context = this.getContext(); // audio context
+    this.source = null; // audio source, set via run
+    this.imageInfo = null; // info allowing svg to sync with audio
+    this.trackInfo = false; // general info about track, name etc.
+    // svg
+    this.divId = null; // div to insert svg into
+    this.svgObj = null; // svg waveform object
+    this.pauseButton = null; // pause button from svg
+    this.waveSpiral = null; // wave image from svg
+    this.playbackHead = null; // head object from svg
+    // playback
+    this.pauseState = 'reset'; // current pause / playback state
+    this.setupNodes();
+    this.waveformAnimation = new WaveformAnimation(this);
+  }
+
+  /**
+   * Setup audio nodes
+   */
+
+
+  _createClass(Waveform, [{
+    key: 'setupNodes',
+    value: function setupNodes() {
+      this.delay = new DelayFx(this.context);
+      this.mixer = new MixerFx(this.context);
+      this.mixer.output.connect(this.context.destination);
+      // attach delay to mixer
+      this.delay.source = this.mixer.output;
+      this.delay.output.connect(this.context.destination);
+    }
+  }, {
+    key: 'getContext',
+    value: function getContext() {
+      var AudioContext = window.AudioContext || window.webkitAudioContext || null;
+      if (AudioContext) {
+        return new AudioContext();
+      }
+      alert('Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox');
+    }
+  }, {
+    key: 'animate',
+    value: function animate(state) {
+      return this.waveformAnimation.animate(state);
+    }
+
+    /**
+     * Return track info
+     */
+
+  }, {
+    key: 'getTrackInfo',
+    value: function getTrackInfo() {
+      return this.trackInfo;
+    }
+
+    /**
+     * When pause button is clicked, action will be dependent on current state
+     */
+
+  }, {
+    key: 'pauseClick',
+    value: function pauseClick() {
+      switch (this.pauseState) {
+        case 'playing':
+          this.pause();
+          break;
+        case 'paused':
+        case 'loaded':
+          this.play();
+          break;
+        case 'reset':
+          this.loadAudio();
+        // case 'loading':
+      }
+    }
+  }, {
+    key: 'setPlaybackRate',
+    value: function setPlaybackRate(speed) {
+      this.source.playbackRate.value = speed;
+    }
+    /**
+     * Play
+     */
+
+  }, {
+    key: 'play',
+    value: function play() {
+      // play
+      this.song.play();
+      // set state
+      this.pauseState = 'playing';
+      this.pauseButton.addClass('playbutton');
+      this.pauseButton.removeClass('pausebutton');
+      this.animate('play');
+    }
+  }, {
+    key: 'ended',
+    value: function ended() {
+      console.log('has ended');
+      this.animate('end');
+      this.pauseState = 'reset';
+      this.pauseButton.addClass('pausebutton');
+      this.pauseButton.removeClass('playbutton');
+    }
+
+    /**
+     * Pause
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      // stop animation
+      this.pauseState = 'paused';
+      this.pauseButton.addClass('pausebutton');
+      this.pauseButton.removeClass('playbutton');
+      this.song.pause();
+      this.animate('pause');
+    }
+  }, {
+    key: 'run',
+    value: function run(trackInfo) {
+      var _this = this;
+
+      this.track = trackInfo;
+      this.clear(); // remove svg
+      this.stop(); // stop audio if it is playing
+      this.createHtml(this.id, trackInfo); // create new svg
+      $.getJSON('json/' + trackInfo.svgId + '.json', function (data) {
+        // get imageInfo
+        _this.imageInfo = data;
+        // set svg objects
+        _this.svgObj = document.getElementById('svg-' + _this.id);
+        _this.svgObj.addEventListener('load', function () {
+          _this.svgObj = Snap.select('#svg-' + _this.id);
+          _this.waveSpiral = _this.svgObj.select('#sp');
+          _this.pauseButton = _this.svgObj.select('#pausebutton');
+          _this.playbackHead = _this.svgObj.select('#playback-head');
+          _this.pauseButton.click(_this.pauseClick.bind(_this));
+          _this.pauseState = 'reset';
+          // load audio
+          _this.loadAudio();
+        });
+      });
+    }
+
+    // remove previous svg if it exists
+
+  }, {
+    key: 'clear',
+    value: function clear() {
+      if (this.divId != null) {
+        this.divId.empty();
+      }
+    }
+
+    /**
+     * Stop audio if it is playing
+     */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      try {
+        this.song.pause();
+        delete this.song;
+      } catch (err) {
+        // do nothing
+      }
+    }
+
+    /**
+     * Create waveform html
+     */
+
+  }, {
+    key: 'createHtml',
+    value: function createHtml(id, trackInfo) {
+      this.divId = $('#' + id);
+      this.trackInfo = trackInfo;
+      // create objects
+      var playerDiv = $('<div/>', {
+        'class': 'spiral-player'
+      });
+      $('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId + '.svg"></object>').appendTo(playerDiv);
+      playerDiv.appendTo(this.divId);
+    }
+  }, {
+    key: '_createSong',
+    value: function _createSong(url) {
+      var sound = document.createElement('audio');
+      sound.id = 'audio-player';
+      sound.controls = 'controls';
+      sound.src = url;
+      sound.type = 'audio/mpeg';
+      return sound;
+    }
+
+    /**
+     * load audio
+     */
+
+  }, {
+    key: 'loadAudio',
+    value: function loadAudio() {
+      var _this2 = this;
+
+      this.song = this._createSong(this.track.url);
+      this.song.load();
+      this.song.oncanplay = function () {
+        // set new audio source
+        _this2.source = _this2.context.createMediaElementSource(_this2.song);
+        // attach source to fx
+        _this2.mixer.source = _this2.source;
+        // add ended call
+        _this2.song.onended = function () {
+          return _this2.ended();
+        };
+        _this2.svgObj.removeClass('loading');
+        _this2.pauseState = 'loaded';
+        $('.track-title').html(_this2.trackInfo.title);
+      };
+    }
+  }]);
+
+  return Waveform;
+}();
+
+module.exports = Waveform;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WaveformAnimation = function () {
+  function WaveformAnimation(opts) {
+    _classCallCheck(this, WaveformAnimation);
+
+    this._waveform = opts;
+  }
+  /**
+   * Animate (or stop animating) the svg
+   */
+
+
+  _createClass(WaveformAnimation, [{
+    key: 'animate',
+    value: function animate(state) {
+      debugger;
+      var position = this._waveform.song.currentTime / this._waveform.song.duration;
+      // progress
+      var totalRotation = this._waveform.imageInfo.totalTurns * 360;
+      var size = this._waveform.imageInfo.size;
+      var hSize = size * 0.5;
+      // relative distance to where head should eventually end
+      var headEnd = this._waveform.imageInfo.playbackDistance;
+      // calculate current angle
+      var currentAngle = position * totalRotation;
+      var currentDistance = position * headEnd;
+      var msDur = (this._waveform.song.duration - this._waveform.song.currentTime) * 1000; // ms
+      switch (state) {
+        case 'play':
+          this.animateObjects(totalRotation, headEnd, hSize, msDur);
+          break;
+        case 'pause':
+          this.stopAnimation();
+          break;
+        case 'sync':
+          this.transformObjects(currentAngle, currentDistance, hSize);
+          this.animateObjects(totalRotation, headEnd, hSize, msDur);
+          break;
+        case 'end':
+          this.animateObjects(0, -headEnd, hSize, 3000);
+      }
+    }
+
+    /**
+     * Animate objects
+     */
+
+  }, {
+    key: 'animateObjects',
+    value: function animateObjects(wAngle, pDistance, centre, duration) {
+      this._waveform.waveSpiral.stop().animate({ transform: 'r' + wAngle + ',' + centre + ',' + centre }, duration);
+      this._waveform.playbackHead.stop().animate({ transform: 't-' + pDistance + ',0' }, duration);
+    }
+  }, {
+    key: 'stopAnimation',
+    value: function stopAnimation() {
+      this._waveform.waveSpiral.stop();
+      this._waveform.playbackHead.stop();
+    }
+
+    /**
+     * Transform objects
+     */
+
+  }, {
+    key: 'transformObjects',
+    value: function transformObjects(wAngle, pDistance, centre) {
+      this._waveform.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre);
+      this._waveform.playbackHead.stop().transform('t-' + pDistance + ',0');
+    }
+  }]);
+
+  return WaveformAnimation;
+}();
+
+module.exports = WaveformAnimation;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_LOCAL_MODULE_0__;var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*** IMPORTS FROM imports-loader ***/
@@ -8324,466 +8881,16 @@ return Snap;
 }.call(window));
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const FxUnit = __webpack_require__(0)
-class DelayFx extends FxUnit {
-  constructor (context) {
-    super()
-    this.context = context
-    this.setupNodes(context)
-    this.setupMappings(context)
-  }
-
-  setupNodes (context) {
-    // send gain
-    this.send = context.createGain()
-    this.send.gain.value = 0
-    // delay line
-    this.delay = context.createDelay(1.5)
-    this.delay.delayTime.value = 0.35
-    // feedback gain
-    this.feedback = context.createGain()
-    this.feedback.gain.value = 0.4
-    // Lowpass like them analog delays
-    this.lowpass = context.createBiquadFilter()
-    this.lowpass.type = 'lowpass'
-    this.lowpass.gain.value = -6
-    this.lowpass.Q.value = 3
-    this.lowpass.frequency.value = 2000
-    // high pass to get rid of lame low hz feedback
-    this.hipass = context.createBiquadFilter()
-    this.hipass.type = 'highpass'
-    this.hipass.gain.value = -6
-    this.hipass.Q.value = 1
-    this.hipass.frequency.value = 150
-    // compression to make it sound more legit
-    this.compressor = context.createDynamicsCompressor()
-    this.compressor.threshold.value = -30
-    this.compressor.knee.value = 40
-    this.compressor.ratio.value = 4
-    this.compressor.attack.value = 0.015
-    this.compressor.release.value = 0.078
-    // inner connections
-    this.send.connect(this.lowpass)
-    this.lowpass.connect(this.delay)
-    this.delay.connect(this.feedback)
-    this.feedback.connect(this.hipass)
-    this.hipass.connect(this.compressor)
-    this.compressor.connect(this.lowpass)
-    this._output = this.delay
-  }
-
-  setupMappings (context) {
-    const delayTime = $('#delay-time')
-    delayTime.on('input', () => {
-      const time = delayTime.val()
-      console.log('delay-time', time)
-      this.delay.delayTime.value = time
-    })
-
-    const delayFeedback = $('#delay-feedback')
-    delayFeedback.on('input', () => {
-      const feed = delayFeedback.val()
-      console.log('delay-feed', feed)
-      this.feedback.gain.value = feed
-    })
-
-    const delaySend = $('#delay-send')
-    delaySend.on('input', () => {
-      const val = delaySend.val()
-      console.log('delay-send', val)
-      this.send.gain.value = val
-    })
-  }
-
-  set source (source) {
-    super.source = source
-    source.connect(this.send)
-  }
-
-  get source () {
-    return super.source
-  }
-}
-
-module.exports = DelayFx
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const FxUnit = __webpack_require__(0)
-
-class MixerFx extends FxUnit {
-  constructor (context) {
-    super()
-    this.context = context
-    this.setupNodes(context)
-    this.setupMappings(context)
-  }
-
-  setupNodes (context) {
-    // fader
-    this.gain = context.createGain()
-    // filter
-    this.lopass = context.createBiquadFilter()
-    this.lopass.type = 'lowpass'
-    this.lopass.gain.value = 0
-    this.lopass.Q.value = 10
-    this.lopass.frequency.value = 20000
-    this.lopass.connect(this.gain)
-    this._output = this.gain
-  }
-
-  setupMappings (context) {
-    const volume = $('#volume')
-    volume.on('input', () => {
-      const vol = volume.val()
-      console.log('gain', vol)
-      this.gain.gain.value = vol
-    })
-    const lowpass = $('#filter')
-    lowpass.on('input', () => {
-      const minlval = Math.log(100)
-      const maxlval = Math.log(20000)
-      const scale = (maxlval - minlval)
-      const freqMag = lowpass.val()
-      const freq = Math.exp((freqMag) * scale + minlval)
-      console.log('freq', freq)
-      this.lopass.frequency.value = freq
-    })
-  }
-
-  get output () {
-    return super.output
-  }
-
-  set source (source) {
-    super.source = source
-    source.connect(this.lopass)
-  }
-
-  get source () {
-    return super.source
-  }
-}
-
-module.exports = MixerFx
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const Snap = __webpack_require__(4)
-const MixerFx = __webpack_require__(6)
-const DelayFx = __webpack_require__(5)
-const WaveformAnimation = __webpack_require__(8)
-
-class Waveform {
-  constructor (id) {
-    this.id = id
-    this.context = this.getContext() // audio context
-    this.source = null // audio source, set via run
-    this.imageInfo = null // info allowing svg to sync with audio
-    this.trackInfo = false // general info about track, name etc.
-    // svg
-    this.divId = null // div to insert svg into
-    this.svgObj = null // svg waveform object
-    this.pauseButton = null // pause button from svg
-    this.waveSpiral = null // wave image from svg
-    this.playbackHead = null // head object from svg
-    // playback
-    this.pauseState = 'reset' // current pause / playback state
-    this.startedAt = 0 // time we started
-    this.pausedAt = 0 // time we paused
-    this.setupNodes()
-    this.waveformAnimation = new WaveformAnimation(this)
-  }
-
-  /**
-   * Setup audio nodes
-   */
-  setupNodes () {
-    this.delay = new DelayFx(this.context)
-    this.mixer = new MixerFx(this.context)
-    this.mixer.output.connect(this.context.destination)
-    // attach delay to mixer
-    this.delay.source = this.mixer.output
-    this.delay.output.connect(this.context.destination)
-  }
-
-  getContext () {
-    const AudioContext = window.AudioContext || window.webkitAudioContext || null
-    if (AudioContext) {
-      return new AudioContext()
-    }
-    alert('Sorry, but the Web Audio API is not supported by your browser. Please, consider upgrading to the latest version or downloading Google Chrome or Mozilla Firefox')
-  }
-
-  animate (state) {
-    return this.waveformAnimation.animate(state)
-  }
-
-  /**
-   * Return track info
-   */
-  getTrackInfo () {
-    return this.trackInfo
-  }
-
-  /**
-   * When pause button is clicked, action will be dependent on current state
-   */
-  pauseClick () {
-    switch (this.pauseState) {
-      case 'playing':
-        this.pause()
-        break
-      case 'paused':
-      case 'loaded':
-        this.play()
-        break
-      case 'reset':
-        this.loadAudio()
-      // case 'loading':
-    }
-  }
-
-  setPlaybackRate (speed) {
-    this.source.playbackRate.value = speed
-  }
-
-  get position () {
-    switch (this._waveformpauseState) {
-      case 'paused':
-        return this._waveformpausedAt / this._waveformbuffer.duration
-      case 'playing':
-        return (this._waveformcontext.currentTime - this._waveformstartedAt) / this._waveformbuffer.duration
-      case 'loaded':
-      case 'reset':
-      default:
-        return 0
-    }
-  }
-  /**
-   * Play
-   */
-  play () {
-    // set new audio source
-    this.source = this.context.createBufferSource() // creates a sound source
-    this.source.buffer = this.buffer
-    // attach source to fx
-    this.mixer.source = this.source
-    // play
-    this.startedAt = this.context.currentTime
-    this.source.start(0, this.pausedAt)
-    // add ended call
-    this.source.onended = () => this.ended()
-    // set state
-    this.pauseState = 'playing'
-    this.pauseButton.addClass('playbutton')
-    this.pauseButton.removeClass('pausebutton')
-    this.animate('play')
-  }
-
-  ended () {
-    if (this.pauseState !== 'paused') {
-      console.log('has ended')
-      this.animate('end')
-      this.pauseState = 'reset'
-      this.pausedAt = null
-      this.pauseButton.addClass('pausebutton')
-      this.pauseButton.removeClass('playbutton')
-    }
-  }
-
-  /**
-   * Pause
-   */
-  pause () {
-    this.pausedAt = this.context.currentTime
-    // stop animation
-    this.pauseState = 'paused'
-    this.pauseButton.addClass('pausebutton')
-    this.pauseButton.removeClass('playbutton')
-    this.source.stop(0)
-    this.animate('pause')
-  }
-
-  run (trackInfo) {
-    this.track = trackInfo
-    this.clear() // remove svg
-    this.stop() // stop audio if it is playing
-    this.createHtml(this.id, trackInfo) // create new svg
-    $.getJSON('json/' + trackInfo.svgId + '.json', (data) => { // get imageInfo
-      this.imageInfo = data
-      // set svg objects
-      this.svgObj = document.getElementById('svg-' + this.id)
-      this.svgObj.addEventListener('load', () => {
-        this.svgObj = Snap.select('#svg-' + this.id)
-        this.waveSpiral = this.svgObj.select('#sp')
-        this.pauseButton = this.svgObj.select('#pausebutton')
-        this.playbackHead = this.svgObj.select('#playback-head')
-        this.pauseButton.click(this.pauseClick.bind(this))
-        this.pauseState = 'reset'
-        // load audio
-        this.loadAudio()
-      })
-    })
-  }
-
-  // remove previous svg if it exists
-  clear () {
-    if (this.divId != null) {
-      this.divId.empty()
-    }
-  }
-
-  /**
-   * Stop audio if it is playing
-   */
-  stop () {
-    try {
-      this.source.stop(0)
-      this.startedAt = 0
-      this.pausedAt = 0
-    } catch (err) {
-      // do nothing
-    }
-  }
-
-  /**
-   * get audio from url
-   */
-  _requestAudio (url, cb) {
-    const request = new XMLHttpRequest()
-    request.open('GET', url, true)
-    request.responseType = 'arraybuffer'
-    // Decode asynchronously
-    request.onload = () => {
-      this.context.decodeAudioData(request.response, cb, (err) => { console.err(err) })
-    }
-    request.send()
-  }
-
-  /**
-   * Create waveform html
-   */
-  createHtml (id, trackInfo) {
-    this.divId = $('#' + id)
-    this.trackInfo = trackInfo
-    // create objects
-    const playerDiv = $('<div/>', {
-      'class': 'spiral-player'
-    })
-    $('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId +
-      '.svg"></object>').appendTo(playerDiv)
-    playerDiv.appendTo(this.divId)
-  }
-
-  /**
-   * load audio
-   */
-  loadAudio () {
-    this._requestAudio(this.track.url, (buffer) => {
-      this.buffer = buffer
-      if (this.pauseState === 'loading') {
-        this.svgObj.removeClass('loading')
-        this.pauseState = 'loaded'
-        $('.track-title').html(this.trackInfo.title)
-      }
-    })
-    this.pauseState = 'loading'
-    this.svgObj.addClass('loading')
-    $('.track-title').html('loading')
-  }
-}
-
-module.exports = Waveform
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports) {
-
-class WaveformAnimation {
-  constructor (opts) {
-    this._waveform = opts
-  }
-  /**
-   * Animate (or stop animating) the svg
-   */
-  animate (state) {
-    const position = this._waveform.position
-    // progress
-    const totalRotation = this._waveform.imageInfo.totalTurns * 360
-    const size = this._waveform.imageInfo.size
-    const hSize = size * 0.5
-    // relative distance to where head should eventually end
-    const headEnd = this._waveform.imageInfo.playbackDistance
-    // calculate current angle
-    const currentAngle = position * totalRotation
-    const currentDistance = position * headEnd
-    const msDur = (this._waveform.buffer.duration - position) * 1000 // ms
-    switch (state) {
-      case 'play':
-        this.animateObjects(totalRotation, headEnd, hSize, msDur)
-        break
-      case 'pause':
-        this.stopAnimation()
-        break
-      case 'sync':
-        this.transformObjects(currentAngle, currentDistance, hSize)
-        this.animateObjects(totalRotation, headEnd, hSize, msDur)
-        break
-      case 'end':
-        this.animateObjects(-totalRotation, -headEnd, hSize, 3000)
-    }
-  }
-
-  /**
-   * Animate objects
-   */
-  animateObjects (wAngle, pDistance, centre, duration) {
-    this._waveform.waveSpiral.stop().animate(
-      { transform: 'r' + wAngle + ',' + centre + ',' + centre },
-      duration)
-    this._waveform.playbackHead.stop().animate(
-      { transform: 't-' + pDistance + ',0' },
-      duration
-      )
-  }
-
-  stopAnimation () {
-    this._waveform.waveSpiral.stop()
-    this._waveform.playbackHead.stop()
-  }
-
-  /**
-   * Transform objects
-   */
-  transformObjects (wAngle, pDistance, centre) {
-    this._waveform.waveSpiral.stop().transform('r' + wAngle + ',' + centre + ',' + centre)
-    this._waveform.playbackHead.stop().transform('t-' + pDistance + ',0')
-  }
-}
-
-module.exports = WaveformAnimation
-
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(2)
-__webpack_require__(3)
+"use strict";
 
-__webpack_require__(1)
 
+__webpack_require__(2);
+__webpack_require__(3);
+
+__webpack_require__(1);
 
 /***/ })
 /******/ ]);

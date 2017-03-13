@@ -18,8 +18,6 @@ class Waveform {
     this.playbackHead = null // head object from svg
     // playback
     this.pauseState = 'reset' // current pause / playback state
-    this.startedAt = 0 // time we started
-    this.pausedAt = 0 // time we paused
     this.setupNodes()
     this.waveformAnimation = new WaveformAnimation(this)
   }
@@ -76,33 +74,12 @@ class Waveform {
   setPlaybackRate (speed) {
     this.source.playbackRate.value = speed
   }
-
-  get position () {
-    switch (this._waveformpauseState) {
-      case 'paused':
-        return this._waveformpausedAt / this._waveformbuffer.duration
-      case 'playing':
-        return (this._waveformcontext.currentTime - this._waveformstartedAt) / this._waveformbuffer.duration
-      case 'loaded':
-      case 'reset':
-      default:
-        return 0
-    }
-  }
   /**
    * Play
    */
   play () {
-    // set new audio source
-    this.source = this.context.createBufferSource() // creates a sound source
-    this.source.buffer = this.buffer
-    // attach source to fx
-    this.mixer.source = this.source
     // play
-    this.startedAt = this.context.currentTime
-    this.source.start(0, this.pausedAt)
-    // add ended call
-    this.source.onended = () => this.ended()
+    this.song.play()
     // set state
     this.pauseState = 'playing'
     this.pauseButton.addClass('playbutton')
@@ -111,26 +88,22 @@ class Waveform {
   }
 
   ended () {
-    if (this.pauseState !== 'paused') {
-      console.log('has ended')
-      this.animate('end')
-      this.pauseState = 'reset'
-      this.pausedAt = null
-      this.pauseButton.addClass('pausebutton')
-      this.pauseButton.removeClass('playbutton')
-    }
+    console.log('has ended')
+    this.animate('end')
+    this.pauseState = 'reset'
+    this.pauseButton.addClass('pausebutton')
+    this.pauseButton.removeClass('playbutton')
   }
 
   /**
    * Pause
    */
   pause () {
-    this.pausedAt = this.context.currentTime
     // stop animation
     this.pauseState = 'paused'
     this.pauseButton.addClass('pausebutton')
     this.pauseButton.removeClass('playbutton')
-    this.source.stop(0)
+    this.song.pause()
     this.animate('pause')
   }
 
@@ -168,26 +141,11 @@ class Waveform {
    */
   stop () {
     try {
-      this.source.stop(0)
-      this.startedAt = 0
-      this.pausedAt = 0
+      this.song.pause()
+      delete this.song
     } catch (err) {
       // do nothing
     }
-  }
-
-  /**
-   * get audio from url
-   */
-  _requestAudio (url, cb) {
-    const request = new XMLHttpRequest()
-    request.open('GET', url, true)
-    request.responseType = 'arraybuffer'
-    // Decode asynchronously
-    request.onload = () => {
-      this.context.decodeAudioData(request.response, cb, (err) => { console.err(err) })
-    }
-    request.send()
   }
 
   /**
@@ -205,21 +163,32 @@ class Waveform {
     playerDiv.appendTo(this.divId)
   }
 
+  _createSong (url) {
+    const sound = document.createElement('audio')
+    sound.id = 'audio-player'
+    sound.controls = 'controls'
+    sound.src = url
+    sound.type = 'audio/mpeg'
+    return sound
+  }
+
   /**
    * load audio
    */
   loadAudio () {
-    this._requestAudio(this.track.url, (buffer) => {
-      this.buffer = buffer
-      if (this.pauseState === 'loading') {
-        this.svgObj.removeClass('loading')
-        this.pauseState = 'loaded'
-        $('.track-title').html(this.trackInfo.title)
-      }
-    })
-    this.pauseState = 'loading'
-    this.svgObj.addClass('loading')
-    $('.track-title').html('loading')
+    this.song = this._createSong(this.track.url)
+    this.song.load()
+    this.song.oncanplay = () => {
+      // set new audio source
+      this.source = this.context.createMediaElementSource(this.song)
+      // attach source to fx
+      this.mixer.source = this.source
+      // add ended call
+      this.song.onended = () => this.ended()
+      this.svgObj.removeClass('loading')
+      this.pauseState = 'loaded'
+      $('.track-title').html(this.trackInfo.title)
+    }
   }
 }
 
