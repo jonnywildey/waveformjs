@@ -99,45 +99,53 @@ class Waveform {
   play () {
     // play
     // set new audio source
-    this.source = this.context.createBufferSource() // creates a sound source
-    this.source.buffer = this.buffer
-    // add ended call
-    this.source.onended = () => this.ended()
-    this.mixer.source = this.source
-    this.startedAt = this.getTime()
-    this.source.start(0, this.pausedAt)
-    // set state
-    this.pauseState = 'playing'
-    this.pauseButton.addClass('playbutton')
-    this.pauseButton.removeClass('pausebutton')
-    this.animate('play')
+    setTimeout(() => {
+      this.source = this.context.createBufferSource() // creates a sound source
+      this.source.buffer = this.buffer
+      // add ended call
+      this.source.onended = () => this.ended()
+      this.mixer.source = this.source
+      this.startedAt = this.getTime()
+      this.source.start(0, this.pausedAt)
+      // set state
+      this.pauseState = 'playing'
+      this.pauseButton.addClass('playbutton')
+      this.pauseButton.removeClass('pausebutton')
+      this.animate('play')
+    })
   }
 
   ended () {
     if (this.pauseState !== 'paused' && this.pauseState !== 'reset') {
-      console.log('has ended')
       this.animate('end')
       this.pauseState = 'reset'
       this.pausedAt = null
       this.pauseButton.addClass('pausebutton')
       this.pauseButton.removeClass('playbutton')
+      this.onEnded()
     }
+  }
+
+  onEnded () {
+    // do nothing
   }
 
   /**
    * Pause
    */
   pause () {
-    this.pausedAt = this.getTime()
-    // stop animation
-    this.pauseState = 'paused'
-    this.pauseButton.addClass('pausebutton')
-    this.pauseButton.removeClass('playbutton')
-    this.source.stop(0)
-    this.animate('pause')
+    setTimeout(() => {
+      this.pausedAt = this.getTime()
+      // stop animation
+      this.pauseState = 'paused'
+      this.pauseButton.addClass('pausebutton')
+      this.pauseButton.removeClass('playbutton')
+      this.source.stop(0)
+      this.animate('pause')
+    })
   }
 
-  run (trackInfo) {
+  run (trackInfo, cb) {
     this.track = trackInfo
     this.clear() // remove svg
     this.stop() // stop audio if it is playing
@@ -154,7 +162,7 @@ class Waveform {
         this.pauseButton.click(this.pauseClick.bind(this))
         this.pauseState = 'reset'
         // load audio
-        this.loadAudio()
+        this.loadAudio(cb)
       })
     })
   }
@@ -172,6 +180,7 @@ class Waveform {
   stop () {
     this.startedAt = 0
     this.pausedAt = 0
+    this.pauseState = 'paused'
     try {
       this.source.stop(0)
     } catch (err) {
@@ -211,7 +220,7 @@ class Waveform {
   /**
    * load audio
    */
-  loadAudio () {
+  loadAudio (cb) {
     this.pauseState = 'loading'
     this.svgObj.addClass('loading')
     $('.track-title').html('loading')
@@ -221,6 +230,9 @@ class Waveform {
       this.svgObj.removeClass('loading')
       this.pauseState = 'loaded'
       $('.track-title').html(this.trackInfo.title)
+      if (cb) {
+        cb()
+      }
     })
   }
 }

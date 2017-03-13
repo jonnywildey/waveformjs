@@ -1,48 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="../../favicon.ico">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" href="../../favicon.ico">
 
-		<title>Alphabets Heaven</title>
+	<title>Alphabets Heaven</title>
 
-		<!-- Bootstrap core CSS -->
-		<link href="style/bootstrap.css" rel="stylesheet">
-		<link href="style/simple-sidebar.css" rel="stylesheet">
-		<link href="style/cover.css" rel="stylesheet">
-		<link href="style/alphabets.css" rel="stylesheet">
-		<link href="style/waveformjs.css" rel="stylesheet">
-	</head>
+	<!-- Bootstrap core CSS -->
+	<link href="style/bootstrap.css" rel="stylesheet">
+	<link href="style/simple-sidebar.css" rel="stylesheet">
+	<link href="style/cover.css" rel="stylesheet">
+	<link href="style/alphabets.css" rel="stylesheet">
+	<link href="style/waveformjs.css" rel="stylesheet">
+</head>
 
-	<body>
-		<div class="container content-container">
-			<nav class="navbar navbar-static-top">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	        </div>
-	        <div id="navbar" class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#">Audio</a></li>
-	            <li><a href="video.html">Video</a></li>
-							<li><a href="releases.html">Releases</a></li>
-	          </ul>
+<body>
+				<!-- <img class="stories-content" src="images/stories.png"> -->
+				<div class="container content-container">
+					<nav class="navbar navbar-static-top">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<li class="dropdown open">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="open">
 									<div class="track-title-container">
-									  <div class="track-title track-selector"> </div>
-								  </div>
+										<div class="track-title track-selector"> </div>
+									</div>
 								</a>
 								<ul class="dropdown-menu track-table-container">
 									<div class='track-table'>
@@ -51,52 +46,63 @@
 								</ul>
 							</li>
 						</ul>
-	        </div><!--/.nav-collapse -->
+						<div id="navbar" class="navbar-collapse collapse">
+							<ul class="nav navbar-nav">
+								<li class="active"><a href="#">Audio</a></li>
+								<li><a href="video.html">Video</a></li>
+								<li><a href="releases.html">Releases</a></li>
+							</ul>
+						</div>
+					</nav>
 
-	    </nav>
+
+
+					<div class="starter-template">
+						<div class="track-player" id="long"></div>
+						<h3 class="cover-heading track-title"></h3>
+					</div>
+
+					<div class="fx-controls">
+						<label for="volume"> Track Volume </label>
+						<input type="range" min="0" max="1" id="volume" step="0.01" value="1"/>
+						<label for="volume"> Track Filter </label>
+						<input type="range" min="0" max="1" id="filter" step="0.01" value="1"/>
+						<label for="delay-send"> Delay Send </label>
+						<input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0"/>
+						<label for="delay-time"> Time </label>
+						<input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35"/>
+						<label for="delay-feedback"> Feedback </label>
+						<input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4"/>
+					</div>
+					<div class='footer-row'>
+						<div class='item-link'>
+							<a href="http://www.twitter.com/alphabetsheaven">
+								<img src='images/twitter.png'> </img>
+							</a>
+						</div>
+						<div class='item-link'>
+							<a href="http://www.soundcloud.com/alphabetsheaven">
+								<img src='images/sc2.png'> </img>
+							</a>
+						</div>
+						<div class='item-link'>
+							<a href="https://alphabetsheaven.bandcamp.com/">
+								<img src='images/bandcamp.png'> </img>
+							</a>
+						</div>
+					</div>
 
 
 
-			<div class="starter-template">
-				<div class="track-player" id="long"></div>
-				<h3 class="cover-heading track-title"></h3>
-			</div>
-
-			<div class="fx-controls">
-				<label for="volume"> Track Volume </label>
-				<input type="range" min="0" max="1" id="volume" step="0.01" value="1"/>
-				<label for="volume"> Track Filter </label>
-				<input type="range" min="0" max="1" id="filter" step="0.01" value="1"/>
-				<label for="delay-send"> Delay Send </label>
-				<input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0"/>
-				<label for="delay-time"> Time </label>
-				<input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35"/>
-				<label for="delay-feedback"> Feedback </label>
-				<input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4"/>
-			</div>
-
-			<div class='footer-row'>
-				<div class='item-link'>
-					<a href="http://www.twitter.com/alphabetsheaven">
-						<img src='images/twitter.png'> </img>
-					</a>
 				</div>
-				<div class='item-link'>
-					<a href="http://www.soundcloud.com/alphabetsheaven">
-						<img src='images/sc2.png'> </img>
-					</a>
-				</div>
-			</div>
 
-	  </div>
-		</footer>
 
-		<!-- bower:js -->
-		<script src="bower_components/jquery/dist/jquery.js"></script>
-		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-		<!-- endbower -->
-		<script src="dist/waveformjs.js"></script>
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- endbower -->
+<script src="dist/waveformjs.js"></script>
 
-	</body>
+</body>
 
 </html>

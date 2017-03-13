@@ -29,7 +29,7 @@ class WaveformAnimation {
         this.animateObjects(totalRotation, headEnd, hSize, msDur)
         break
       case 'end':
-        this.animateObjects(-totalRotation, -headEnd, hSize, 3000)
+        this.animateObjects(0, -headEnd, hSize, 3000)
     }
   }
 

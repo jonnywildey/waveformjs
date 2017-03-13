@@ -8,13 +8,12 @@
 }
 
 .svg-wave {
-  fill: #0c2540;
-  stroke-width: 1;
-  stroke: #e8551a;
+  fill: #0b2540;
+  stroke-width: 0;
 }
 
 .playback-head {
-    fill: #ec4e17;
+  fill: #eb4116;
 }
 
 .spiral-player {
@@ -29,7 +28,7 @@
 }
 
 .pausebutton, .playbutton {
-  fill: #ec4e17;
+  fill: #eb4116;
 	cursor: pointer;
 }
 
@@ -44,7 +43,7 @@
 }
 
 .pausesymbol, .playsymbol {
-    fill: #ec4e17;
+    fill: #eb4116;
     transition: all 0.2s ease;
 }
 
