@@ -12,8 +12,16 @@ window.playAudio = (trackUrl) => {
   window.lw.run(track)
 }
 
+function getSearchParams (k) {
+  var p = {}
+  window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (s, k, v) { p[k] = v })
+  return k ? p[k] : p
+}
+
 $(function () {
   window.lw = new Waveform('long')
+  const id = getSearchParams('id')
+  const track = window.scData.find(track => track.id === id) || window.scData[0]
   populateTrackTable(window.scData)
-  window.playAudio(window.scData[0].url)
+  window.playAudio(track.url)
 })
