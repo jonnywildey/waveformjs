@@ -114,7 +114,7 @@ class Waveform {
   }
 
   ended () {
-    if (this.pauseState !== 'paused') {
+    if (this.pauseState !== 'paused' && this.pauseState !== 'reset') {
       console.log('has ended')
       this.animate('end')
       this.pauseState = 'reset'
