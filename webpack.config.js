@@ -20,7 +20,7 @@ module.exports = {
     filename: "waveformjs.js",
     path: __dirname + "/dist",
   },
-  plugins: [
-   new webpack.optimize.UglifyJsPlugin({minimize: true})
-  ]
+  // plugins: [
+  //  new webpack.optimize.UglifyJsPlugin({minimize: true})
+  // ]
 };

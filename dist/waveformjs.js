@@ -137,7 +137,6 @@ function getSearchParams(k) {
 $(function () {
   window.lw = new Waveform('long');
   var id = getSearchParams('id');
-  console.log(id);
   var track = window.scData.find(function (track) {
     return track.id === id;
   }) || window.scData[0];
@@ -405,6 +404,8 @@ var Waveform = function () {
     this.playbackHead = null; // head object from svg
     // playback
     this.pauseState = 'reset'; // current pause / playback state
+    this.startedAt = 0; // time we started
+    this.pausedAt = 0; // time we paused
     this.setupNodes();
     this.waveformAnimation = new WaveformAnimation(this);
   }
@@ -474,6 +475,11 @@ var Waveform = function () {
     value: function setPlaybackRate(speed) {
       this.source.playbackRate.value = speed;
     }
+  }, {
+    key: 'getTime',
+    value: function getTime() {
+      return (Date.now() - this._start) / 1000;
+    }
     /**
      * Play
      */
@@ -481,8 +487,19 @@ var Waveform = function () {
   }, {
     key: 'play',
     value: function play() {
+      var _this = this;
+
       // play
-      this.song.play();
+      // set new audio source
+      this.source = this.context.createBufferSource(); // creates a sound source
+      this.source.buffer = this.buffer;
+      // add ended call
+      this.source.onended = function () {
+        return _this.ended();
+      };
+      this.mixer.source = this.source;
+      this.startedAt = this.getTime();
+      this.source.start(0, this.pausedAt);
       // set state
       this.pauseState = 'playing';
       this.pauseButton.addClass('playbutton');
@@ -492,11 +509,14 @@ var Waveform = function () {
   }, {
     key: 'ended',
     value: function ended() {
-      console.log('has ended');
-      this.animate('end');
-      this.pauseState = 'reset';
-      this.pauseButton.addClass('pausebutton');
-      this.pauseButton.removeClass('playbutton');
+      if (this.pauseState !== 'paused') {
+        console.log('has ended');
+        this.animate('end');
+        this.pauseState = 'reset';
+        this.pausedAt = null;
+        this.pauseButton.addClass('pausebutton');
+        this.pauseButton.removeClass('playbutton');
+      }
     }
 
     /**
@@ -506,17 +526,18 @@ var Waveform = function () {
   }, {
     key: 'pause',
     value: function pause() {
+      this.pausedAt = this.getTime();
       // stop animation
       this.pauseState = 'paused';
       this.pauseButton.addClass('pausebutton');
       this.pauseButton.removeClass('playbutton');
-      this.song.pause();
+      this.source.stop(0);
       this.animate('pause');
     }
   }, {
     key: 'run',
     value: function run(trackInfo) {
-      var _this = this;
+      var _this2 = this;
 
       this.track = trackInfo;
       this.clear(); // remove svg
@@ -524,18 +545,18 @@ var Waveform = function () {
       this.createHtml(this.id, trackInfo); // create new svg
       $.getJSON('json/' + trackInfo.svgId + '.json', function (data) {
         // get imageInfo
-        _this.imageInfo = data;
+        _this2.imageInfo = data;
         // set svg objects
-        _this.svgObj = document.getElementById('svg-' + _this.id);
-        _this.svgObj.addEventListener('load', function () {
-          _this.svgObj = Snap.select('#svg-' + _this.id);
-          _this.waveSpiral = _this.svgObj.select('#sp');
-          _this.pauseButton = _this.svgObj.select('#pausebutton');
-          _this.playbackHead = _this.svgObj.select('#playback-head');
-          _this.pauseButton.click(_this.pauseClick.bind(_this));
-          _this.pauseState = 'reset';
+        _this2.svgObj = document.getElementById('svg-' + _this2.id);
+        _this2.svgObj.addEventListener('load', function () {
+          _this2.svgObj = Snap.select('#svg-' + _this2.id);
+          _this2.waveSpiral = _this2.svgObj.select('#sp');
+          _this2.pauseButton = _this2.svgObj.select('#pausebutton');
+          _this2.playbackHead = _this2.svgObj.select('#playback-head');
+          _this2.pauseButton.click(_this2.pauseClick.bind(_this2));
+          _this2.pauseState = 'reset';
           // load audio
-          _this.loadAudio();
+          _this2.loadAudio();
         });
       });
     }
@@ -558,11 +579,33 @@ var Waveform = function () {
     key: 'stop',
     value: function stop() {
       try {
-        this.song.pause();
-        delete this.song;
+        this.source.stop(0);
+        this.startedAt = 0;
+        this.pausedAt = 0;
       } catch (err) {
         // do nothing
       }
+    }
+
+    /**
+     * get audio from url
+     */
+
+  }, {
+    key: '_requestAudio',
+    value: function _requestAudio(url, cb) {
+      var _this3 = this;
+
+      var request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.responseType = 'arraybuffer';
+      // Decode asynchronously
+      request.onload = function () {
+        _this3.context.decodeAudioData(request.response, cb, function (err) {
+          console.err(err);
+        });
+      };
+      request.send();
     }
 
     /**
@@ -581,16 +624,6 @@ var Waveform = function () {
       $('<object id="svg-' + id + '"class="svg-object" type="image/svg+xml" data="svg/' + trackInfo.svgId + '.svg"></object>').appendTo(playerDiv);
       playerDiv.appendTo(this.divId);
     }
-  }, {
-    key: '_createSong',
-    value: function _createSong(url) {
-      var sound = document.createElement('audio');
-      sound.id = 'audio-player';
-      sound.controls = 'controls';
-      sound.src = url;
-      sound.type = 'audio/mpeg';
-      return sound;
-    }
 
     /**
      * load audio
@@ -599,23 +632,33 @@ var Waveform = function () {
   }, {
     key: 'loadAudio',
     value: function loadAudio() {
-      var _this2 = this;
+      var _this4 = this;
 
-      this.song = this._createSong(this.track.url);
-      this.song.load();
-      this.song.oncanplay = function () {
-        // set new audio source
-        _this2.source = _this2.context.createMediaElementSource(_this2.song);
+      this.pauseState = 'loading';
+      this.svgObj.addClass('loading');
+      $('.track-title').html('loading');
+      this._requestAudio(this.track.url, function (buffer) {
+        _this4._start = Date.now();
+        _this4.buffer = buffer;
         // attach source to fx
-        _this2.mixer.source = _this2.source;
-        // add ended call
-        _this2.song.onended = function () {
-          return _this2.ended();
-        };
-        _this2.svgObj.removeClass('loading');
-        _this2.pauseState = 'loaded';
-        $('.track-title').html(_this2.trackInfo.title);
-      };
+        _this4.svgObj.removeClass('loading');
+        _this4.pauseState = 'loaded';
+        $('.track-title').html(_this4.trackInfo.title);
+      });
+    }
+  }, {
+    key: 'position',
+    get: function get() {
+      switch (this.pauseState) {
+        case 'paused':
+          return this.pausedAt / this.buffer.duration;
+        case 'playing':
+          return (this.getTime() - this.startedAt) / this.buffer.duration;
+        case 'loaded':
+        case 'reset':
+        default:
+          return 0;
+      }
     }
   }]);
 
@@ -649,7 +692,7 @@ var WaveformAnimation = function () {
   _createClass(WaveformAnimation, [{
     key: 'animate',
     value: function animate(state) {
-      var position = this._waveform.song.currentTime / this._waveform.song.duration;
+      var position = this._waveform.position;
       // progress
       var totalRotation = this._waveform.imageInfo.totalTurns * 360;
       var size = this._waveform.imageInfo.size;
@@ -659,7 +702,7 @@ var WaveformAnimation = function () {
       // calculate current angle
       var currentAngle = position * totalRotation;
       var currentDistance = position * headEnd;
-      var msDur = (this._waveform.song.duration - this._waveform.song.currentTime) * 1000; // ms
+      var msDur = (this._waveform.buffer.duration - position) * 1000; // ms
       switch (state) {
         case 'play':
           this.animateObjects(totalRotation, headEnd, hSize, msDur);
@@ -672,7 +715,7 @@ var WaveformAnimation = function () {
           this.animateObjects(totalRotation, headEnd, hSize, msDur);
           break;
         case 'end':
-          this.animateObjects(0, -headEnd, hSize, 3000);
+          this.animateObjects(-totalRotation, -headEnd, hSize, 3000);
       }
     }
 
