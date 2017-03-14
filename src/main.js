@@ -3,13 +3,19 @@ const Waveform = require('./waveform')
 
 function populateTrackTable (tracks) {
   // create tracks table
-  let tStr = tracks.reduce((str, track) => `${str}<a href="#" onclick="playAudio('${track.url}');event.stopPropagation()"><div class="track-item">${track.title}</div></a>`, '')
+  let tStr = tracks.reduce((str, track) => `${str}<a href="#" onclick="playAudio('${track.url}');event.stopPropagation();"><div class="track-item">${track.title}</div></a>`, '')
   $('.track-table').append(tStr)
 }
 
+window.hasPlayed = false
 window.playAudio = (trackUrl) => {
   const track = window.scData.find(tr => tr.url === trackUrl)
-  window.lw.run(track, () => window.lw.play())
+  if (window.hasPlayed) {
+    window.lw.run(track, () => window.lw.play())
+  } else {
+    window.lw.run(track)
+    window.hasPlayed = true
+  }
 }
 
 function getSearchParams (k) {

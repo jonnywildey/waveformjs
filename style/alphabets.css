@@ -204,7 +204,7 @@ iframe {
 	min-width: 200px;
 	width: 100%;
 	float: left;
-	background-color: rgba(12, 37, 64, 1) !important;
+	background-color: #0b2540 !important;
 }
 
 .track-selector:before {
