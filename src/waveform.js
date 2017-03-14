@@ -20,6 +20,7 @@ class Waveform {
     this.pauseState = 'reset' // current pause / playback state
     this.startedAt = 0 // time we started
     this.pausedAt = 0 // time we paused
+    this.trackPosition = 0
     this.setupNodes()
     this.waveformAnimation = new WaveformAnimation(this)
   }
@@ -99,20 +100,18 @@ class Waveform {
   play () {
     // play
     // set new audio source
-    setTimeout(() => {
-      this.source = this.context.createBufferSource() // creates a sound source
-      this.source.buffer = this.buffer
-      // add ended call
-      this.source.onended = () => this.ended()
-      this.mixer.source = this.source
-      this.startedAt = this.getTime()
-      this.source.start(0, this.pausedAt)
-      // set state
-      this.pauseState = 'playing'
-      this.pauseButton.addClass('playbutton')
-      this.pauseButton.removeClass('pausebutton')
-      this.animate('play')
-    })
+    this.source = this.context.createBufferSource() // creates a sound source
+    this.source.buffer = this.buffer
+    // add ended call
+    this.source.onended = () => this.ended()
+    this.mixer.source = this.source
+    this.source.start(0, this.trackPosition)
+    this.startedAt = this.getTime()
+    // set state
+    this.pauseState = 'playing'
+    this.pauseButton.addClass('playbutton')
+    this.pauseButton.removeClass('pausebutton')
+    this.animate('play')
   }
 
   ended () {
@@ -134,15 +133,14 @@ class Waveform {
    * Pause
    */
   pause () {
-    setTimeout(() => {
-      this.pausedAt = this.getTime()
-      // stop animation
-      this.pauseState = 'paused'
-      this.pauseButton.addClass('pausebutton')
-      this.pauseButton.removeClass('playbutton')
-      this.source.stop(0)
-      this.animate('pause')
-    })
+    // stop animation
+    this.source.stop()
+    this.pausedAt = this.getTime()
+    this.trackPosition += this.pausedAt - this.startedAt
+    this.pauseState = 'paused'
+    this.animate('pause')
+    this.pauseButton.addClass('pausebutton')
+    this.pauseButton.removeClass('playbutton')
   }
 
   run (trackInfo, cb) {
@@ -169,7 +167,7 @@ class Waveform {
 
   // remove previous svg if it exists
   clear () {
-    if (this.divId != null) {
+    if (this.divId) {
       this.divId.empty()
     }
   }
@@ -180,7 +178,9 @@ class Waveform {
   stop () {
     this.startedAt = 0
     this.pausedAt = 0
+    this.trackPosition = 0
     this.pauseState = 'paused'
+    this.buffer = null
     try {
       this.source.stop(0)
     } catch (err) {
@@ -226,6 +226,7 @@ class Waveform {
     $('.track-title').html('loading')
     this._requestAudio(this.track.url, (buffer) => {
       this.buffer = buffer
+      this.loadedAt = this.getTime()
       // attach source to fx
       this.svgObj.removeClass('loading')
       this.pauseState = 'loaded'
