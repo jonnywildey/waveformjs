@@ -6,27 +6,19 @@ class WaveformAnimation {
    * Animate (or stop animating) the svg
    */
   animate (state) {
-    const position = this._waveform.position
     // progress
     const totalRotation = this._waveform.imageInfo.totalTurns * 360
     const size = this._waveform.imageInfo.size
     const hSize = size * 0.5
     // relative distance to where head should eventually end
     const headEnd = this._waveform.imageInfo.playbackDistance
-    // calculate current angle
-    const currentAngle = position * totalRotation
-    const currentDistance = position * headEnd
-    const msDur = (this._waveform.buffer.duration - position) * 1000 // ms
+    const msDur = (this._waveform.buffer.duration - this._waveform.trackPosition) * 1000 // ms
     switch (state) {
       case 'play':
         this.animateObjects(totalRotation, headEnd, hSize, msDur)
         break
       case 'pause':
         this.stopAnimation()
-        break
-      case 'sync':
-        this.transformObjects(currentAngle, currentDistance, hSize)
-        this.animateObjects(totalRotation, headEnd, hSize, msDur)
         break
       case 'end':
         this.animateObjects(0, -headEnd, hSize, 3000)

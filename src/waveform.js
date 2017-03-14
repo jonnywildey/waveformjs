@@ -78,19 +78,6 @@ class Waveform {
     this.source.playbackRate.value = speed
   }
 
-  get position () {
-    switch (this.pauseState) {
-      case 'paused':
-        return this.pausedAt / this.buffer.duration
-      case 'playing':
-        return (this.getTime() - this.startedAt) / this.buffer.duration
-      case 'loaded':
-      case 'reset':
-      default:
-        return 0
-    }
-  }
-
   getTime () {
     return this.context.currentTime
   }
