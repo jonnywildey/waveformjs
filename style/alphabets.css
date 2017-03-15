@@ -44,7 +44,7 @@ input[type=range]::-webkit-slider-runnable-track {
 	height: 5px;
 	cursor: pointer;
 	background: rgba(12, 37, 64, 0.8);
-	border-radius: 5px;
+	border-radius: 2px;
 }
 input[type=range]::-webkit-slider-thumb {
 	height: 30px;
@@ -64,7 +64,7 @@ input[type=range]::-moz-range-track {
 	height: 5px;
 	cursor: pointer;
 	background: rgba(12, 37, 64, 0.8);
-	border-radius: 5px;
+	border-radius: 2px;
 }
 input[type=range]::-moz-range-thumb {
 	height: 30px;
@@ -186,6 +186,7 @@ iframe {
 }
 
 .track-table-container {
+	font-family: 'Pentaprism2NFW01-Regular', 'DIN-RegularAlternate', sans-serif;
 	max-height: 230px;
 	border: none;
 	overflow-y: scroll;
@@ -200,6 +201,7 @@ iframe {
 }
 
 .track-selector {
+	font-family: 'Pentaprism2NFW01-Regular', 'DIN-RegularAlternate', sans-serif;
 	padding: 10px;
 	min-width: 200px;
 	width: 100%;
