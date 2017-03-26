@@ -8,6 +8,17 @@
 	min-height: 1150px;
 }
 
+.buy-link {
+	display: inline-block;
+	padding-left: 20px;
+}
+
+.download-icon {
+	width: 30px;
+	position: relative;
+	top: -7px;
+}
+
 .navbar {
 	padding: 0 20px;
 }
