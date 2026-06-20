@@ -16,6 +16,7 @@
   window.albumConfig = {
     artist:      'Alphabets Heaven',
     title:       'Stories',
+    artwork:     'images/stories.jpg',
     bandcampUrl: 'https://alphabetsheaven.bandcamp.com/album/stories',
     links: [
       { name: 'Bandcamp',    url: 'https://alphabetsheaven.bandcamp.com/album/stories' },
@@ -64,35 +65,49 @@
 
     <div class="page-layout">
 
-      <div class="player-backdrop">
-        <div class="player-header" id="player-header"></div>
-        <div class="track-player" id="long"></div>
-
-        <div class="track-info-row">
-          <h3 class="track-title"></h3>
+      <!-- Artwork + streaming links -->
+      <div class="artwork-column">
+        <img class="album-artwork" id="album-artwork" src="" alt="">
+        <div class="artwork-links" id="artwork-links">
+          <!-- populated by player.js -->
         </div>
-
-        <details class="fx-section">
-          <summary>FX</summary>
-          <div class="fx-controls">
-            <label for="volume">Volume</label>
-            <input type="range" min="0" max="1" id="volume" step="0.01" value="1">
-            <label for="filter">Filter</label>
-            <input type="range" min="0" max="1" id="filter" step="0.01" value="1">
-            <label for="delay-send">Delay Send</label>
-            <input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0">
-            <label for="delay-time">Delay Time</label>
-            <input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35">
-            <label for="delay-feedback">Feedback</label>
-            <input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4">
-          </div>
-        </details>
       </div>
 
+      <!-- Player: header card → circle → title + FX -->
+      <div class="player-column">
+        <div class="player-header" id="player-header"></div>
+        <div class="player-backdrop">
+          <div class="track-player" id="long"></div>
+        </div>
+        <div class="track-below">
+          <h3 class="track-title"></h3>
+          <details class="fx-section">
+            <summary>FX</summary>
+            <div class="fx-controls">
+              <label for="volume">Volume</label>
+              <input type="range" min="0" max="1" id="volume" step="0.01" value="1">
+              <label for="filter">Filter</label>
+              <input type="range" min="0" max="1" id="filter" step="0.01" value="1">
+              <label for="delay-send">Delay Send</label>
+              <input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0">
+              <label for="delay-time">Delay Time</label>
+              <input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35">
+              <label for="delay-feedback">Feedback</label>
+              <input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4">
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <!-- Track list -->
       <aside class="track-list" id="track-list">
         <!-- populated by player.js from albumConfig -->
       </aside>
 
+    </div>
+
+    <div class="artwork-lightbox" id="artwork-lightbox" hidden>
+      <img class="artwork-lightbox-img" id="artwork-lightbox-img" src="" alt="">
     </div>
 
     <div class="footer-row">

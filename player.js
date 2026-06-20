@@ -233,7 +233,7 @@ class Waveform {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  const { artist, title, tracks, links = [] } = window.albumConfig
+  const { artist, title, tracks, links = [], artwork = '' } = window.albumConfig
   const player = new Waveform('long')
 
   // Album header
@@ -243,6 +243,39 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="player-header-artist">${artist}</div>
       <div class="player-header-title">${title}</div>
     `
+  }
+
+  // Artwork image + lightbox
+  const artworkImg = document.getElementById('album-artwork')
+  const lightbox = document.getElementById('artwork-lightbox')
+  const lightboxImg = document.getElementById('artwork-lightbox-img')
+  if (artworkImg && artwork) {
+    artworkImg.src = artwork
+    artworkImg.alt = `${artist} — ${title}`
+    if (lightbox && lightboxImg) {
+      lightboxImg.src = artwork
+      lightboxImg.alt = artworkImg.alt
+      artworkImg.addEventListener('click', () => { lightbox.hidden = false })
+      lightbox.addEventListener('click', () => { lightbox.hidden = true })
+    }
+  }
+
+  // Streaming links under artwork
+  const artworkLinksEl = document.getElementById('artwork-links')
+  if (artworkLinksEl && links.length > 0) {
+    const label = document.createElement('div')
+    label.className = 'artwork-links-label'
+    label.textContent = 'Listen on'
+    artworkLinksEl.appendChild(label)
+    links.forEach(({ name, url }) => {
+      const a = document.createElement('a')
+      a.className = 'stream-link'
+      a.href = url
+      a.target = '_blank'
+      a.rel = 'noopener'
+      a.textContent = name
+      artworkLinksEl.appendChild(a)
+    })
   }
 
   // Build track list panel from albumConfig
@@ -292,26 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     listEl.appendChild(table)
-
-    // Stream links section
-    if (links.length > 0) {
-      const linksEl = document.createElement('div')
-      linksEl.className = 'track-list-links'
-      const label = document.createElement('div')
-      label.className = 'track-list-links-label'
-      label.textContent = 'Listen on'
-      linksEl.appendChild(label)
-      links.forEach(({ name, url }) => {
-        const a = document.createElement('a')
-        a.className = 'stream-link'
-        a.href = url
-        a.target = '_blank'
-        a.rel = 'noopener'
-        a.textContent = name
-        linksEl.appendChild(a)
-      })
-      listEl.appendChild(linksEl)
-    }
   }
 
   function setActiveTrack(id) {

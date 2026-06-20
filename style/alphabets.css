@@ -1,416 +1,497 @@
 /* ── Page shell ──────────────────────────────────────────────────────────── */
 
 .content-container {
-  padding: 0;
-  position: relative;
-  background-color: #f48a21;
-  background: url('../images/stories.jpg') no-repeat center;
-  background-size: cover;
-  min-height: 100vh;
+    padding: 0;
+    position: relative;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+        url("../images/stories.jpg") no-repeat center / cover;
+    min-height: 100vh;
 }
 
 .navbar {
-  padding: 0 20px;
-  background: rgba(11, 37, 64, 0.75);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+    padding: 0 20px;
+    background: rgba(11, 37, 64, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .navbar .nav > li > a {
-  color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .navbar .nav > li > a:hover,
 .navbar .nav > li.active > a,
 .navbar .nav > li.active > a:hover {
-  color: white;
-  background: transparent;
+    color: white;
+    background: transparent;
 }
 
-/* ── Main layout: player + track list side by side ───────────────────────── */
+/* ── Main layout: 3 columns ──────────────────────────────────────────────── */
 
 .page-layout {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 20px 16px 0;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 28px 40px 70px;
 }
 
-/* ── Album header ────────────────────────────────────────────────────────── */
+/* ── Artwork column (left) ───────────────────────────────────────────────── */
 
+.artwork-column {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(11, 37, 64, 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.album-artwork {
+    width: 100%;
+    display: block;
+    cursor: zoom-in;
+}
+
+/* ── Artwork lightbox ────────────────────────────────────────────────────── */
+
+.artwork-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    cursor: zoom-out;
+}
+
+.artwork-lightbox[hidden] {
+    display: none;
+}
+
+.artwork-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
+}
+
+.artwork-links {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px 16px;
+}
+
+.artwork-links-label {
+    font-size: 0.65em;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+/* ── Player column (centre) ──────────────────────────────────────────────── */
+
+.player-column {
+    flex: 1 1 420px;
+    min-width: 0;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Album title — floats above the circle on the dark background */
 .player-header {
-  text-align: center;
-  padding-bottom: 14px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    padding: 4px 0 10px;
+    margin: 0 0 4px;
 }
 
 .player-header-artist {
-  font-size: 0.7em;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+    font-size: 0.7em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
 }
 
 .player-header-title {
-  font-size: 1.4em;
-  color: white;
-  font-weight: 600;
-  margin-top: 3px;
+    font-size: 1.4em;
+    color: white;
+    font-weight: 600;
+    margin-top: 3px;
 }
 
-/* ── Player backdrop ─────────────────────────────────────────────────────── */
-
+/* Circle backdrop — clips the SVG waveform to a disc */
 .player-backdrop {
-  flex: 0 1 560px;
-  min-width: 0;
-  background: rgba(11, 37, 64, 0.78);
-  border-radius: 12px;
-  padding: 20px 20px 16px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(11, 37, 64, 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 .track-player {
-  margin: auto;
-  position: relative;
+    width: 100%;
+    position: relative;
 }
 
-.track-info-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 8px;
+/* Below the circle: track title + FX card */
+.track-below {
+    text-align: center;
+    padding-top: 10px;
 }
 
 .track-title {
-  color: white;
-  margin: 0;
-  font-size: 1.1em;
-  font-weight: 400;
+    color: white;
+    margin: 0 0 6px;
+    font-size: 1.1em;
+    font-weight: 400;
 }
 
-.buy-link {
-  display: inline-flex;
-  align-items: center;
-  opacity: 0.7;
-  transition: opacity 0.15s;
-}
-
-.buy-link:hover {
-  opacity: 1;
-}
-
-.download-icon {
-  width: 22px;
-}
-
-/* ── FX collapsible ─────────────────────────────────────────────────────── */
+/* ── FX collapsible ──────────────────────────────────────────────────────── */
 
 .fx-section {
-  margin-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 8px;
+    padding: 0 4px;
 }
 
 .fx-section > summary {
-  display: block;
-  padding: 8px 0 4px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.75em;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-align: center;
-  user-select: none;
-  transition: color 0.15s;
+    display: block;
+    padding: 8px 0 4px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    user-select: none;
+    transition: color 0.15s;
 }
 
 .fx-section > summary:hover {
-  color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.75);
 }
 
 /* hide the default triangle marker */
-.fx-section > summary::-webkit-details-marker { display: none; }
-.fx-section > summary::marker               { display: none; }
+.fx-section > summary::-webkit-details-marker {
+    display: none;
+}
+.fx-section > summary::marker {
+    display: none;
+}
 
-.fx-section:not([open]) > summary::after { content: ' ▾'; }
-.fx-section[open]       > summary::after { content: ' ▴'; }
+.fx-section:not([open]) > summary::after {
+    content: " ▾";
+}
+.fx-section[open] > summary::after {
+    content: " ▴";
+}
 
 .fx-controls {
-  padding: 8px 8px 4px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 12px;
-  row-gap: 4px;
-  align-items: center;
+    padding: 8px 8px 4px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    align-items: center;
 }
 
 .fx-controls label {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.8em;
-  white-space: nowrap;
-  margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8em;
+    white-space: nowrap;
+    margin: 0;
 }
 
 /* ── Sliders ─────────────────────────────────────────────────────────────── */
 
-input[type=range] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  background: none;
-  margin: 6px 0;
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: none;
+    margin: 6px 0;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
 }
 
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  height: 18px;
-  width: 18px;
-  border-radius: 50%;
-  background: #eb4116;
-  cursor: pointer;
-  margin-top: -7px;
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #eb4116;
+    cursor: pointer;
+    margin-top: -7px;
 }
 
-input[type=range]::-moz-range-track {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  border: none;
+input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    border: none;
 }
 
-input[type=range]::-moz-range-thumb {
-  height: 18px;
-  width: 18px;
-  border: none;
-  border-radius: 50%;
-  background: #eb4116;
-  cursor: pointer;
+input[type="range"]::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border: none;
+    border-radius: 50%;
+    background: #eb4116;
+    cursor: pointer;
 }
 
 /* ── Track list panel ────────────────────────────────────────────────────── */
 
 .track-list {
-  flex: 0 0 210px;
-  background: rgba(11, 37, 64, 0.85);
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: 560px;
+    flex: 0 0 260px;
+    background: rgba(11, 37, 64, 0.85);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 560px;
 }
 
 .track-list-header {
-  padding: 14px 16px 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  flex-shrink: 0;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
 }
 
 .album-artist {
-  font-size: 0.68em;
-  color: rgba(255, 255, 255, 0.45);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+    font-size: 0.68em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 .album-name {
-  font-size: 1em;
-  color: white;
-  font-weight: 600;
-  margin: 3px 0 2px;
+    font-size: 1em;
+    color: white;
+    font-weight: 600;
+    margin: 3px 0 2px;
 }
 
 .album-count {
-  font-size: 0.68em;
-  color: rgba(255, 255, 255, 0.3);
+    font-size: 0.68em;
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .track-table {
-  overflow-y: auto;
-  flex: 1;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .track-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 0.88em;
-  text-decoration: none;
-  transition: background 0.12s, color 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.88em;
+    text-decoration: none;
+    transition:
+        background 0.12s,
+        color 0.12s;
 }
 
 .track-item:hover {
-  background: rgba(255, 255, 255, 0.07);
-  color: white;
-  text-decoration: none;
+    background: rgba(255, 255, 255, 0.07);
+    color: white;
+    text-decoration: none;
 }
 
 .track-item.is-playing {
-  color: #eb4116;
-  background: rgba(235, 65, 22, 0.1);
+    color: #eb4116;
+    background: rgba(235, 65, 22, 0.1);
 }
 
 .track-num {
-  font-size: 0.72em;
-  color: rgba(255, 255, 255, 0.25);
-  min-width: 18px;
-  font-variant-numeric: tabular-nums;
-  flex-shrink: 0;
+    font-size: 0.72em;
+    color: rgba(255, 255, 255, 0.25);
+    min-width: 18px;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
 }
 
 .track-item.is-playing .track-num {
-  color: rgba(235, 65, 22, 0.5);
+    color: rgba(235, 65, 22, 0.5);
+}
+
+/* ── Stream links (used in artwork-links panel) ──────────────────────────── */
+
+.stream-link {
+    display: block;
+    padding: 4px 0;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.83em;
+    text-decoration: none;
+    transition: color 0.12s;
+}
+
+.stream-link:hover {
+    color: white;
+    text-decoration: none;
 }
 
 /* ── Footer ──────────────────────────────────────────────────────────────── */
 
 .footer-row {
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 0 !important;
 }
 
-/* On the player page the footer sits at the bottom of the full-height bg image */
 .content-container .footer-row {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  border-radius: 0;
-  background: rgba(11, 37, 64, 0.75);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  padding: 10px 20px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border-radius: 0 !important;
+    background: rgba(11, 37, 64, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 10px 20px;
+    border-radius: 0 !important;
 }
 
 .artwork {
-  flex: 1;
+    flex: 1;
 }
 
 .artwork a {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.8em;
-  text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8em;
+    text-decoration: none;
 }
 
 .artwork a:hover {
-  color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .item-link {
-  height: 25px;
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  opacity: 0.7;
-  transition: opacity 0.15s;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    opacity: 0.7;
+    transition: opacity 0.15s;
 }
 
 .item-link:hover {
-  opacity: 1;
+    opacity: 1;
 }
 
 .item-link img {
-  height: 25px;
-  width: auto;
-}
-
-/* ── Track list: stream links ────────────────────────────────────────────── */
-
-.track-list-links {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 10px 14px 12px;
-  flex-shrink: 0;
-}
-
-.track-list-links-label {
-  font-size: 0.65em;
-  color: rgba(255, 255, 255, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 6px;
-}
-
-.stream-link {
-  display: block;
-  padding: 4px 0;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 0.83em;
-  text-decoration: none;
-  transition: color 0.12s;
-}
-
-.stream-link:hover {
-  color: white;
-  text-decoration: none;
+    height: 25px;
+    width: auto;
 }
 
 /* ── Video / releases pages ───────────────────────────────────────────────── */
 
 .video-container {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 .a-video {
-  margin-bottom: 4em;
+    margin-bottom: 4em;
 }
 
 .video-scroller {
-  overflow-y: auto;
-  height: 500px;
+    overflow-y: auto;
+    height: 500px;
 }
 
 iframe {
-  width: 300px;
-  height: 200px;
+    width: 300px;
+    height: 200px;
 }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
+/* Mobile: stack everything, bring artwork back below tracklist */
 @media (max-width: 680px) {
-  .page-layout {
-    flex-direction: column;
-  }
+    .page-layout {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 16px 14px 80px;
+        gap: 14px;
+    }
 
-  .player-backdrop {
-    flex: none;
-    width: 100%;
-  }
+    /* Restore and reorder artwork column below tracklist */
+    .artwork-column {
+        display: flex;
+        order: 3;
+        flex: none;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        padding-top: 0;
+    }
 
-  .track-list {
-    flex: none;
-    width: 100%;
-    max-height: 220px;
-  }
+    .album-artwork {
+        width: 160px;
+        padding: 8px;
+        flex-shrink: 0;
+        border-radius: 0;
+    }
 
-  /* Footer flows below content on mobile instead of floating over it */
-  .content-container .footer-row {
-    position: relative;
-    bottom: auto;
-    margin-top: 12px;
-  }
+    .artwork-links {
+        flex: 1;
+        border-top: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-  .content-container {
-    padding-bottom: 0;
-  }
+    .player-column {
+        order: 1;
+        flex: none;
+        width: 100%;
+    }
+
+    .track-list {
+        order: 2;
+        flex: none;
+        width: 100%;
+        max-height: 220px;
+    }
+
+    /* Footer flows below content on mobile */
+    .content-container .footer-row {
+        position: relative;
+        bottom: auto;
+        margin-top: 12px;
+    }
+
+    .content-container {
+        padding-bottom: 0;
+    }
 }
 
 @media (min-width: 1000px) {
-  iframe {
-    width: 500px;
-    height: 250px;
-  }
+    iframe {
+        width: 500px;
+        height: 250px;
+    }
 
-  .video-scroller {
-    height: 660px;
-  }
+    .video-scroller {
+        height: 660px;
+    }
 }
