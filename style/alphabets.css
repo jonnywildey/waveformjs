@@ -136,6 +136,24 @@
     background: rgba(11, 37, 64, 0.78);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+    position: relative;
+}
+
+/* Vinyl label — sits below the SVG (z-index: -1) so the play button stays on top */
+.vinyl-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 45%;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
 }
 
 .track-player {

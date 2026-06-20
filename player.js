@@ -245,17 +245,25 @@ document.addEventListener('DOMContentLoaded', () => {
     `
   }
 
-  // Artwork image + lightbox
+  // Artwork image + lightbox + vinyl label
   const artworkImg = document.getElementById('album-artwork')
   const lightbox = document.getElementById('artwork-lightbox')
   const lightboxImg = document.getElementById('artwork-lightbox-img')
-  if (artworkImg && artwork) {
-    artworkImg.src = artwork
-    artworkImg.alt = `${artist} — ${title}`
+  const vinylLabel = document.getElementById('vinyl-label')
+  if (artwork) {
+    const alt = `${artist} — ${title}`
+    if (artworkImg) {
+      artworkImg.src = artwork
+      artworkImg.alt = alt
+    }
+    if (vinylLabel) {
+      vinylLabel.src = artwork
+      vinylLabel.alt = alt
+    }
     if (lightbox && lightboxImg) {
       lightboxImg.src = artwork
-      lightboxImg.alt = artworkImg.alt
-      artworkImg.addEventListener('click', () => { lightbox.hidden = false })
+      lightboxImg.alt = alt
+      if (artworkImg) artworkImg.addEventListener('click', () => { lightbox.hidden = false })
       lightbox.addEventListener('click', () => { lightbox.hidden = true })
     }
   }
