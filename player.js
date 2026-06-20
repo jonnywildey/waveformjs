@@ -411,6 +411,58 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  // Background crossfade — fades between track-specific artwork when available
+  const container = document.querySelector('.content-container')
+  const bgLayer = container ? (() => {
+    const el = document.createElement('div')
+    el.className = 'content-bg'
+    container.insertBefore(el, container.firstChild)
+    return el
+  })() : null
+
+  let currentBgArtwork = artwork
+  let fadeCancelFn = null
+
+  function crossfadeBackground(newArtwork) {
+    if (!bgLayer || !container || !newArtwork || newArtwork === currentBgArtwork) return
+    if (fadeCancelFn) fadeCancelFn()
+
+    const overlay = getComputedStyle(document.documentElement).getPropertyValue('--bg-overlay').trim()
+    const bgValue = `linear-gradient(${overlay}, ${overlay}), url('${newArtwork}') fixed center / cover`
+
+    // Reset layer instantly, set new image, then fade in
+    bgLayer.style.transition = 'none'
+    bgLayer.style.opacity = '0'
+    bgLayer.style.backgroundImage = bgValue.replace(' fixed center / cover', '')
+    bgLayer.style.backgroundSize = 'cover'
+    bgLayer.style.backgroundPosition = 'center'
+    bgLayer.style.backgroundAttachment = 'fixed'
+    void bgLayer.offsetWidth  // force reflow so transition fires
+    bgLayer.style.transition = ''
+    bgLayer.style.opacity = '1'
+
+    const onEnd = () => {
+      fadeCancelFn = null
+      container.style.backgroundImage = bgLayer.style.backgroundImage
+      bgLayer.style.transition = 'none'
+      bgLayer.style.opacity = '0'
+      void bgLayer.offsetWidth
+      bgLayer.style.transition = ''
+      currentBgArtwork = newArtwork
+    }
+    bgLayer.addEventListener('transitionend', onEnd, { once: true })
+    fadeCancelFn = () => bgLayer.removeEventListener('transitionend', onEnd)
+
+    // Fade artwork panel + vinyl label to the new image in sync
+    if (artworkImg) artworkImg.style.opacity = '0'
+    if (vinylLabel) vinylLabel.style.opacity = '0'
+    setTimeout(() => {
+      if (artworkImg) { artworkImg.src = newArtwork; artworkImg.style.opacity = '' }
+      if (vinylLabel) { vinylLabel.src = newArtwork; vinylLabel.style.opacity = '' }
+      if (lightboxImg) lightboxImg.src = newArtwork
+    }, 300)
+  }
+
   // Build track list panel from albumConfig
   const listEl = document.getElementById('track-list')
   if (listEl) {
@@ -447,6 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault()
         e.stopPropagation()
         setActiveTrack(track.id)
+        crossfadeBackground(track.artwork || artwork)
         if (player.pauseState !== 'reset') {
           player.run(track, () => player.play())
         } else {
@@ -489,6 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const next = tracks[idx + 1]
       setTimeout(() => {
         setActiveTrack(next.id)
+        crossfadeBackground(next.artwork || artwork)
         player.run(next, () => player.play())
       }, 3000)
     }

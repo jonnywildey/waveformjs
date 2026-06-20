@@ -7,6 +7,21 @@
     background: var(--bg-overlay, rgba(0, 0, 0, 0.8)) center / cover no-repeat;
     background-attachment: fixed;
     min-height: 100vh;
+    isolation: isolate; /* stacking context so .content-bg z-index:-1 stays inside */
+}
+
+/* Crossfade layer — sits behind all content, fades in when track artwork changes */
+.content-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    pointer-events: none;
 }
 
 .navbar {
@@ -55,6 +70,7 @@
     width: 100%;
     display: block;
     cursor: zoom-in;
+    transition: opacity 0.35s ease;
 }
 
 /* ── Artwork lightbox ────────────────────────────────────────────────────── */
@@ -150,6 +166,7 @@
     object-fit: cover;
     z-index: -1;
     opacity: 45%;
+    transition: opacity 0.35s ease;
     box-shadow:
         0 0 0 3px rgba(255, 255, 255, 0.08),
         0 4px 20px rgba(0, 0, 0, 0.6);
