@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waveform Generator</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      max-width: 640px;
+      margin: 40px auto;
+      padding: 0 24px;
+      color: #222;
+    }
+    h1 { font-size: 1.5em; margin-bottom: 0.25em; }
+    p.subtitle { color: #666; margin-top: 0; margin-bottom: 1.5em; }
+
+    .drop-zone {
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: #eb4116;
+      background: #fff5f2;
+    }
+    .drop-zone p { margin: 0; color: #888; pointer-events: none; }
+    .drop-zone input[type="file"] { display: none; }
+
+    .status {
+      margin-top: 1em;
+      min-height: 1.4em;
+      color: #555;
+      font-size: 0.95em;
+    }
+
+    .downloads {
+      display: none;
+      margin-top: 1.5em;
+    }
+    .downloads p { margin: 0 0 0.75em; font-weight: 600; }
+    .downloads a {
+      display: inline-block;
+      margin-right: 0.75em;
+      padding: 8px 18px;
+      background: #0b2540;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9em;
+      transition: background 0.15s;
+    }
+    .downloads a:hover { background: #eb4116; }
+
+    details {
+      margin-top: 1.5em;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 0;
+    }
+    summary {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 0.9em;
+      color: #555;
+      user-select: none;
+    }
+    .options {
+      padding: 12px 14px 14px;
+      border-top: 1px solid #e0e0e0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .option label { display: block; font-size: 0.8em; color: #888; margin-bottom: 4px; }
+    .option input[type="range"] { width: 100%; }
+    .option .val { font-size: 0.85em; color: #333; }
+
+    .instructions {
+      margin-top: 2em;
+      padding: 16px;
+      background: #f7f7f7;
+      border-radius: 6px;
+      font-size: 0.88em;
+      color: #555;
+    }
+    .instructions h2 { font-size: 1em; margin: 0 0 0.75em; color: #333; }
+    .instructions ol { margin: 0; padding-left: 1.4em; line-height: 1.8; }
+    code {
+      background: #ebebeb;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Waveform Generator</h1>
+<p class="subtitle">Generates the spiral SVG and JSON metadata needed by the player.</p>
+
+<div class="drop-zone" id="dropZone">
+  <p>Drop an audio file here, or click to browse</p>
+  <input type="file" id="fileInput" accept="audio/*">
+</div>
+
+<div class="status" id="status"></div>
+
+<div class="downloads" id="downloads">
+  <p>Ready to download:</p>
+  <a id="svgLink">Download SVG</a>
+  <a id="jsonLink">Download JSON</a>
+</div>
+
+<details>
+  <summary>Advanced options</summary>
+  <div class="options">
+    <div class="option">
+      <label>Resolution <span class="val" id="resVal">1</span></label>
+      <input type="range" id="resolution" min="1" max="10" step="1" value="1">
+      <small style="color:#aaa">1 = highest detail, 10 = fastest</small>
+    </div>
+    <div class="option">
+      <label>Gap <span class="val" id="gapVal">0.10</span></label>
+      <input type="range" id="gap" min="0" max="0.5" step="0.01" value="0.1">
+      <small style="color:#aaa">space between spiral rings</small>
+    </div>
+    <div class="option">
+      <label>Signal fattening <span class="val" id="fatVal">0.20</span></label>
+      <input type="range" id="signalFattening" min="0" max="0.5" step="0.01" value="0.2">
+      <small style="color:#aaa">boosts quieter parts</small>
+    </div>
+  </div>
+</details>
+
+<div class="instructions">
+  <h2>How to add a new track</h2>
+  <ol>
+    <li>Drop your MP3 here and download the two files</li>
+    <li>Put the <code>.svg</code> in <code>svg/stories/</code> and the <code>.json</code> in <code>json/stories/</code></li>
+    <li>Put the MP3 in <code>audio/stories/</code></li>
+    <li>Add an entry to the <code>scData</code> array at the top of <code>player.js</code>:<br>
+      <code>{ id: 'mytrack', url: 'audio/stories/mytrack.mp3', svgId: 'stories/mytrack.mp3', title: 'My Track' }</code>
+    </li>
+  </ol>
+</div>
+
+<script>
+// ─── DSP utilities ────────────────────────────────────────────────────────────
+
+const dsp = {
+  interpolateBuffer(buffer, index) {
+    const fi = Math.floor(index)
+    const ci = Math.min(Math.ceil(index), buffer.length - 1)
+    const d = index - fi
+    return buffer[fi] + (buffer[ci] - buffer[fi]) * d
+  },
+
+  windowedAmplitude(buffer, start, end) {
+    const sf = Math.floor(start)
+    const ec = Math.min(Math.ceil(end), buffer.length)
+    const len = end - start
+    const hLen = len * 0.5
+    let c = 0
+    for (let i = sf; i < ec; i++) {
+      const pos = i - sf
+      const amp = pos < hLen ? pos / hLen : (pos - hLen) / hLen
+      c += Math.abs(buffer[i]) * amp
+    }
+    return c / hLen * 2
+  },
+}
+
+// ─── Spiral generator ─────────────────────────────────────────────────────────
+
+const generator = {
+  resolution:      1,
+  innerLabelSize:  0.222,
+  gap:             0.1,
+  signalFattening: 0.2,
+
+  generate(ch0, ch1, durationMs) {
+    const size = 1000
+    const totalTurns = this._calculateTurns(durationMs)
+    const path = this._drawWaveSpiral(totalTurns, ch0, ch1, size)
+    return {
+      svg:  this._createSvg(size, path, totalTurns),
+      json: this._createJson(size, totalTurns),
+    }
+  },
+
+  _calculateTurns(durationMs) {
+    const mDur = durationMs / 60000
+    return Math.round(Math.tanh(mDur * 2 / 60) * 8 + 2)
+  },
+
+  _gapAmp() {
+    return (1 - this.gap) * 0.5
+  },
+
+  _outerRadius(size, totalTurns) {
+    const r = size * 0.5
+    return r - ((r - r * this.innerLabelSize) / totalTurns) * this._gapAmp()
+  },
+
+  _innerRadius(size, totalTurns) {
+    return this._outerRadius(size, totalTurns) * this.innerLabelSize
+  },
+
+  _calculatePlaybackDistance(size, totalTurns) {
+    const outer = this._outerRadius(size, totalTurns)
+    return outer - outer * this.innerLabelSize
+  },
+
+  _calculateInnerLabelRadius(size, totalTurns) {
+    const outer = size * 0.5
+    const inner = outer * this.innerLabelSize
+    return inner - ((outer - inner) / 3) * this._gapAmp()
+  },
+
+  _calculatePlaybackStartMagnitude(size, totalTurns) {
+    return ((size * 0.5 - size * 0.5 * this.innerLabelSize) / totalTurns) * this._gapAmp()
+  },
+
+  _calculatePlaybackHeadPoints(size, totalTurns) {
+    const hSize = size * 0.5
+    const tSize = size * 0.02
+    const shift = this._calculatePlaybackStartMagnitude(size, totalTurns)
+    return `${size - shift},${hSize} ${size - shift - tSize},${hSize + tSize * 2} ${size - shift + tSize},${hSize + tSize * 2}`
+  },
+
+  _polarToCart(r, a, cx, cy) {
+    return [r * Math.cos(a) + cx, r * Math.sin(a) + cy]
+  },
+
+  _lengthOfSpiral(a, b, totalTurns) {
+    const f = (t) => Math.sqrt((a + b * t) ** 2 + b ** 2)
+    return f(totalTurns * Math.PI * 2) - f(0)
+  },
+
+  _sampleSignal(signal, i, scaleFactor) {
+    if (scaleFactor > 1) {
+      return dsp.windowedAmplitude(signal, i * scaleFactor, (i + 1) * scaleFactor)
+    }
+    return dsp.interpolateBuffer(signal, i * scaleFactor)
+  },
+
+  _drawWaveSpiral(totalTurns, ch0, ch1, size) {
+    const cx = size * 0.5, cy = size * 0.5
+    const gapAmp = this._gapAmp()
+    const outer = this._outerRadius(size, totalTurns)
+    const inner = this._innerRadius(size, totalTurns)
+    const increasePerTurn = (outer - inner) / totalTurns
+    const amplification = increasePerTurn * gapAmp
+    const b = increasePerTurn / (2 * Math.PI)
+    const lineLength = this._lengthOfSpiral(inner, b, totalTurns)
+    const scaleFactor = ch0.length / (outer - inner)
+    const orbit = Math.PI * 2 * totalTurns
+    const step = this.resolution * 0.01
+    let path = ''
+
+    // Forward pass: outer edge of the spiral groove
+    for (let a = 0; a <= orbit; a += step) {
+      let disp = this._sampleSignal(ch0, ((orbit - a) / orbit) * lineLength, scaleFactor)
+      disp = Math.pow(Math.max(disp, 0), 1 - this.signalFattening)
+      const r = inner + b * a - disp * amplification
+      const [x, y] = this._polarToCart(r, a, cx, cy)
+      path += a === 0 ? `M${x.toFixed(2)} ${y.toFixed(2)} ` : `L${x.toFixed(2)} ${y.toFixed(2)} `
+    }
+
+    // Backward pass: inner edge of the spiral groove (second channel)
+    for (let a = orbit; a >= 0; a -= step) {
+      let disp = this._sampleSignal(ch1, ((orbit - a) / orbit) * lineLength, scaleFactor)
+      disp = Math.pow(Math.max(disp, 0), 1 - this.signalFattening)
+      const r = inner + b * a + disp * amplification
+      const [x, y] = this._polarToCart(r, a, cx, cy)
+      path += `L${x.toFixed(2)} ${y.toFixed(2)} `
+    }
+
+    return path + 'Z'
+  },
+
+  _createSvg(size, path, totalTurns) {
+    const hSize = size * 0.5
+    const innerR = this._calculateInnerLabelRadius(size, totalTurns)
+    const rHeight = innerR * 0.95
+    const barWidth = rHeight * 0.2
+    const lStart = hSize - barWidth * 2
+    const rStart = hSize + barWidth
+    const round = barWidth * 0.2
+    const circleLess = hSize - innerR * 0.5
+    const x = barWidth
+
+    return `<?xml-stylesheet href="../../style/waveformjs.css" type="text/css"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 ${size} ${size}">
+  <path class="svg-wave" id="sp" d="${path}"/>
+  <svg class="pausebutton" id="pausebutton">
+    <circle cx="${hSize}" cy="${hSize}" id="pausestart" class="pausestart" r="${innerR.toFixed(2)}"/>
+    <rect height="${rHeight.toFixed(2)}" width="${barWidth.toFixed(2)}" y="${circleLess.toFixed(2)}" rx="${round.toFixed(2)}" ry="${round.toFixed(2)}" x="${lStart.toFixed(2)}" class="pausesymbol"/>
+    <rect height="${rHeight.toFixed(2)}" width="${barWidth.toFixed(2)}" y="${circleLess.toFixed(2)}" rx="${round.toFixed(2)}" ry="${round.toFixed(2)}" x="${rStart.toFixed(2)}" class="pausesymbol"/>
+    <polygon points="${(hSize + x * 3).toFixed(2)},${hSize} ${(hSize - x * 2).toFixed(2)},${(hSize + x * 3).toFixed(2)} ${(hSize - x * 2).toFixed(2)},${(hSize - x * 3).toFixed(2)}" class="playsymbol"/>
+  </svg>
+  <polygon id="playback-head" class="playback-head" points="${this._calculatePlaybackHeadPoints(size, totalTurns)}"/>
+</svg>`
+  },
+
+  _createJson(size, totalTurns) {
+    return {
+      size,
+      innerLabelRadius:         this._calculateInnerLabelRadius(size, totalTurns),
+      playbackStartMagnitude:   size - this._calculatePlaybackStartMagnitude(size, totalTurns),
+      playbackDistance:         this._calculatePlaybackDistance(size, totalTurns),
+      totalTurns,
+    }
+  },
+}
+
+// ─── UI ───────────────────────────────────────────────────────────────────────
+
+const dropZone  = document.getElementById('dropZone')
+const fileInput = document.getElementById('fileInput')
+const status    = document.getElementById('status')
+const downloads = document.getElementById('downloads')
+const svgLink   = document.getElementById('svgLink')
+const jsonLink  = document.getElementById('jsonLink')
+
+// Advanced option sliders
+document.getElementById('resolution').addEventListener('input', e => {
+  generator.resolution = +e.target.value
+  document.getElementById('resVal').textContent = e.target.value
+})
+document.getElementById('gap').addEventListener('input', e => {
+  generator.gap = +e.target.value
+  document.getElementById('gapVal').textContent = (+e.target.value).toFixed(2)
+})
+document.getElementById('signalFattening').addEventListener('input', e => {
+  generator.signalFattening = +e.target.value
+  document.getElementById('fatVal').textContent = (+e.target.value).toFixed(2)
+})
+
+// Drop zone
+dropZone.addEventListener('click', () => fileInput.click())
+dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over') })
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'))
+dropZone.addEventListener('drop', e => {
+  e.preventDefault()
+  dropZone.classList.remove('drag-over')
+  const file = e.dataTransfer.files[0]
+  if (file) processFile(file)
+})
+fileInput.addEventListener('change', () => {
+  if (fileInput.files[0]) processFile(fileInput.files[0])
+})
+
+async function processFile(file) {
+  status.textContent = 'Decoding audio…'
+  downloads.style.display = 'none'
+
+  try {
+    const arrayBuffer = await file.arrayBuffer()
+    const audioCtx = new AudioContext()
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer)
+    await audioCtx.close()
+
+    status.textContent = 'Generating spiral… (may take a moment for long tracks)'
+    // Yield to the browser so the status message renders before computation blocks
+    await new Promise(resolve => setTimeout(resolve, 50))
+
+    const ch0 = audioBuffer.getChannelData(0)
+    const ch1 = audioBuffer.numberOfChannels > 1 ? audioBuffer.getChannelData(1) : ch0
+    const { svg, json } = generator.generate(ch0, ch1, audioBuffer.duration * 1000)
+
+    // Revoke any previous object URLs
+    if (svgLink.href.startsWith('blob:'))  URL.revokeObjectURL(svgLink.href)
+    if (jsonLink.href.startsWith('blob:')) URL.revokeObjectURL(jsonLink.href)
+
+    svgLink.href  = URL.createObjectURL(new Blob([svg],                  { type: 'image/svg+xml' }))
+    jsonLink.href = URL.createObjectURL(new Blob([JSON.stringify(json)], { type: 'application/json' }))
+    svgLink.download  = file.name + '.svg'
+    jsonLink.download = file.name + '.json'
+
+    downloads.style.display = 'block'
+    status.textContent = `Done — "${file.name}"`
+  } catch (err) {
+    status.textContent = 'Error: ' + err.message
+    console.error(err)
+  }
+}
+</script>
+</body>
+</html>
