@@ -1,326 +1,532 @@
+/* ── Page shell ──────────────────────────────────────────────────────────── */
 
 .content-container {
-	padding: 0;
-	position: relative;
-	background-color: #f48a21;
-	background: url('../images/stories.jpg') no-repeat center;
-	background-size: cover;
-	min-height: 1250px;
+    padding: 0;
+    position: relative;
+    /* background-image is set per-page via an inline <style> block */
+    background: var(--bg-overlay, rgba(0, 0, 0, 0.8)) center / cover no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    isolation: isolate; /* stacking context so .content-bg z-index:-1 stays inside */
 }
 
-.buy-link {
-	display: inline-block;
-	padding-left: 20px;
-}
-
-.download-icon {
-	width: 30px;
-	position: relative;
-	top: -7px;
+/* Crossfade layer — sits behind all content, fades in when track artwork changes */
+.content-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    pointer-events: none;
 }
 
 .navbar {
-	padding: 0 20px;
+    padding: 0 20px;
+    background: rgba(var(--panel-rgb), 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.navbar .nav > li > a {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar .nav > li > a:hover,
+.navbar .nav > li.active > a,
+.navbar .nav > li.active > a:hover {
+    color: white;
+    background: transparent;
+}
+
+/* ── Main layout: 3 columns ──────────────────────────────────────────────── */
+
+.page-layout {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 28px 40px 70px;
+}
+
+/* ── Artwork column (left) ───────────────────────────────────────────────── */
+
+.artwork-column {
+    flex: 0 0 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(var(--panel-rgb), 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.album-artwork {
+    width: 100%;
+    display: block;
+    cursor: zoom-in;
+    transition: opacity 0.35s ease;
+}
+
+/* ── Artwork lightbox ────────────────────────────────────────────────────── */
+
+.artwork-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    cursor: zoom-out;
+}
+
+.artwork-lightbox[hidden] {
+    display: none;
+}
+
+.artwork-lightbox-img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
+}
+
+.artwork-links {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px 16px;
+}
+
+.artwork-links-label {
+    font-size: 0.65em;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+/* ── Player column (centre) ──────────────────────────────────────────────── */
+
+.player-column {
+    flex: 1 1 420px;
+    min-width: 0;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* Album title — floats above the circle on the dark background */
+.player-header {
+    text-align: center;
+    padding: 4px 0 10px;
+    margin: 0 0 4px;
+}
+
+.player-header-artist {
+    font-size: 0.7em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.player-header-title {
+    font-size: 1.4em;
+    color: white;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+/* Circle backdrop — clips the SVG waveform to a disc */
+.player-backdrop {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(var(--panel-rgb), 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    position: relative;
+}
+
+/* Vinyl label — sits below the SVG (z-index: -1) so the play button stays on top */
+.vinyl-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 94%;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 45%;
+    transition: opacity 0.35s ease;
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.08),
+        0 4px 20px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
 }
 
 .track-player {
-	margin: auto;
-	max-width: 550px;
-	position: relative;
+    width: 100%;
+    position: relative;
 }
 
-.dropdown-toggle {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+/* Below the circle: track title + FX card */
+.track-below {
+    text-align: center;
+    padding-top: 10px;
 }
 
-.dark-blue {
-	color: #0b2540;
+.track-title {
+    color: white;
+    margin: 0 0 6px;
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+/* ── FX collapsible ──────────────────────────────────────────────────────── */
+
+.fx-section {
+    margin-top: 8px;
+    padding: 0 4px;
+}
+
+.fx-section > summary {
+    display: block;
+    padding: 8px 0 4px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    user-select: none;
+    transition: color 0.15s;
+}
+
+.fx-section > summary:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* hide the default triangle marker */
+.fx-section > summary::-webkit-details-marker {
+    display: none;
+}
+.fx-section > summary::marker {
+    display: none;
+}
+
+.fx-section:not([open]) > summary::after {
+    content: " ▾";
+}
+.fx-section[open] > summary::after {
+    content: " ▴";
 }
 
 .fx-controls {
-	padding: 50px 50px 0;
+    padding: 8px 8px 4px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 12px;
+    row-gap: 4px;
+    align-items: center;
 }
 
-
-input[type=range] {
-	-webkit-appearance: none;
-	margin: 15px auto;
-	max-width: 500px;
-	background: none;
+.fx-controls label {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8em;
+    white-space: nowrap;
+    margin: 0;
 }
 
-input[type=range]::-webkit-slider-runnable-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	background: rgba(12, 37, 64, 0.8);
-	border-radius: 2px;
-}
-input[type=range]::-webkit-slider-thumb {
-	height: 30px;
-	width: 30px;
-	border-radius: 33px;
-	border: none;
-	background: #eb4116;
-	cursor: pointer;
-	-webkit-appearance: none;
-	margin-top: -12.7px;
-}
-input[type=range]:focus::-webkit-slider-runnable-track {
-	background: rgba(13, 13, 13, 0);
-}
-input[type=range]::-moz-range-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	background: rgba(12, 37, 64, 0.8);
-	border-radius: 2px;
-}
-input[type=range]::-moz-range-thumb {
-	height: 30px;
-	width: 30px;
-	border: none;
-	border-radius: 33px;
-	background: #eb4116;
-	cursor: pointer;
-}
-input[type=range]::-ms-track {
-	width: 100%;
-	height: 5px;
-	cursor: pointer;
-	background: transparent;
-	border-color: transparent;
-	color: transparent;
-}
-input[type=range]::-ms-fill-lower {
-	background: rgba(0, 0, 0, 0);
-	border: 0.2px solid rgba(1, 1, 1, 0.31);
-	border-radius: 0px;
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.42), 0px 0px 1px rgba(13, 13, 13, 0.42);
-}
-input[type=range]::-ms-fill-upper {
-	background: rgba(0, 0, 0, 0);
-	border: 0.2px solid rgba(1, 1, 1, 0.31);
-	border-radius: 0px;
-	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.42), 0px 0px 1px rgba(13, 13, 13, 0.42);
-}
-input[type=range]::-ms-thumb {
-	height: 30px;
-	width: 30px;
-	border-radius: 33px;
-	background: #eb4116;
-	cursor: pointer;
-	height: 5px;
-}
-input[type=range]:focus::-ms-fill-lower {
-	background: rgba(0, 0, 0, 0);
-}
-input[type=range]:focus::-ms-fill-upper {
-	background: rgba(13, 13, 13, 0);
+/* ── Sliders ─────────────────────────────────────────────────────────────── */
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: none;
+    margin: 6px 0;
 }
 
-
-#track-table {
-	height: 260px;
-	width: 100%;
-	margin: auto;
-	overflow: auto;
-	text-overflow: ellipsis;
-	content: "";
-	position:relative;
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
 }
 
-.video-scroller {
-	overflow-y: auto;
-	height: 500px;
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    margin-top: -7px;
 }
 
-
-.play {
-	background-image: url('../images/play.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	margin-right: 20px;
-	float: left;
-	height: 30px;
-	width: 30px;
+input[type="range"]::-moz-range-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    border: none;
 }
 
-.video-container {
-	margin-top: 5%;
-
+input[type="range"]::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    border: none;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
 }
 
-.a-video {
-	margin-bottom: 4em;
+/* ── Track list panel ────────────────────────────────────────────────────── */
 
+.track-list {
+    flex: 0 0 260px;
+    background: rgba(var(--panel-rgb), 0.85);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 560px;
 }
 
-iframe {
-	width: 300px;
-	height: 200px;
+.track-list-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
 }
 
-.table-top-shadow {
-	position:relative;
+.album-artist {
+    font-size: 0.68em;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
-
-
-.table-top-shadow:after {
-	content:'';
-	width: 100%;
-	height: 10%;
-	position:absolute;
-	left:0;
-	top:0;
-	background:linear-gradient(#1E1C25 0%, transparent 100%);
+.album-name {
+    font-size: 1em;
+    color: white;
+    font-weight: 600;
+    margin: 3px 0 2px;
 }
 
-.table-bottom-shadow {
-	position:relative;
+.album-count {
+    font-size: 0.68em;
+    color: rgba(255, 255, 255, 0.3);
 }
 
-.table-bottom-shadow:after {
-	content:'';
-	width: 100%;
-	height: 20%;
-	position:absolute;
-	left:0;
-	bottom:0;
-	background:linear-gradient(transparent 0%, #1E1C25 100%);
+.track-table {
+    overflow-y: auto;
+    flex: 1;
 }
-
-.videos {
-	padding-top: 60px;
-}
-
-.track-table-container {
-	font-family: 'Pentaprism2NFW01-Regular', 'DIN-RegularAlternate', sans-serif;
-	max-height: 230px;
-	border: none;
-	overflow-y: scroll;
-	padding: 0;
-	margin-right: 0;
-	background-color: rgba(0, 0, 0, 0.6) !important;
-}
-
-.track-item:before {
-	content: '\25BA';
-	float: left;
-}
-
-.track-selector {
-	font-family: 'Pentaprism2NFW01-Regular', 'DIN-RegularAlternate', sans-serif;
-	padding: 10px;
-	min-width: 200px;
-	width: 100%;
-	float: left;
-	background-color: #0b2540 !important;
-}
-
-.track-selector:before {
-	content: '\25BA';
-	float:left;
-}
-
 
 .track-item {
-	width: 100%;
-	min-width: 200px;
-	margin: 0 auto;
-	line-height: 1.5;
-	text-align: center;
-	display: block;
-	cursor: pointer;
-	padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 14px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.88em;
+    text-decoration: none;
+    transition:
+        background 0.12s,
+        color 0.12s;
 }
 
 .track-item:hover {
-	background-color: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.07);
+    color: white;
+    text-decoration: none;
 }
 
-.track-item a {
-	opacity: 0.8;
+.track-item.is-playing {
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.1);
 }
 
-.track-item a:active,
-.track-item a:focus {
-
-	text-decoration: none;
+.track-num {
+    font-size: 0.72em;
+    color: rgba(255, 255, 255, 0.25);
+    min-width: 18px;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
 }
 
-.track-item a:hover {
-	opacity: 0.9;
-	text-decoration: none;
+.track-item.is-playing .track-num {
+    color: rgba(var(--accent-rgb), 0.5);
 }
 
+/* ── Stream links (used in artwork-links panel) ──────────────────────────── */
 
-.sc-powered-link {
-	position: absolute;
-	opacity: 0.8;
-	right: 20px;
-	bottom: 3px;
+.stream-link {
+    display: block;
+    padding: 4px 0;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.83em;
+    text-decoration: none;
+    transition: color 0.12s;
+}
+
+.stream-link:hover {
+    color: white;
+    text-decoration: none;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+
+.footer-row {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border-radius: 0 !important;
+}
+
+.content-container .footer-row {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border-radius: 0 !important;
+    background: rgba(var(--panel-rgb), 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: 10px 20px;
+    border-radius: 0 !important;
+}
+
+.artwork {
+    flex: 1;
+}
+
+.artwork a {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8em;
+    text-decoration: none;
+}
+
+.artwork a:hover {
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .item-link {
-	height: 42px;
-	display: table-cell;
-	padding-left: 15px;
-	padding-right: 15px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    opacity: 0.7;
+    transition: opacity 0.15s;
 }
 
-body {
-	/* Margin bottom by footer height */
-}
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	/* Set the fixed height of the footer here */
-	height: 60px;
-	padding-right: 15px;
-	padding-left: 15px;
-	overflow-x: auto;
-	display: table;
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	transition: all 0.5s ease;
+.item-link:hover {
+    opacity: 1;
 }
 
-.footer-row {
-	position: absolute;
-	width: 100%;
-	bottom: 20px;
+.item-link img {
+    height: 25px;
+    width: auto;
 }
 
-.item-link a, .item-link img{
-	height: 100%;
+/* ── Video / releases pages ───────────────────────────────────────────────── */
+
+.video-container {
+    margin-top: 5%;
 }
 
-@media(min-width:1000px) {
+.a-video {
+    margin-bottom: 4em;
+}
 
-	.track-table-container {
-		max-height: 330px;
-	}
+.video-scroller {
+    overflow-y: auto;
+    height: 500px;
+}
 
-	.content-container {
-		min-height: 1150px;
-	}
+iframe {
+    width: 300px;
+    height: 200px;
+}
 
-	.navbar-right {
-		margin-right: -20px;
-	}
+/* ── Responsive ──────────────────────────────────────────────────────────── */
 
-	iframe {
-		width: 500px;
-		height: 250px;
-	}
+/* Mobile: stack everything, bring artwork back below tracklist */
+@media (max-width: 680px) {
+    .page-layout {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 16px 14px 80px;
+        gap: 14px;
+    }
 
-	.video-scroller {
-		height: 660px;
-	}
+    /* Restore and reorder artwork column below tracklist */
+    .artwork-column {
+        display: flex;
+        order: 3;
+        flex: none;
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        gap: 0;
+        padding-top: 0;
+    }
 
+    .album-artwork {
+        width: 160px;
+        padding: 8px;
+        flex-shrink: 0;
+        border-radius: 0;
+    }
+
+    .artwork-links {
+        flex: 1;
+        border-top: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .player-column {
+        order: 1;
+        flex: none;
+        width: 100%;
+    }
+
+    .track-list {
+        order: 2;
+        flex: none;
+        width: 100%;
+        max-height: 220px;
+    }
+
+    /* Footer flows below content on mobile */
+    .content-container .footer-row {
+        position: relative;
+        bottom: auto;
+        margin-top: 12px;
+    }
+
+    .content-container {
+        padding-bottom: 0;
+    }
+}
+
+@media (min-width: 1000px) {
+    iframe {
+        width: 500px;
+        height: 250px;
+    }
+
+    .video-scroller {
+        height: 660px;
+    }
 }
