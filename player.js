@@ -14,6 +14,7 @@ class Waveform {
     this.startedAt = 0
     this.trackPosition = 0
     this._rafId = null
+    this._scrubProgress = null
     this.onEnded = () => {}
     this._setupFx()
     this._setupControls()
@@ -143,10 +144,117 @@ class Waveform {
         this.buffer = buffer
         this.pauseState = 'loaded'
         document.querySelectorAll('.track-title').forEach(el => el.textContent = this.trackInfo.title)
+        this._setupScrubbing()
         if (cb) cb()
       })
     }
     req.send()
+  }
+
+  _setupScrubbing() {
+    const head = this._playbackHead
+    if (!head) return
+
+    let isDragging = false
+    let dragStartX = 0
+    let dragStartProgress = 0
+    let wasPlaying = false
+
+    // Convert screen pixels to SVG-space progress delta.
+    // The head moves left (negative X) as the track progresses, so
+    // dragging left → positive delta → later in track.
+    const getScale = () => {
+      const obj = document.getElementById('svg-' + this.id)
+      return obj ? obj.getBoundingClientRect().width / this.imageInfo.size : 1
+    }
+
+    const applyProgress = progress => {
+      if (this._waveSpiral)
+        this._waveSpiral.style.transform = `rotate(${progress * this.imageInfo.totalTurns * 360}deg)`
+      if (this._playbackHead)
+        this._playbackHead.style.transform = `translateX(-${progress * this.imageInfo.playbackDistance}px)`
+      this._scrubProgress = progress
+    }
+
+    const commitSeek = () => {
+      const progress = this._scrubProgress !== null ? this._scrubProgress : dragStartProgress
+      this.trackPosition = progress * this.buffer.duration
+      this._scrubProgress = null
+      if (this.pauseState === 'reset') {
+        this.pauseState = 'loaded'
+        this._setButtonClass('pausebutton')
+      }
+      if (wasPlaying) this.play()
+    }
+
+    const onMouseMove = e => {
+      if (!isDragging) return
+      const p = Math.max(0, Math.min(1,
+        dragStartProgress - (e.clientX - dragStartX) / getScale() / this.imageInfo.playbackDistance
+      ))
+      applyProgress(p)
+    }
+
+    const onMouseUp = () => {
+      if (!isDragging) return
+      isDragging = false
+      // Remove from both documents so either scope releases the drag
+      if (this._svgDoc) {
+        this._svgDoc.removeEventListener('mousemove', onMouseMove)
+        this._svgDoc.removeEventListener('mouseup', onMouseUp)
+      }
+      document.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mouseup', onMouseUp)
+      commitSeek()
+    }
+
+    const startDrag = clientX => {
+      isDragging = true
+      dragStartX = clientX
+      if (this.pauseState === 'playing') {
+        wasPlaying = true
+        this._pause()
+      } else {
+        wasPlaying = false
+      }
+      dragStartProgress = this.trackPosition / this.buffer.duration
+      this._scrubProgress = null
+      // Listen on both the SVG doc (inside the circle) and the outer doc (mouse exits circle)
+      if (this._svgDoc) {
+        this._svgDoc.addEventListener('mousemove', onMouseMove)
+        this._svgDoc.addEventListener('mouseup', onMouseUp)
+      }
+      document.addEventListener('mousemove', onMouseMove)
+      document.addEventListener('mouseup', onMouseUp)
+    }
+
+    head.addEventListener('mousedown', e => {
+      if (!this.buffer || this.pauseState === 'loading') return
+      e.preventDefault()
+      startDrag(e.clientX)
+    })
+
+    // Touch: events follow the touch's initial target so no dual-doc trick needed
+    head.addEventListener('touchstart', e => {
+      if (!this.buffer || this.pauseState === 'loading') return
+      e.preventDefault()
+      startDrag(e.touches[0].clientX)
+    }, { passive: false })
+
+    head.addEventListener('touchmove', e => {
+      if (!isDragging) return
+      e.preventDefault()
+      const p = Math.max(0, Math.min(1,
+        dragStartProgress - (e.touches[0].clientX - dragStartX) / getScale() / this.imageInfo.playbackDistance
+      ))
+      applyProgress(p)
+    }, { passive: false })
+
+    head.addEventListener('touchend', () => {
+      if (!isDragging) return
+      isDragging = false
+      commitSeek()
+    })
   }
 
   _pauseClick() {

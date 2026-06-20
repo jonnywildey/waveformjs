@@ -1,43 +1,70 @@
-
 .svg-wave {
-  fill: rgba(255, 255, 255, 0.88);
-  stroke-width: 0;
+    fill: rgba(255, 255, 255, 0.88);
+    stroke-width: 0;
 }
 
 .playback-head {
-  fill: #eb4116;
+    fill: #eb4116;
+    cursor: grab;
+    transition:
+        fill 0.12s,
+        filter 0.12s;
+}
+
+.playback-head:hover {
+    fill: #ffe7d2;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+}
+
+.playback-head:active {
+    cursor: grabbing;
+    fill: #ffe7d2;
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 1));
 }
 
 .spiral-player {
-  margin: auto;
-  position: relative;
+    margin: auto;
+    position: relative;
 }
 
 .svg-object {
-  margin: auto;
-  width: 100%;
+    margin: auto;
+    width: 100%;
 }
 
-.pausebutton, .playbutton {
-  fill: #eb4116;
-  cursor: pointer;
+.pausebutton,
+.playbutton {
+    fill: #eb4116;
+    cursor: pointer;
+    transition: fill 0.12s;
+}
+
+.pausebutton:hover,
+.playbutton:hover {
+    fill: #ff7044;
+}
+
+.pausebutton:active,
+.playbutton:active {
+    fill: #ff9e80;
 }
 
 .loading .pausebutton {
-  cursor: wait;
+    cursor: wait;
 }
 
 /* Icons are white, always visible against the orange circle */
-.pausesymbol, .playsymbol {
-  fill: rgba(255, 255, 255, 0.9);
+.pausesymbol,
+.playsymbol {
+    fill: rgba(255, 255, 255, 0.9);
 }
 
 /* When playing: show pause bars only */
 .playbutton .playsymbol {
-  display: none;
+    display: none;
 }
 
 /* When paused: show play triangle only */
 .pausebutton .pausesymbol {
-  display: none;
+    display: none;
 }
