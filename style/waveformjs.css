@@ -1,14 +1,6 @@
 
-#spiral:hover {
-
-}
-
-.loading {
-
-}
-
 .svg-wave {
-  fill: #0b2540;
+  fill: rgba(255, 255, 255, 0.88);
   stroke-width: 0;
 }
 
@@ -18,7 +10,7 @@
 
 .spiral-player {
   margin: auto;
-	position: relative;
+  position: relative;
   top: 50%;
 }
 
@@ -29,45 +21,24 @@
 
 .pausebutton, .playbutton {
   fill: #eb4116;
-	cursor: pointer;
-}
-
-@-webkit-keyframes blink {
-	0% {fill: rgba(245, 245, 245, 1);}
-    50% {fill: rgba(245, 245, 245, 0);}
-}
-
-.playsymbol {
-    animation: blink 2s step-end infinite;
-    -webkit-animation: blink 2s step-end infinite;
-}
-
-.pausesymbol, .playsymbol {
-    fill: #eb4116;
-    transition: all 0.2s ease;
-}
-
-.playbutton .playsymbol, .loading .playsymbol, .loading .pausebutton:hover .playsymbol  {
-    animation: none;
-    -webkit-animation: none;
-    display: none;
+  cursor: pointer;
 }
 
 .loading .pausebutton {
-     cursor: wait;
+  cursor: wait;
 }
 
-.pausebutton:hover .pausesymbol, .playbutton:hover .playsymbol {
-    fill: rgba(245, 245, 245, 0);
-    transition: all 0.2s ease;
-    animation: none;
-    -webkit-animation: none;
-
+/* Icons are white, always visible against the orange circle */
+.pausesymbol, .playsymbol {
+  fill: rgba(255, 255, 255, 0.9);
 }
 
-.pausebutton:hover .playsymbol, .playbutton:hover .pausesymbol {
-    fill: rgba(245, 245, 245, 1);
-    transition: all 0.2s ease;
-    animation: none;
-    -webkit-animation: none;
+/* When playing: show pause bars only */
+.playbutton .playsymbol {
+  display: none;
+}
+
+/* When paused: show play triangle only */
+.pausebutton .pausesymbol {
+  display: none;
 }

@@ -1,20 +1,3 @@
-const BASE = 'audio/Alphabets Heaven - Stories'
-
-const scData = [
-  { id: 'oats',       url: `${BASE}/01 - Alphabets Heaven - Oats.mp3`,       svgId: 'stories/oats.mp3',       title: 'Oats' },
-  { id: 'deep-blue',  url: `${BASE}/02 - Alphabets Heaven - Deep Blue.mp3`,  svgId: 'stories/deep-blue.mp3',  title: 'Deep Blue' },
-  { id: 'pho',        url: `${BASE}/03 - Alphabets Heaven - Pho.mp3`,        svgId: 'stories/pho.mp3',        title: 'Pho' },
-  { id: 'degree',     url: `${BASE}/04 - Alphabets Heaven - °.mp3`,          svgId: 'stories/degree.mp3',     title: '°' },
-  { id: 'tonise',     url: `${BASE}/05 - Alphabets Heaven - Tonise.mp3`,     svgId: 'stories/tonise.mp3',     title: 'Tonise' },
-  { id: 'terbeat',    url: `${BASE}/06 - Alphabets Heaven - Terbeat.mp3`,    svgId: 'stories/terbeat.mp3',    title: 'Terbeat' },
-  { id: 'world',      url: `${BASE}/07 - Alphabets Heaven - World.mp3`,      svgId: 'stories/world.mp3',      title: 'World' },
-  { id: 'blindlight', url: `${BASE}/08 - Alphabets Heaven - Blindlight.mp3`, svgId: 'stories/blindlight.mp3', title: 'Blindlight' },
-  { id: 'far-beyond', url: `${BASE}/09 - Alphabets Heaven - Far Beyond.mp3`, svgId: 'stories/far-beyond.mp3', title: 'Far Beyond' },
-  { id: 'heart',      url: `${BASE}/10 - Alphabets Heaven - Heart.mp3`,      svgId: 'stories/heart.mp3',      title: 'Heart' },
-  { id: 'caravan',    url: `${BASE}/11 - Alphabets Heaven - Caravan.mp3`,    svgId: 'stories/caravan.mp3',    title: 'Caravan' },
-  { id: 'koko',       url: `${BASE}/12 - Alphabets Heaven - Koko.mp3`,       svgId: 'stories/koko.mp3',       title: 'Koko' },
-]
-
 class Waveform {
   constructor(id) {
     this.id = id
@@ -57,7 +40,7 @@ class Waveform {
     this.lopass.connect(this.gainNode)
     this.gainNode.connect(ctx.destination)
 
-    // Delay: send → lopass → delay → feedback → hipass → compressor → (loops back to lopass) → output
+    // Delay: send → lopass → delay → feedback → hipass → compressor → (loops) → output
     this.delaySend = ctx.createGain()
     this.delaySend.gain.value = 0
     this.delayLine = ctx.createDelay(1.5)
@@ -91,14 +74,14 @@ class Waveform {
       const el = document.getElementById(id)
       if (el) el.addEventListener('input', fn)
     }
-    bind('volume', e => { this.gainNode.gain.value = +e.target.value })
-    bind('filter', e => {
+    bind('volume',         e => { this.gainNode.gain.value                = +e.target.value })
+    bind('filter',         e => {
       const min = Math.log(100), max = Math.log(20000)
       this.lopass.frequency.value = Math.exp(+e.target.value * (max - min) + min)
     })
-    bind('delay-time',     e => { this.delayLine.delayTime.value    = +e.target.value })
-    bind('delay-feedback', e => { this.delayFeedback.gain.value     = +e.target.value })
-    bind('delay-send',     e => { this.delaySend.gain.value         = +e.target.value })
+    bind('delay-time',     e => { this.delayLine.delayTime.value          = +e.target.value })
+    bind('delay-feedback', e => { this.delayFeedback.gain.value           = +e.target.value })
+    bind('delay-send',     e => { this.delaySend.gain.value               = +e.target.value })
   }
 
   run(trackInfo, cb) {
@@ -168,10 +151,10 @@ class Waveform {
 
   _pauseClick() {
     switch (this.pauseState) {
-      case 'playing':          this._pause(); break
+      case 'playing':        this._pause();     break
       case 'paused':
-      case 'loaded':           this.play();   break
-      case 'reset':            this._loadAudio(); break
+      case 'loaded':         this.play();       break
+      case 'reset':          this._loadAudio(); break
     }
   }
 
@@ -247,29 +230,94 @@ class Waveform {
   }
 }
 
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
 document.addEventListener('DOMContentLoaded', () => {
+  const { artist, title, tracks, links = [] } = window.albumConfig
   const player = new Waveform('long')
 
-  // Populate track selector dropdown
-  const table = document.querySelector('.track-table')
-  if (table) {
-    scData.forEach(track => {
+  // Album header
+  const headerEl = document.getElementById('player-header')
+  if (headerEl) {
+    headerEl.innerHTML = `
+      <div class="player-header-artist">${artist}</div>
+      <div class="player-header-title">${title}</div>
+    `
+  }
+
+  // Build track list panel from albumConfig
+  const listEl = document.getElementById('track-list')
+  if (listEl) {
+    const header = document.createElement('div')
+    header.className = 'track-list-header'
+    header.innerHTML = `
+      <div class="album-artist">${artist}</div>
+      <div class="album-name">${title}</div>
+      <div class="album-count">${tracks.length} tracks</div>
+    `
+    listEl.appendChild(header)
+
+    const table = document.createElement('div')
+    table.className = 'track-table'
+
+    tracks.forEach((track, i) => {
       const a = document.createElement('a')
       a.href = '#'
+      a.className = 'track-item'
+      a.dataset.id = track.id
+
+      const num = document.createElement('span')
+      num.className = 'track-num'
+      num.textContent = String(i + 1).padStart(2, '0')
+
+      const name = document.createElement('span')
+      name.className = 'track-name'
+      name.textContent = track.title
+
+      a.appendChild(num)
+      a.appendChild(name)
+
       a.addEventListener('click', e => {
         e.preventDefault()
         e.stopPropagation()
+        setActiveTrack(track.id)
         if (player.pauseState !== 'reset') {
           player.run(track, () => player.play())
         } else {
           player.run(track)
         }
       })
-      const div = document.createElement('div')
-      div.className = 'track-item'
-      div.textContent = track.title
-      a.appendChild(div)
+
       table.appendChild(a)
+    })
+
+    listEl.appendChild(table)
+
+    // Stream links section
+    if (links.length > 0) {
+      const linksEl = document.createElement('div')
+      linksEl.className = 'track-list-links'
+      const label = document.createElement('div')
+      label.className = 'track-list-links-label'
+      label.textContent = 'Listen on'
+      linksEl.appendChild(label)
+      links.forEach(({ name, url }) => {
+        const a = document.createElement('a')
+        a.className = 'stream-link'
+        a.href = url
+        a.target = '_blank'
+        a.rel = 'noopener'
+        a.textContent = name
+        linksEl.appendChild(a)
+      })
+      listEl.appendChild(linksEl)
+    }
+  }
+
+  function setActiveTrack(id) {
+    if (!listEl) return
+    listEl.querySelectorAll('.track-item').forEach(el => {
+      el.classList.toggle('is-playing', el.dataset.id === id)
     })
   }
 
@@ -284,14 +332,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load initial track (from ?id= param or first track)
   const params = new URLSearchParams(window.location.search)
   const id = params.get('id')
-  const initial = scData.find(t => t.id === id) || scData[0]
+  const initial = tracks.find(t => t.id === id) || tracks[0]
+  setActiveTrack(initial.id)
   player.run(initial)
 
   // Auto-advance to next track after 3s gap
   player.onEnded = () => {
-    const idx = scData.findIndex(t => t.url === player.trackInfo.url)
-    if (idx > -1 && idx + 1 < scData.length) {
-      setTimeout(() => player.run(scData[idx + 1], () => player.play()), 3000)
+    const idx = tracks.findIndex(t => t.url === player.trackInfo.url)
+    if (idx > -1 && idx + 1 < tracks.length) {
+      const next = tracks[idx + 1]
+      setTimeout(() => {
+        setActiveTrack(next.id)
+        player.run(next, () => player.play())
+      }, 3000)
     }
   }
 })
