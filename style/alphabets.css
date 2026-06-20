@@ -3,15 +3,14 @@
 .content-container {
     padding: 0;
     position: relative;
-    background:
-        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-        url("../images/stories.jpg") no-repeat center / cover;
+    /* background-image is set per-page via an inline <style> block */
+    background: var(--bg-overlay, rgba(0, 0, 0, 0.8)) center / cover no-repeat;
     min-height: 100vh;
 }
 
 .navbar {
     padding: 0 20px;
-    background: rgba(11, 37, 64, 0.75);
+    background: rgba(var(--panel-rgb), 0.75);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
@@ -44,7 +43,7 @@
     display: flex;
     flex-direction: column;
     gap: 0;
-    background: rgba(11, 37, 64, 0.85);
+    background: rgba(var(--panel-rgb), 0.85);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border-radius: 10px;
@@ -133,7 +132,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     overflow: hidden;
-    background: rgba(11, 37, 64, 0.78);
+    background: rgba(var(--panel-rgb), 0.78);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     position: relative;
@@ -145,7 +144,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
+    width: 94%;
     border-radius: 50%;
     object-fit: cover;
     z-index: -1;
@@ -250,7 +249,7 @@ input[type="range"]::-webkit-slider-thumb {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #eb4116;
+    background: var(--accent);
     cursor: pointer;
     margin-top: -7px;
 }
@@ -267,7 +266,7 @@ input[type="range"]::-moz-range-thumb {
     width: 18px;
     border: none;
     border-radius: 50%;
-    background: #eb4116;
+    background: var(--accent);
     cursor: pointer;
 }
 
@@ -275,7 +274,7 @@ input[type="range"]::-moz-range-thumb {
 
 .track-list {
     flex: 0 0 260px;
-    background: rgba(11, 37, 64, 0.85);
+    background: rgba(var(--panel-rgb), 0.85);
     border-radius: 10px;
     overflow: hidden;
     display: flex;
@@ -333,8 +332,8 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .track-item.is-playing {
-    color: #eb4116;
-    background: rgba(235, 65, 22, 0.1);
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.1);
 }
 
 .track-num {
@@ -346,7 +345,7 @@ input[type="range"]::-moz-range-thumb {
 }
 
 .track-item.is-playing .track-num {
-    color: rgba(235, 65, 22, 0.5);
+    color: rgba(var(--accent-rgb), 0.5);
 }
 
 /* ── Stream links (used in artwork-links panel) ──────────────────────────── */
@@ -379,7 +378,7 @@ input[type="range"]::-moz-range-thumb {
     width: 100%;
     bottom: 0;
     border-radius: 0 !important;
-    background: rgba(11, 37, 64, 0.75);
+    background: rgba(var(--panel-rgb), 0.75);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     padding: 10px 20px;

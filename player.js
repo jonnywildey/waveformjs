@@ -106,6 +106,23 @@ class Waveform {
             const c = this.imageInfo.size * 0.5 + 'px'
             this._waveSpiral.style.transformOrigin = `${c} ${c}`
           }
+          // Inject page accent colour into the SVG document (CSS vars don't cross <object> boundary).
+          // Use ID selectors so they outrank the class selectors in waveformjs.css.
+          const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()
+          if (accent) {
+            const [r, g, b] = (getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb') || '').split(',').map(n => parseInt(n) || 0)
+            const hover = `rgb(${Math.min(255,r+60)},${Math.min(255,g+60)},${Math.min(255,b+60)})`
+            const svgStyle = this._svgDoc.createElementNS('http://www.w3.org/2000/svg', 'style')
+            svgStyle.textContent = [
+              `#playback-head{fill:${accent}}`,
+              `#playback-head:hover{fill:${hover};filter:drop-shadow(0 0 8px rgba(255,255,255,0.9))}`,
+              `#playback-head:active{fill:${hover};filter:drop-shadow(0 0 12px rgba(255,255,255,1))}`,
+              `#pausebutton{fill:${accent}}`,
+              `#pausebutton:hover{fill:${hover}}`,
+              `#pausebutton:active{fill:${hover}}`,
+            ].join('')
+            this._svgDoc.documentElement.appendChild(svgStyle)
+          }
           this._pauseButton.addEventListener('click', () => this._pauseClick())
           this.pauseState = 'reset'
           this._loadAudio(cb)
