@@ -539,22 +539,41 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Streaming links under artwork
+  // Streaming + download links under artwork
   const artworkLinksEl = document.getElementById("artwork-links");
   if (artworkLinksEl && links.length > 0) {
-    const label = document.createElement("div");
-    label.className = "artwork-links-label";
-    label.textContent = "Listen on";
-    artworkLinksEl.appendChild(label);
-    links.forEach(({ name, url }) => {
-      const a = document.createElement("a");
-      a.className = "stream-link";
-      a.href = url;
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.textContent = name;
-      artworkLinksEl.appendChild(a);
-    });
+    const streamLinks = links.filter((l) => !l.download);
+    const downloadLinks = links.filter((l) => l.download);
+
+    if (streamLinks.length > 0) {
+      const label = document.createElement("div");
+      label.className = "artwork-links-label";
+      label.textContent = "Listen on";
+      artworkLinksEl.appendChild(label);
+      streamLinks.forEach(({ name, url }) => {
+        const a = document.createElement("a");
+        a.className = "stream-link";
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = name;
+        artworkLinksEl.appendChild(a);
+      });
+    }
+
+    if (downloadLinks.length > 0) {
+      const label = document.createElement("div");
+      label.className = "artwork-links-label";
+      label.textContent = "Download";
+      artworkLinksEl.appendChild(label);
+      downloadLinks.forEach(({ name, url }) => {
+        const a = document.createElement("a");
+        a.className = "stream-link";
+        a.href = url;
+        a.textContent = name;
+        artworkLinksEl.appendChild(a);
+      });
+    }
   }
 
   // Credits section (static, no collapsible)
