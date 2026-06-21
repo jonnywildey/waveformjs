@@ -526,7 +526,7 @@ iframe {
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 
 /* Mobile: stack everything, bring artwork back below tracklist */
-@media (max-width: 680px) {
+@media (max-width: 1000px) {
     .page-layout {
         flex-direction: column;
         justify-content: flex-start;
@@ -575,13 +575,13 @@ iframe {
         order: 1;
         flex: none;
         width: 100%;
+        margin: 0 auto;
     }
 
     .track-list {
         order: 2;
         flex: none;
         width: 100%;
-        max-height: 220px;
     }
 
     /* Footer flows below content on mobile */
