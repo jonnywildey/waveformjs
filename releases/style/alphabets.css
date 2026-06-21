@@ -33,6 +33,11 @@
 
 .navbar .nav > li > a {
     color: rgba(255, 255, 255, 0.7);
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8em;
 }
 
 .navbar .nav > li > a:hover,
@@ -137,10 +142,13 @@
 }
 
 .player-header-title {
-    font-size: 1.4em;
+    font-size: 1.3em;
     color: white;
     font-weight: 600;
-    margin-top: 3px;
+    font-family: "Josefin Sans", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 6px;
 }
 
 /* Circle backdrop — clips the SVG waveform to a disc */
@@ -186,9 +194,12 @@
 
 .track-title {
     color: white;
-    margin: 0 0 6px;
+    margin: 6px 0 6px;
     font-size: 1.1em;
-    font-weight: 400;
+    font-weight: 600;
+    font-family: "Josefin Sans", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 /* ── FX collapsible ──────────────────────────────────────────────────────── */
