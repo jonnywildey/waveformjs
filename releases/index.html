@@ -54,6 +54,23 @@
                 margin: 0;
             }
 
+            /* ── Bottom fade ── */
+
+            .bottom-fade {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 140px;
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(0, 0, 0, 0.9)
+                );
+                pointer-events: none;
+                z-index: 10;
+            }
+
             /* ── Filter tabs ── */
 
             .filter-tabs {
@@ -248,6 +265,24 @@
                         </div>
                     </a>
                     <!-- ── Releases with vinyl player ── -->
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="eternal-gold-somnolence.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/eternal-gold-somnolence/eternal-gold-somnolence.jpg"
+                                alt="Eternal Gold Somnolence"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Gold Somnolence
+                            </div>
+                            <div class="release-label">WotNot Music · 2025</div>
+                        </div>
+                    </a>
 
                     <a
                         class="release-card"
@@ -523,13 +558,11 @@
                     <a
                         class="release-card"
                         data-type="single-remix"
-                        href="https://alphabetsheaven.bandcamp.com/album/wild-love"
-                        target="_blank"
-                        rel="noopener"
+                        href="wild-love.html"
                     >
                         <div class="release-artwork">
                             <img
-                                src="images/wild-love/wild-love.jpg"
+                                src="images/wild-love/wild-love.png"
                                 alt="Wild Love"
                             />
                         </div>
@@ -592,6 +625,7 @@
                 </div>
             </div>
         </div>
+        <div class="bottom-fade"></div>
         <script>
             document.querySelectorAll(".filter-tab").forEach((tab) => {
                 tab.addEventListener("click", () => {
