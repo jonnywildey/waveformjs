@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="favicon.ico" />
+        <title>Alphabets Heaven — Rosewater</title>
+        <link href="style/navbar.css" rel="stylesheet" />
+        <link href="style/alphabets.css" rel="stylesheet" />
+        <link href="style/waveformjs.css" rel="stylesheet" />
+
+        <style>
+            :root {
+                --panel-rgb: 35, 10, 20;
+                --accent: #c85a7a;
+                --accent-rgb: 200, 90, 122;
+                --bg-overlay: rgba(0, 0, 0, 0.85);
+            }
+            .content-container {
+                background:
+                    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                    url("images/rosewater/rosewaterback.jpg") no-repeat center / cover;
+                background-attachment: fixed;
+            }
+        </style>
+
+        <script>
+            window.albumConfig = {
+                artist: "Alphabets Heaven",
+                title: "Rosewater",
+                year: 2012,
+                label: "",
+                credits: [],
+                artwork: "images/rosewater/rosewater.jpg",
+                links: [
+                    {
+                        name: "Bandcamp",
+                        url: "https://alphabetsheaven.bandcamp.com/album/rosewater",
+                    },
+                    {
+                        name: "Apple Music",
+                        url: "https://music.apple.com/gb/artist/alphabets-heaven/399956656",
+                    },
+                    {
+                        name: "Spotify",
+                        url: "https://open.spotify.com/artist/6hGEHoOjXVNXSP0xicAtxy",
+                    },
+                    {
+                        name: "Tidal",
+                        url: "https://tidal.com/browse/artist/3857031",
+                    },
+                ],
+                tracks: [
+                    {
+                        id: "iou",
+                        url: "https://pub-b2c73c4391b6462980c9e5d8c74b3b8f.r2.dev/audio/Alphabets Heaven - Rosewater/Alphabets Heaven - Iou.mp3",
+                        svgId: "rosewater/iou.mp3",
+                        title: "Iou",
+                    },
+                    {
+                        id: "gm-loop",
+                        url: "https://pub-b2c73c4391b6462980c9e5d8c74b3b8f.r2.dev/audio/Alphabets Heaven - Rosewater/Alphabets Heaven - GM Loop.mp3",
+                        svgId: "rosewater/gm-loop.mp3",
+                        title: "GM Loop",
+                    },
+                    {
+                        id: "panafonics",
+                        url: "https://pub-b2c73c4391b6462980c9e5d8c74b3b8f.r2.dev/audio/Alphabets Heaven - Rosewater/Alphabets Heaven - Panafonics.mp3",
+                        svgId: "rosewater/panafonics.mp3",
+                        title: "Panafonics",
+                    },
+                ],
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="content-container">
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-header">
+                    <button
+                        type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target="#navbar"
+                    >
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Releases</a></li>
+                        <li><a href="video.html">Video</a></li>
+                    </ul>
+                    <div class="nav-social">
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="page-layout">
+                <div class="artwork-column">
+                    <img
+                        class="album-artwork"
+                        id="album-artwork"
+                        src=""
+                        alt=""
+                    />
+                    <div class="artwork-links" id="artwork-links"></div>
+                    <div class="album-credits" id="release-credits"></div>
+                    <details class="fx-section">
+                        <summary>FX</summary>
+                        <div class="fx-controls-wrap">
+                            <div class="fx-controls">
+                                <label for="volume">Volume</label>
+                                <input type="range" min="0" max="1" id="volume" step="0.01" value="1" />
+                                <label for="filter">Filter</label>
+                                <input type="range" min="0" max="1" id="filter" step="0.01" value="1" />
+                                <label for="delay-send">Delay</label>
+                                <input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0" />
+                                <label for="delay-time">Delay Time</label>
+                                <input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35" />
+                                <label for="delay-feedback">Feedback</label>
+                                <input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4" />
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="player-column">
+                    <div class="player-header" id="player-header"></div>
+                    <div class="player-backdrop">
+                        <img class="vinyl-label" id="vinyl-label" src="" alt="" />
+                        <div class="track-player" id="long"></div>
+                    </div>
+                    <div class="track-below">
+                        <h3 class="track-title"></h3>
+                        <div class="track-time" id="track-time"></div>
+                    </div>
+                </div>
+
+                <aside class="track-list" id="track-list"></aside>
+            </div>
+
+            <div class="artwork-lightbox" id="artwork-lightbox" hidden>
+                <img class="artwork-lightbox-img" id="artwork-lightbox-img" src="" alt="" />
+            </div>
+        </div>
+
+        <script src="player.js"></script>
+    </body>
+</html>

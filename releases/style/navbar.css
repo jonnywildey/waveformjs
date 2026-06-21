@@ -1,70 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Josefin+Sans:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Josefin+Sans:wght@400;600&display=swap");
 
 /* ── Resets ──────────────────────────────────────────────────────────────── */
 
-*, *::before, *::after { box-sizing: border-box; }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     background: #1e1c25;
     color: #fff;
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
 }
 
-a { color: #fff; text-decoration: none; }
-a:hover, a:focus { opacity: 0.85; }
+a {
+    color: #fff;
+    text-decoration: none;
+}
+a:hover,
+a:focus {
+    opacity: 0.85;
+}
 
 /* ── Navbar shell ────────────────────────────────────────────────────────── */
-
-.navbar {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    min-height: 50px;
-    width: 100%;
-}
-
-.navbar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.navbar-brand {
-    font-size: 1.1em;
-    padding: 15px;
-    white-space: nowrap;
-}
-
-/* ── Hamburger ───────────────────────────────────────────────────────────── */
-
-.navbar-toggle {
-    background: none;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 9px 10px;
-    margin: 8px;
-}
-
-.icon-bar {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: rgba(255,255,255,0.7);
-    border-radius: 1px;
-}
-.icon-bar + .icon-bar { margin-top: 4px; }
-
-/* ── Collapse ────────────────────────────────────────────────────────────── */
-
-.collapse { display: none; width: 100%; }
-.collapse.in { display: block; }
-
-.navbar-collapse { padding: 0 15px; }
 
 /* ── Nav links ───────────────────────────────────────────────────────────── */
 
@@ -81,14 +43,27 @@ a:hover, a:focus { opacity: 0.85; }
 
 /* ── Desktop ─────────────────────────────────────────────────────────────── */
 
-@media (min-width: 768px) {
-    .navbar-header { width: auto; }
-    .navbar-toggle { display: none; }
-    .collapse { display: flex !important; align-items: center; width: auto; }
-    .navbar-nav { display: flex; }
-    .navbar-nav > li > a { padding: 15px; }
-    .navbar-right { margin-left: auto; }
+/*@media (min-width: 768px) {*/
+.navbar-header {
+    width: auto;
 }
+.navbar-toggle {
+    display: none;
+}
+.collapse {
+    display: flex !important;
+    align-items: center;
+}
+.navbar-nav {
+    display: flex;
+}
+.navbar-nav > li > a {
+    padding: 15px;
+}
+.navbar-right {
+    margin-left: auto;
+}
+/*}*/
 
 /* ── Social icons ────────────────────────────────────────────────────────── */
 
@@ -116,10 +91,12 @@ a:hover, a:focus { opacity: 0.85; }
 
 .sr-only {
     position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
 }
