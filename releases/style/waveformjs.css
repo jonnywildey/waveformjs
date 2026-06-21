@@ -4,7 +4,7 @@
 }
 
 .playback-head {
-    fill: #eb4116;
+    fill: #010101;
     cursor: grab;
     transition:
         fill 0.12s,
@@ -34,19 +34,19 @@
 
 .pausebutton,
 .playbutton {
-    fill: #eb4116;
+    fill: #010101;
     cursor: pointer;
     transition: fill 0.12s;
 }
 
 .pausebutton:hover,
 .playbutton:hover {
-    fill: #ff7044;
+    fill: #4d4d4d;
 }
 
 .pausebutton:active,
 .playbutton:active {
-    fill: #ff9e80;
+    fill: #898989;
 }
 
 .loading .pausebutton {
