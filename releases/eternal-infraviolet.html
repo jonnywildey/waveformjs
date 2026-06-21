@@ -23,7 +23,8 @@
             .content-container {
                 background:
                     linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-                    url("images/eternal-infraviolet/eternal-infraviolet.jpg") no-repeat center / cover;
+                    url("images/eternal-infraviolet/eternal-infraviolet.jpg")
+                        no-repeat center / cover;
                 background-attachment: fixed;
             }
         </style>
@@ -69,7 +70,8 @@
                         url: "https://pub-b2c73c4391b6462980c9e5d8c74b3b8f.r2.dev/audio/Alphabets Heaven - Eternal Infraviolet Sunset EP/03 - Alphabets Heaven - Sake Of Itself.mp3",
                         svgId: "eternal-infraviolet/sake-of-itself.mp3",
                         title: "Sake Of Itself",
-                        artwork: "images/eternal-infraviolet/sake-of-itself.jpg",
+                        artwork:
+                            "images/eternal-infraviolet/sake-of-itself.jpg",
                     },
                     {
                         id: "eternal-infraviolet-sunset",
@@ -125,24 +127,9 @@
                     <div class="artwork-links" id="artwork-links">
                         <!-- populated by player.js -->
                     </div>
-                </div>
-
-                <!-- Player: header card → circle → title + FX -->
-                <div class="player-column">
-                    <div class="player-header" id="player-header"></div>
-                    <div class="player-backdrop">
-                        <img
-                            class="vinyl-label"
-                            id="vinyl-label"
-                            src=""
-                            alt=""
-                        />
-                        <div class="track-player" id="long"></div>
-                    </div>
-                    <div class="track-below">
-                        <h3 class="track-title"></h3>
-                        <details class="fx-section">
-                            <summary>FX</summary>
+                    <details class="fx-section">
+                        <summary>FX</summary>
+                        <div class="fx-controls-wrap">
                             <div class="fx-controls">
                                 <label for="volume">Volume</label>
                                 <input
@@ -162,7 +149,7 @@
                                     step="0.01"
                                     value="1"
                                 />
-                                <label for="delay-send">Delay Send</label>
+                                <label for="delay-send">Delay</label>
                                 <input
                                     type="range"
                                     min="0"
@@ -190,7 +177,24 @@
                                     value="0.4"
                                 />
                             </div>
-                        </details>
+                        </div>
+                    </details>
+                </div>
+
+                <!-- Player: header card → circle → title -->
+                <div class="player-column">
+                    <div class="player-header" id="player-header"></div>
+                    <div class="player-backdrop">
+                        <img
+                            class="vinyl-label"
+                            id="vinyl-label"
+                            src=""
+                            alt=""
+                        />
+                        <div class="track-player" id="long"></div>
+                    </div>
+                    <div class="track-below">
+                        <h3 class="track-title"></h3>
                     </div>
                 </div>
 

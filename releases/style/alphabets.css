@@ -205,48 +205,66 @@
 /* ── FX collapsible ──────────────────────────────────────────────────────── */
 
 .fx-section {
-    margin-top: 8px;
-    padding: 0 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    overflow: hidden;
 }
 
 .fx-section > summary {
-    display: block;
-    padding: 8px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.88em;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    text-align: center;
     user-select: none;
-    transition: color 0.15s;
+    transition: color 0.15s, background 0.15s;
+    list-style: none;
 }
+
+.fx-section > summary::-webkit-details-marker { display: none; }
+.fx-section > summary::marker { display: none; }
 
 .fx-section > summary:hover {
-    color: rgba(255, 255, 255, 0.75);
+    color: white;
+    background: rgba(255, 255, 255, 0.04);
 }
 
-/* hide the default triangle marker */
-.fx-section > summary::-webkit-details-marker {
-    display: none;
-}
-.fx-section > summary::marker {
-    display: none;
+.fx-section[open] > summary {
+    color: white;
 }
 
-.fx-section:not([open]) > summary::after {
-    content: " ▾";
+.fx-section > summary::after {
+    content: "▾";
+    transition: transform 0.35s ease;
 }
+
 .fx-section[open] > summary::after {
-    content: " ▴";
+    transform: rotate(-180deg);
+}
+
+/* Wrapper drives the expand/collapse animation */
+.fx-controls-wrap {
+    display: block !important; /* override UA display:none on closed <details> content */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.fx-section[open] > .fx-controls-wrap {
+    max-height: 320px;
 }
 
 .fx-controls {
-    padding: 8px 8px 4px;
+    padding: 10px 16px 16px;
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 12px;
-    row-gap: 4px;
+    row-gap: 10px;
     align-items: center;
 }
 
