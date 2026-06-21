@@ -192,6 +192,15 @@
     padding-top: 10px;
 }
 
+.track-time {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.72em;
+    letter-spacing: 0.06em;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 6px;
+    margin-top: 24px;
+}
+
 .track-title {
     color: white;
     margin: 6px 0 6px;
@@ -239,17 +248,23 @@
     cursor: pointer;
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.88em;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: "Josefin Sans", sans-serif;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     user-select: none;
-    transition: color 0.15s, background 0.15s;
+    transition:
+        color 0.15s,
+        background 0.15s;
     list-style: none;
 }
 
-.fx-section > summary::-webkit-details-marker { display: none; }
-.fx-section > summary::marker { display: none; }
+.fx-section > summary::-webkit-details-marker {
+    display: none;
+}
+.fx-section > summary::marker {
+    display: none;
+}
 
 .fx-section > summary:hover {
     color: white;

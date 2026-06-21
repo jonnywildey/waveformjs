@@ -161,6 +161,8 @@ class Waveform {
         this.buffer = buffer
         this.pauseState = 'loaded'
         document.querySelectorAll('.track-title').forEach(el => el.textContent = this.trackInfo.title)
+        const timeEl = document.getElementById('track-time')
+        if (timeEl) timeEl.textContent = `0:00 / ${formatTime(this.buffer.duration)}`
         this._setupScrubbing()
         if (cb) cb()
       })
@@ -333,16 +335,17 @@ class Waveform {
     const totalRotation = this.imageInfo.totalTurns * 360
     const headEnd = this.imageInfo.playbackDistance
 
+    const timeEl = document.getElementById('track-time')
     const tick = () => {
       if (this.pauseState !== 'playing') return
-      const progress = Math.min(
-        (this.context.currentTime - this.startedAt + this.trackPosition) / this.buffer.duration,
-        1
-      )
+      const elapsed = this.context.currentTime - this.startedAt + this.trackPosition
+      const progress = Math.min(elapsed / this.buffer.duration, 1)
       if (this._waveSpiral)
         this._waveSpiral.style.transform = `rotate(${progress * totalRotation}deg)`
       if (this._playbackHead)
         this._playbackHead.style.transform = `translateX(-${progress * headEnd}px)`
+      if (timeEl)
+        timeEl.textContent = `${formatTime(elapsed)} / ${formatTime(this.buffer.duration)}`
       this._rafId = requestAnimationFrame(tick)
     }
     this._rafId = requestAnimationFrame(tick)
@@ -353,6 +356,12 @@ class Waveform {
     this._pauseButton.classList.remove('pausebutton', 'playbutton')
     this._pauseButton.classList.add(cls)
   }
+}
+
+const formatTime = s => {
+  const m = Math.floor(s / 60)
+  const sec = Math.floor(s % 60)
+  return `${m}:${sec.toString().padStart(2, '0')}`
 }
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
