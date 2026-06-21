@@ -17,13 +17,13 @@
                 --panel-rgb: 45, 15, 60; /* deep violet */
                 --accent: #c85a8a; /* rose pink */
                 --accent-rgb: 200, 90, 138; /* same as above as R,G,B */
-                --bg-overlay: rgba(15, 5, 25, 0.72);
+                --bg-overlay: rgba(15, 5, 25, 0.96);
             }
             /* URL resolved relative to this HTML file — no ambiguity */
             .content-container {
                 background:
                     linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-                    url("images/eternal-infraviolet/eternal-infraviolet.jpg")
+                    url("images/eternal-infraviolet/eternal-infravioletback.jpg")
                         no-repeat center / cover;
                 background-attachment: fixed;
             }
@@ -35,9 +35,7 @@
                 title: "Eternal Infraviolet Sunset EP",
                 year: 2025,
                 label: "WotNot Music",
-                credits: [
-                    "Mixed and Mastered by Aneek Thapar",
-                ],
+                credits: ["Mixed and Mastered by Aneek Thapar"],
                 artwork: "images/eternal-infraviolet/eternal-infraviolet.jpg",
                 links: [
                     {
@@ -118,8 +116,20 @@
                         <li><a href="video.html">Video</a></li>
                     </ul>
                     <div class="nav-social">
-                        <a href="http://www.soundcloud.com/alphabetsheaven" target="_blank" rel="noopener"><img src="images/social/sc2.png" alt="SoundCloud" /></a>
-                        <a href="https://alphabetsheaven.bandcamp.com/" target="_blank" rel="noopener"><img src="images/social/bandcamp.png" alt="Bandcamp" /></a>
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
                     </div>
                 </div>
             </nav>
@@ -223,7 +233,6 @@
                     alt=""
                 />
             </div>
-
         </div>
 
         <script src="player.js"></script>

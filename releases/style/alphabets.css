@@ -173,7 +173,7 @@
     border-radius: 50%;
     object-fit: cover;
     z-index: -1;
-    opacity: 45%;
+    opacity: 60%;
     transition: opacity 0.35s ease;
     box-shadow:
         0 0 0 3px rgba(255, 255, 255, 0.08),

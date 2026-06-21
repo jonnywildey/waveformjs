@@ -23,7 +23,8 @@
             .content-container {
                 background:
                     linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-                    url("images/stories/stories.jpg") no-repeat center / cover;
+                    url("images/stories/storiesback.jpg") no-repeat center /
+                        cover;
                 background-attachment: fixed;
             }
         </style>
@@ -159,8 +160,20 @@
                         <li><a href="video.html">Video</a></li>
                     </ul>
                     <div class="nav-social">
-                        <a href="http://www.soundcloud.com/alphabetsheaven" target="_blank" rel="noopener"><img src="images/social/sc2.png" alt="SoundCloud" /></a>
-                        <a href="https://alphabetsheaven.bandcamp.com/" target="_blank" rel="noopener"><img src="images/social/bandcamp.png" alt="Bandcamp" /></a>
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
                     </div>
                 </div>
             </nav>
@@ -183,15 +196,50 @@
                         <div class="fx-controls-wrap">
                             <div class="fx-controls">
                                 <label for="volume">Volume</label>
-                                <input type="range" min="0" max="1" id="volume" step="0.01" value="1" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="volume"
+                                    step="0.01"
+                                    value="1"
+                                />
                                 <label for="filter">Filter</label>
-                                <input type="range" min="0" max="1" id="filter" step="0.01" value="1" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="filter"
+                                    step="0.01"
+                                    value="1"
+                                />
                                 <label for="delay-send">Delay</label>
-                                <input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-send"
+                                    step="0.01"
+                                    value="0"
+                                />
                                 <label for="delay-time">Delay Time</label>
-                                <input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35" />
+                                <input
+                                    type="range"
+                                    min="0.1"
+                                    max="1.2"
+                                    id="delay-time"
+                                    step="0.01"
+                                    value="0.35"
+                                />
                                 <label for="delay-feedback">Feedback</label>
-                                <input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-feedback"
+                                    step="0.01"
+                                    value="0.4"
+                                />
                             </div>
                         </div>
                     </details>
@@ -229,7 +277,6 @@
                     alt=""
                 />
             </div>
-
         </div>
 
         <script src="player.js"></script>
