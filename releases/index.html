@@ -10,8 +10,8 @@
         <style>
             :root {
                 --panel-rgb: 10, 10, 16;
-                --accent: #eb4116;
-                --accent-rgb: 235, 65, 22;
+                --accent: #484848;
+                --accent-rgb: 72, 72, 72;
                 --bg-overlay: rgba(0, 0, 0, 0);
             }
 
@@ -151,22 +151,9 @@
     <body>
         <div class="content-container">
             <nav class="navbar navbar-static-top">
-                <div class="navbar-header">
-                    <button
-                        type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#navbar"
-                    >
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Releases</a></li>
+                        <li class="active"><a href="#">Alphabets Heaven</a></li>
                         <li><a href="video.html">Video</a></li>
                     </ul>
                     <div class="nav-social">
@@ -237,7 +224,10 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="everything-stays-the-same.html">
+                    <a
+                        class="release-card"
+                        href="everything-stays-the-same.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/everything-stays-the-same/everything-stays-the-same.jpg"
@@ -253,10 +243,7 @@
 
                     <a class="release-card" href="lovers.html">
                         <div class="release-artwork">
-                            <img
-                                src="images/lovers/lovers.jpg"
-                                alt="Lovers"
-                            />
+                            <img src="images/lovers/lovers.jpg" alt="Lovers" />
                         </div>
                         <div class="release-info">
                             <div class="release-title">Lovers</div>
@@ -289,10 +276,7 @@
 
                     <a class="release-card" href="boosh.html">
                         <div class="release-artwork">
-                            <img
-                                src="images/boosh/boosh.jpg"
-                                alt="Boosh"
-                            />
+                            <img src="images/boosh/boosh.jpg" alt="Boosh" />
                         </div>
                         <div class="release-info">
                             <div class="release-title">Boosh</div>
@@ -313,19 +297,5 @@
                 </div>
             </div>
         </div>
-
-        <script>
-            // Bootstrap navbar hamburger toggle
-            document
-                .querySelectorAll('[data-toggle="collapse"]')
-                .forEach((btn) => {
-                    btn.addEventListener("click", () => {
-                        const target = document.querySelector(
-                            btn.dataset.target,
-                        );
-                        if (target) target.classList.toggle("in");
-                    });
-                });
-        </script>
     </body>
 </html>

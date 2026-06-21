@@ -25,6 +25,8 @@
 }
 
 .navbar {
+    display: flex;
+    align-items: center;
     padding: 0 20px;
     background: rgba(var(--panel-rgb), 0.75);
     backdrop-filter: blur(4px);

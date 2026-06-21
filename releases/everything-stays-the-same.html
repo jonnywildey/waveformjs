@@ -19,7 +19,8 @@
             .content-container {
                 background:
                     linear-gradient(var(--bg-overlay), var(--bg-overlay)),
-                    url("images/everything-stays-the-same/everything-stays-the-sameback.jpg") no-repeat center / cover;
+                    url("images/everything-stays-the-same/everything-stays-the-sameback.jpg")
+                        no-repeat center / cover;
                 background-attachment: fixed;
             }
         </style>
@@ -30,10 +31,9 @@
                 title: "Everything Stays The Same",
                 year: 2014,
                 label: "King Deluxe",
-                credits: [
-                    "Deft on 'Pride and Joy'",
-                ],
-                artwork: "images/everything-stays-the-same/everything-stays-the-same.jpg",
+                credits: ["Deft on 'Pride and Joy'"],
+                artwork:
+                    "images/everything-stays-the-same/everything-stays-the-same.jpg",
                 links: [
                     {
                         name: "Bandcamp",
@@ -97,22 +97,9 @@
     <body>
         <div class="content-container">
             <nav class="navbar navbar-static-top">
-                <div class="navbar-header">
-                    <button
-                        type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#navbar"
-                    >
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
+                <div class="navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="index.html">Releases</a></li>
+                        <li><a href="index.html">Alphabets Heaven</a></li>
                         <li><a href="video.html">Video</a></li>
                     </ul>
                     <div class="nav-social">
@@ -149,15 +136,50 @@
                         <div class="fx-controls-wrap">
                             <div class="fx-controls">
                                 <label for="volume">Volume</label>
-                                <input type="range" min="0" max="1" id="volume" step="0.01" value="1" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="volume"
+                                    step="0.01"
+                                    value="1"
+                                />
                                 <label for="filter">Filter</label>
-                                <input type="range" min="0" max="1" id="filter" step="0.01" value="1" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="filter"
+                                    step="0.01"
+                                    value="1"
+                                />
                                 <label for="delay-send">Delay</label>
-                                <input type="range" min="0" max="0.7" id="delay-send" step="0.01" value="0" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-send"
+                                    step="0.01"
+                                    value="0"
+                                />
                                 <label for="delay-time">Delay Time</label>
-                                <input type="range" min="0.1" max="1.2" id="delay-time" step="0.01" value="0.35" />
+                                <input
+                                    type="range"
+                                    min="0.1"
+                                    max="1.2"
+                                    id="delay-time"
+                                    step="0.01"
+                                    value="0.35"
+                                />
                                 <label for="delay-feedback">Feedback</label>
-                                <input type="range" min="0" max="0.7" id="delay-feedback" step="0.01" value="0.4" />
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-feedback"
+                                    step="0.01"
+                                    value="0.4"
+                                />
                             </div>
                         </div>
                     </details>
@@ -166,7 +188,12 @@
                 <div class="player-column">
                     <div class="player-header" id="player-header"></div>
                     <div class="player-backdrop">
-                        <img class="vinyl-label" id="vinyl-label" src="" alt="" />
+                        <img
+                            class="vinyl-label"
+                            id="vinyl-label"
+                            src=""
+                            alt=""
+                        />
                         <div class="track-player" id="long"></div>
                     </div>
                     <div class="track-below">
@@ -179,7 +206,12 @@
             </div>
 
             <div class="artwork-lightbox" id="artwork-lightbox" hidden>
-                <img class="artwork-lightbox-img" id="artwork-lightbox-img" src="" alt="" />
+                <img
+                    class="artwork-lightbox-img"
+                    id="artwork-lightbox-img"
+                    src=""
+                    alt=""
+                />
             </div>
         </div>
 
