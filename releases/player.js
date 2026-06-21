@@ -286,16 +286,21 @@ class Waveform {
   }
 
   play() {
+    this.pauseState = 'playing'
+    this._setButtonClass('playbutton')
+
     this.source = this.context.createBufferSource()
     this.source.buffer = this.buffer
     this.source.onended = () => this._onSourceEnded()
     this.source.connect(this.lopass)
     this.source.connect(this.delaySend)
-    this.source.start(0, this.trackPosition)
-    this.startedAt = this.context.currentTime
-    this.pauseState = 'playing'
-    this._setButtonClass('playbutton')
-    this._startAnimation()
+
+    // iOS Safari starts AudioContext suspended; resume() must be called inside a user gesture
+    this.context.resume().then(() => {
+      this.source.start(0, this.trackPosition)
+      this.startedAt = this.context.currentTime
+      this._startAnimation()
+    })
   }
 
   _pause() {
