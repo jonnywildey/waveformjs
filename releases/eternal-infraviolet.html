@@ -33,6 +33,11 @@
             window.albumConfig = {
                 artist: "Alphabets Heaven",
                 title: "Eternal Infraviolet Sunset EP",
+                year: 2025,
+                label: "WotNot Music",
+                credits: [
+                    "Mixed and Mastered by Aneek Thapar",
+                ],
                 artwork: "images/eternal-infraviolet/eternal-infraviolet.jpg",
                 links: [
                     {
@@ -112,6 +117,10 @@
                         <li><a href="index.html">Releases</a></li>
                         <li><a href="video.html">Video</a></li>
                     </ul>
+                    <div class="nav-social">
+                        <a href="http://www.soundcloud.com/alphabetsheaven" target="_blank" rel="noopener"><img src="images/social/sc2.png" alt="SoundCloud" /></a>
+                        <a href="https://alphabetsheaven.bandcamp.com/" target="_blank" rel="noopener"><img src="images/social/bandcamp.png" alt="Bandcamp" /></a>
+                    </div>
                 </div>
             </nav>
 
@@ -127,6 +136,7 @@
                     <div class="artwork-links" id="artwork-links">
                         <!-- populated by player.js -->
                     </div>
+                    <div class="album-credits" id="release-credits"></div>
                     <details class="fx-section">
                         <summary>FX</summary>
                         <div class="fx-controls-wrap">
@@ -213,21 +223,6 @@
                 />
             </div>
 
-            <div class="footer-row">
-                <div class="artwork">
-                    <!--<a href="http://www.raimundwong.com/">Artwork by Raimund Wong</a>-->
-                </div>
-                <div class="item-link">
-                    <a href="http://www.soundcloud.com/alphabetsheaven"
-                        ><img src="images/social/sc2.png" alt="SoundCloud"
-                    /></a>
-                </div>
-                <div class="item-link">
-                    <a href="https://alphabetsheaven.bandcamp.com/"
-                        ><img src="images/social/bandcamp.png" alt="Bandcamp"
-                    /></a>
-                </div>
-            </div>
         </div>
 
         <script src="player.js"></script>

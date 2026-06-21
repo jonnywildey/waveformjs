@@ -358,7 +358,7 @@ class Waveform {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-  const { artist, title, tracks, links = [], artwork = '' } = window.albumConfig
+  const { artist, title, year, label, credits = [], tracks, links = [], artwork = '' } = window.albumConfig
   const player = new Waveform('long')
 
   // Album header
@@ -409,6 +409,15 @@ document.addEventListener('DOMContentLoaded', () => {
       a.textContent = name
       artworkLinksEl.appendChild(a)
     })
+  }
+
+  // Credits section (static, no collapsible)
+  const creditsEl = document.getElementById('release-credits')
+  if (creditsEl && credits.length > 0) {
+    creditsEl.innerHTML = `
+      <div class="release-info-label">Credits</div>
+      ${credits.map(line => `<p class="credit-line">${line}</p>`).join('')}
+    `
   }
 
   // Background crossfade — fades between track-specific artwork when available
@@ -468,10 +477,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (listEl) {
     const header = document.createElement('div')
     header.className = 'track-list-header'
+    const metaParts = [tracks.length + ' tracks', year, label].filter(Boolean)
     header.innerHTML = `
       <div class="album-artist">${artist}</div>
       <div class="album-name">${title}</div>
-      <div class="album-count">${tracks.length} tracks</div>
+      <div class="album-count">${metaParts.join(' · ')}</div>
     `
     listEl.appendChild(header)
 
@@ -511,6 +521,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     listEl.appendChild(table)
+
+    // Move FX section into the track list panel (it lives in artwork-column in HTML)
+    const fxEl = document.querySelector('.fx-section')
+    if (fxEl) listEl.appendChild(fxEl)
   }
 
   function setActiveTrack(id) {

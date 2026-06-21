@@ -31,6 +31,13 @@
             window.albumConfig = {
                 artist: "Alphabets Heaven",
                 title: "Stories",
+                year: 2017,
+                label: "WotNot Music",
+                credits: [
+                    "Vocals on 'Heart' by Emma Gatrill",
+                    "Artwork by Raimund Wong",
+                    "Mastered by Jeremy Cox",
+                ],
                 artwork: "images/stories/stories.jpg",
                 bandcampUrl:
                     "https://alphabetsheaven.bandcamp.com/album/stories",
@@ -151,6 +158,10 @@
                         <li><a href="index.html">Releases</a></li>
                         <li><a href="video.html">Video</a></li>
                     </ul>
+                    <div class="nav-social">
+                        <a href="http://www.soundcloud.com/alphabetsheaven" target="_blank" rel="noopener"><img src="images/social/sc2.png" alt="SoundCloud" /></a>
+                        <a href="https://alphabetsheaven.bandcamp.com/" target="_blank" rel="noopener"><img src="images/social/bandcamp.png" alt="Bandcamp" /></a>
+                    </div>
                 </div>
             </nav>
 
@@ -166,6 +177,7 @@
                     <div class="artwork-links" id="artwork-links">
                         <!-- populated by player.js -->
                     </div>
+                    <div class="album-credits" id="release-credits"></div>
                     <details class="fx-section">
                         <summary>FX</summary>
                         <div class="fx-controls-wrap">
@@ -217,23 +229,6 @@
                 />
             </div>
 
-            <div class="footer-row">
-                <div class="artwork">
-                    <a href="http://www.raimundwong.com/"
-                        >Artwork by Raimund Wong</a
-                    >
-                </div>
-                <div class="item-link">
-                    <a href="http://www.soundcloud.com/alphabetsheaven"
-                        ><img src="images/social/sc2.png" alt="SoundCloud"
-                    /></a>
-                </div>
-                <div class="item-link">
-                    <a href="https://alphabetsheaven.bandcamp.com/"
-                        ><img src="images/social/bandcamp.png" alt="Bandcamp"
-                    /></a>
-                </div>
-            </div>
         </div>
 
         <script src="player.js"></script>

@@ -9,15 +9,20 @@
         <link href="style/alphabets.css" rel="stylesheet" />
         <style>
             :root {
-                --panel-rgb:  10, 10, 16;
-                --accent:     #eb4116;
+                --panel-rgb: 10, 10, 16;
+                --accent: #eb4116;
                 --accent-rgb: 235, 65, 22;
-                --bg-overlay: rgba(0, 0, 0, 0.0);
+                --bg-overlay: rgba(0, 0, 0, 0);
             }
 
             .content-container {
-                background: #0c0c14;
-                min-height: 100vh;
+                /*background: #0c0c14;
+                min-height: 100vh;*/
+
+                background:
+                    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                    url("images/promo/promo8.jpg") no-repeat center / cover;
+                background-attachment: fixed;
             }
 
             /* ── Hub layout ── */
@@ -65,7 +70,10 @@
                 border-radius: 10px;
                 overflow: hidden;
                 text-decoration: none;
-                transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+                transition:
+                    transform 0.18s ease,
+                    border-color 0.18s ease,
+                    box-shadow 0.18s ease;
             }
 
             .release-card:hover {
@@ -97,7 +105,11 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.04) 0%,
+                    rgba(255, 255, 255, 0.01) 100%
+                );
                 font-size: 2em;
                 color: rgba(255, 255, 255, 0.08);
                 font-weight: 700;
@@ -125,8 +137,13 @@
             }
 
             @media (max-width: 600px) {
-                .releases-hub { padding: 32px 16px 80px; }
-                .releases-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+                .releases-hub {
+                    padding: 32px 16px 80px;
+                }
+                .releases-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 12px;
+                }
             }
         </style>
     </head>
@@ -152,6 +169,22 @@
                         <li class="active"><a href="#">Releases</a></li>
                         <li><a href="video.html">Video</a></li>
                     </ul>
+                    <div class="nav-social">
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
+                    </div>
                 </div>
             </nav>
 
@@ -162,21 +195,28 @@
                 </div>
 
                 <div class="releases-grid">
-
                     <!-- ── Releases with vinyl player ── -->
 
                     <a class="release-card" href="eternal-infraviolet.html">
                         <div class="release-artwork">
-                            <img src="images/eternal-infraviolet/eternal-infraviolet.jpg" alt="Eternal Infraviolet Sunset EP" />
+                            <img
+                                src="images/eternal-infraviolet/eternal-infraviolet.jpg"
+                                alt="Eternal Infraviolet Sunset EP"
+                            />
                         </div>
                         <div class="release-info">
-                            <div class="release-title">Eternal Infraviolet Sunset EP</div>
+                            <div class="release-title">
+                                Eternal Infraviolet Sunset EP
+                            </div>
                         </div>
                     </a>
 
                     <a class="release-card" href="stories.html">
                         <div class="release-artwork">
-                            <img src="images/stories/stories.jpg" alt="Stories" />
+                            <img
+                                src="images/stories/stories.jpg"
+                                alt="Stories"
+                            />
                         </div>
                         <div class="release-info">
                             <div class="release-title">Stories</div>
@@ -185,9 +225,16 @@
 
                     <!-- ── Other releases (link to Bandcamp) ── -->
 
-                    <a class="release-card" href="http://alphabetsheaven.bandcamp.com/album/rosewater" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://alphabetsheaven.bandcamp.com/album/rosewater"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Rosewater</div>
+                            <div class="release-artwork-placeholder">
+                                Rosewater
+                            </div>
                         </div>
                         <div class="release-info">
                             <div class="release-title">Rosewater</div>
@@ -195,19 +242,35 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://store.kingdeluxe.ca/album/everything-stays-the-same" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://store.kingdeluxe.ca/album/everything-stays-the-same"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Everything Stays The Same</div>
+                            <div class="release-artwork-placeholder">
+                                Everything Stays The Same
+                            </div>
                         </div>
                         <div class="release-info">
-                            <div class="release-title">Everything Stays The Same</div>
+                            <div class="release-title">
+                                Everything Stays The Same
+                            </div>
                             <div class="release-label">King Deluxe</div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://alphabetsheaven.bandcamp.com/album/lovers" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://alphabetsheaven.bandcamp.com/album/lovers"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Lovers</div>
+                            <div class="release-artwork-placeholder">
+                                Lovers
+                            </div>
                         </div>
                         <div class="release-info">
                             <div class="release-title">Lovers</div>
@@ -215,9 +278,16 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://store.kingdeluxe.ca/album/siamese-burn-ep" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://store.kingdeluxe.ca/album/siamese-burn-ep"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Siamese Burn EP</div>
+                            <div class="release-artwork-placeholder">
+                                Siamese Burn EP
+                            </div>
                         </div>
                         <div class="release-info">
                             <div class="release-title">Siamese Burn EP</div>
@@ -225,9 +295,16 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://cleaningtapes.bandcamp.com/album/mountainsound" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://cleaningtapes.bandcamp.com/album/mountainsound"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Mountainsound</div>
+                            <div class="release-artwork-placeholder">
+                                Mountainsound
+                            </div>
                         </div>
                         <div class="release-info">
                             <div class="release-title">Mountainsound</div>
@@ -235,7 +312,12 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://store.kingdeluxe.ca/album/boosh" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://store.kingdeluxe.ca/album/boosh"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
                             <div class="release-artwork-placeholder">Boosh</div>
                         </div>
@@ -245,29 +327,21 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="http://store.kingdeluxe.ca/album/jays-odyssey" target="_blank" rel="noopener">
+                    <a
+                        class="release-card"
+                        href="http://store.kingdeluxe.ca/album/jays-odyssey"
+                        target="_blank"
+                        rel="noopener"
+                    >
                         <div class="release-artwork">
-                            <div class="release-artwork-placeholder">Jay's Odyssey</div>
+                            <div class="release-artwork-placeholder">
+                                Jay's Odyssey
+                            </div>
                         </div>
                         <div class="release-info">
                             <div class="release-title">Jay's Odyssey</div>
                             <div class="release-label">King Deluxe</div>
                         </div>
-                    </a>
-
-                </div>
-            </div>
-
-            <div class="footer-row">
-                <div class="artwork"></div>
-                <div class="item-link">
-                    <a href="http://www.soundcloud.com/alphabetsheaven">
-                        <img src="images/social/sc2.png" alt="SoundCloud" />
-                    </a>
-                </div>
-                <div class="item-link">
-                    <a href="https://alphabetsheaven.bandcamp.com/">
-                        <img src="images/social/bandcamp.png" alt="Bandcamp" />
                     </a>
                 </div>
             </div>
@@ -275,12 +349,16 @@
 
         <script>
             // Bootstrap navbar hamburger toggle
-            document.querySelectorAll('[data-toggle="collapse"]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const target = document.querySelector(btn.dataset.target)
-                    if (target) target.classList.toggle('in')
-                })
-            })
+            document
+                .querySelectorAll('[data-toggle="collapse"]')
+                .forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const target = document.querySelector(
+                            btn.dataset.target,
+                        );
+                        if (target) target.classList.toggle("in");
+                    });
+                });
         </script>
     </body>
 </html>

@@ -90,6 +90,28 @@ a:hover, a:focus { opacity: 0.85; }
     .navbar-right { margin-left: auto; }
 }
 
+/* ── Social icons ────────────────────────────────────────────────────────── */
+
+.nav-social {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+    padding: 0 16px;
+}
+
+.nav-social img {
+    height: 18px;
+    width: auto;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+    display: block;
+}
+
+.nav-social a:hover img {
+    opacity: 1;
+}
+
 /* ── Utilities ───────────────────────────────────────────────────────────── */
 
 .sr-only {
