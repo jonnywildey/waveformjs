@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="favicon.ico" />
+        <title>Alphabets Heaven — Releases</title>
+        <link href="style/navbar.css" rel="stylesheet" />
+        <link href="style/alphabets.css" rel="stylesheet" />
+        <style>
+            :root {
+                --panel-rgb: 10, 10, 16;
+                --accent: #484848;
+                --accent-rgb: 72, 72, 72;
+                --bg-overlay: rgba(0, 0, 0, 0);
+            }
+
+            .content-container {
+                /*background: #0c0c14;
+                min-height: 100vh;*/
+
+                background:
+                    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                    url("images/promo/promo8.jpg") no-repeat center / cover;
+                background-attachment: fixed;
+            }
+
+            /* ── Hub layout ── */
+
+            .releases-hub {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 48px 32px 100px;
+            }
+
+            .hub-heading {
+                text-align: center;
+                margin-bottom: 48px;
+            }
+
+            .hub-heading h1 {
+                font-size: 2em;
+                font-weight: 700;
+                color: white;
+                letter-spacing: 0.04em;
+                margin: 0 0 6px;
+            }
+
+            .hub-heading p {
+                color: rgba(255, 255, 255, 0.35);
+                font-size: 0.85em;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                margin: 0;
+            }
+
+            /* ── Release grid ── */
+
+            .releases-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+
+            .release-card {
+                display: flex;
+                flex-direction: column;
+                background: rgba(var(--panel-rgb), 0.9);
+                border: 1px solid rgba(255, 255, 255, 0.06);
+                border-radius: 10px;
+                overflow: hidden;
+                text-decoration: none;
+                transition:
+                    transform 0.18s ease,
+                    border-color 0.18s ease,
+                    box-shadow 0.18s ease;
+            }
+
+            .release-card:hover {
+                transform: translateY(-4px);
+                border-color: rgba(var(--accent-rgb), 0.5);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+                text-decoration: none;
+            }
+
+            .release-artwork {
+                width: 100%;
+                aspect-ratio: 1;
+                background: rgba(255, 255, 255, 0.04);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .release-artwork img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            /* Placeholder for releases without local artwork */
+            .release-artwork-placeholder {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.04) 0%,
+                    rgba(255, 255, 255, 0.01) 100%
+                );
+                font-size: 2em;
+                color: rgba(255, 255, 255, 0.08);
+                font-weight: 700;
+                letter-spacing: -0.02em;
+                padding: 16px;
+                text-align: center;
+            }
+
+            .release-info {
+                padding: 12px 14px 14px;
+            }
+
+            .release-title {
+                color: white;
+                font-size: 0.9em;
+                font-weight: 600;
+                line-height: 1.3;
+                margin-bottom: 3px;
+            }
+
+            .release-label {
+                color: rgba(255, 255, 255, 0.3);
+                font-size: 0.72em;
+                letter-spacing: 0.04em;
+            }
+
+            @media (max-width: 600px) {
+                .releases-hub {
+                    padding: 32px 16px 80px;
+                }
+                .releases-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 12px;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="content-container">
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Alphabets Heaven</a></li>
+                        <li><a href="video.html">Video</a></li>
+                    </ul>
+                    <div class="nav-social">
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="releases-hub">
+                <div class="hub-heading">
+                    <h1 class="player-header-title">Alphabets Heaven</h1>
+                    <p></p>
+                </div>
+
+                <div class="releases-grid">
+                    <!-- ── Releases with vinyl player ── -->
+
+                    <a class="release-card" href="eternal-infraviolet.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/eternal-infraviolet/eternal-infraviolet.jpg"
+                                alt="Eternal Infraviolet Sunset"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Infraviolet Sunset
+                            </div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="stories.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/stories/stories.jpg"
+                                alt="Stories"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Stories</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Other releases (link to Bandcamp) ── -->
+
+                    <a class="release-card" href="rosewater.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/rosewater/rosewater.jpg"
+                                alt="Rosewater"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Rosewater</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        href="everything-stays-the-same.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/everything-stays-the-same/everything-stays-the-same.jpg"
+                                alt="Everything Stays The Same"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Everything Stays The Same
+                            </div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="lovers.html">
+                        <div class="release-artwork">
+                            <img src="images/lovers/lovers.jpg" alt="Lovers" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Lovers</div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="siamese-burn.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/siamese-burn/siamese-burn.jpg"
+                                alt="Siamese Burn EP"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Siamese Burn EP</div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="mountainsound.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/mountainsound/mountainsound.jpg"
+                                alt="Mountainsound"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Mountainsound</div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="boosh.html">
+                        <div class="release-artwork">
+                            <img src="images/boosh/boosh.jpg" alt="Boosh" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Boosh</div>
+                        </div>
+                    </a>
+
+                    <a class="release-card" href="jays-odyssey.html">
+                        <div class="release-artwork">
+                            <img
+                                src="images/jays-odyssey/jays-odyssey.jpg"
+                                alt="Jay's Odyssey"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Jay's Odyssey</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

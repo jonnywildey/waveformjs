@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Josefin+Sans:wght@400;600&display=swap");
+
+/* ── Resets ──────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background: #1e1c25;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+a:hover,
+a:focus {
+    opacity: 0.85;
+}
+
+/* ── Navbar shell ────────────────────────────────────────────────────────── */
+
+/* ── Nav links ───────────────────────────────────────────────────────────── */
+
+.nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav > li > a {
+    display: block;
+    padding: 10px 15px;
+}
+
+/* ── Desktop ─────────────────────────────────────────────────────────────── */
+
+.navbar-collapse {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+.navbar-nav {
+    display: flex;
+}
+.navbar-nav > li > a {
+    padding: 15px;
+}
+.navbar-right {
+    margin-left: auto;
+}
+
+/* ── Social icons ────────────────────────────────────────────────────────── */
+
+.nav-social {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-left: auto;
+    padding: 0 16px;
+}
+
+.nav-social img {
+    height: 18px;
+    width: auto;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+    display: block;
+}
+
+.nav-social a:hover img {
+    opacity: 1;
+}
+
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 15px;
+}

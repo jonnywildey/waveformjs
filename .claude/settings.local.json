@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - Dopé/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Boosh Docs/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Siamese Burn EP promo/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/SMBD_GAMM_Summer/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Edenbridge - Warp Records/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - mountainsound/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - Stories/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Jay's Odyssey/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Bamboo/**)",
+      "Read(//Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Wander/**)",
+      "Bash(unzip -l \"/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - Rosewater.zip\")",
+      "Bash(unzip -l \"/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - Boosh.zip\")",
+      "Bash(unzip -l \"/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Everything Stays The Same Masters.zip\")",
+      "Bash(unzip -l \"/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Alphabets Heaven - Rosewater - pr.zip\")",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/boosh)",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/siamese-burn)",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/mountainsound)",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/jays-odyssey)",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/rosewater)",
+      "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Boosh')",
+      "Bash(cp '/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Boosh Docs/[KING011] Alphabets Heaven - Boosh 3/*.mp3' '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Boosh/')",
+      "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Siamese Burn EP')",
+      "Bash(cp '/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Siamese Burn EP promo/*.mp3' '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Siamese Burn EP/')",
+      "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Mountainsound')"
+    ]
+  }
+}
