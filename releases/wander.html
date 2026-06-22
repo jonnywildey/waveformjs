@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="favicon.ico" />
+        <title>Alphabets Heaven — Wander</title>
+        <link href="style/navbar.css" rel="stylesheet" />
+        <link href="style/alphabets.css" rel="stylesheet" />
+        <link href="style/waveformjs.css" rel="stylesheet" />
+
+        <style>
+            :root {
+                --panel-rgb: 18, 10, 38;
+                --accent: #9b72cf;
+                --accent-rgb: 155, 114, 207;
+                --bg-overlay: rgba(5, 0, 18, 0.9);
+            }
+            .content-container {
+                background:
+                    linear-gradient(var(--bg-overlay), var(--bg-overlay)),
+                    url("images/wander/wanderback.jpg") no-repeat center / cover;
+                background-attachment: fixed;
+            }
+        </style>
+
+        <script>
+            const R2 = "https://pub-b2c73c4391b6462980c9e5d8c74b3b8f.r2.dev/audio/Alphabets Heaven - Wander/";
+            window.albumConfig = {
+                artist: "Alphabets Heaven",
+                title: "Wander",
+                year: 2016,
+                label: "WotNot",
+                credits: [],
+                artwork: "images/wander/wander.jpg",
+                links: [
+                    {
+                        name: "Bandcamp",
+                        url: "https://alphabetsheaven.bandcamp.com/album/wander",
+                    },
+                ],
+                tracks: [
+                    {
+                        id: "some-movement",
+                        url: R2 + "01 Alphabets Heaven - Some Movement.mp3",
+                        svgId: "wander/some-movement.mp3",
+                        title: "Some Movement",
+                    },
+                    {
+                        id: "mogwai",
+                        url: R2 + "02 Alphabets Heaven - Mogwai.mp3",
+                        svgId: "wander/mogwai.mp3",
+                        title: "Mogwai",
+                    },
+                    {
+                        id: "say-what-you-mean",
+                        url: R2 + "03 Say What You Mean.mp3",
+                        svgId: "wander/03-say-what-you-mean.mp3",
+                        title: "Say What You Mean ft. Charo",
+                    },
+                    {
+                        id: "wander",
+                        url: R2 + "04 Alphabets Heaven - Wander.mp3",
+                        svgId: "wander/wander.mp3",
+                        title: "Wander",
+                    },
+                    {
+                        id: "party",
+                        url: R2 + "05 Alphabets Heaven - Party.mp3",
+                        svgId: "wander/party.mp3",
+                        title: "Party",
+                    },
+                    {
+                        id: "atomic",
+                        url: R2 + "06 Alphabets Heaven & Segilola - Atomic.mp3",
+                        svgId: "wander/atomic.mp3",
+                        title: "Atomic ft. Segilola",
+                    },
+                    {
+                        id: "some-movement-remix",
+                        url: R2 + "07 Some Movement Mono_Poly Remix.mp3",
+                        svgId: "wander/07-some-movement-mono_poly-remix.mp3",
+                        title: "Some Movement (MONO/POLY Remix)",
+                    },
+                ],
+            };
+        </script>
+    </head>
+
+    <body>
+        <div class="content-container">
+            <nav class="navbar navbar-static-top">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Alphabets Heaven</a></li>
+                    </ul>
+                    <div class="nav-social">
+                        <a
+                            href="http://www.soundcloud.com/alphabetsheaven"
+                            target="_blank"
+                            rel="noopener"
+                            ><img src="images/social/sc2.png" alt="SoundCloud"
+                        /></a>
+                        <a
+                            href="https://alphabetsheaven.bandcamp.com/"
+                            target="_blank"
+                            rel="noopener"
+                            ><img
+                                src="images/social/bandcamp.png"
+                                alt="Bandcamp"
+                        /></a>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="page-layout">
+                <div class="artwork-column">
+                    <img
+                        class="album-artwork"
+                        id="album-artwork"
+                        src=""
+                        alt=""
+                    />
+                    <div class="artwork-links" id="artwork-links"></div>
+                    <div class="album-credits" id="release-credits"></div>
+                    <details class="fx-section">
+                        <summary>FX</summary>
+                        <div class="fx-controls-wrap">
+                            <div class="fx-controls">
+                                <label for="volume">Volume</label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="volume"
+                                    step="0.01"
+                                    value="1"
+                                />
+                                <label for="filter">Filter</label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="1"
+                                    id="filter"
+                                    step="0.01"
+                                    value="1"
+                                />
+                                <label for="delay-send">Delay</label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-send"
+                                    step="0.01"
+                                    value="0"
+                                />
+                                <label for="delay-time">Delay Time</label>
+                                <input
+                                    type="range"
+                                    min="0.1"
+                                    max="1.2"
+                                    id="delay-time"
+                                    step="0.01"
+                                    value="0.35"
+                                />
+                                <label for="delay-feedback">Feedback</label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="0.7"
+                                    id="delay-feedback"
+                                    step="0.01"
+                                    value="0.4"
+                                />
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="player-column">
+                    <div class="player-header" id="player-header"></div>
+                    <div class="player-backdrop">
+                        <img
+                            class="vinyl-label"
+                            id="vinyl-label"
+                            src=""
+                            alt=""
+                        />
+                        <div class="track-player" id="long"></div>
+                    </div>
+                    <div class="track-below">
+                        <h3 class="track-title"></h3>
+                        <div class="track-time" id="track-time"></div>
+                    </div>
+                </div>
+
+                <aside class="track-list" id="track-list"></aside>
+            </div>
+
+            <div class="artwork-lightbox" id="artwork-lightbox" hidden>
+                <img
+                    class="artwork-lightbox-img"
+                    id="artwork-lightbox-img"
+                    src=""
+                    alt=""
+                />
+            </div>
+        </div>
+
+        <script src="player.js"></script>
+    </body>
+</html>

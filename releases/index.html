@@ -54,6 +54,61 @@
                 margin: 0;
             }
 
+            /* ── Bottom fade ── */
+
+            .bottom-fade {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 140px;
+                background: linear-gradient(
+                    to bottom,
+                    transparent,
+                    rgba(0, 0, 0, 0.9)
+                );
+                pointer-events: none;
+                z-index: 10;
+            }
+
+            /* ── Filter tabs ── */
+
+            .filter-tabs {
+                display: flex;
+                gap: 8px;
+                margin-bottom: 32px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .filter-tab {
+                background: none;
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                color: rgba(255, 255, 255, 0.45);
+                padding: 6px 20px;
+                border-radius: 20px;
+                cursor: pointer;
+                font-size: 0.75em;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                transition:
+                    border-color 0.18s ease,
+                    color 0.18s ease,
+                    background 0.18s ease;
+                font-family: inherit;
+            }
+
+            .filter-tab:hover {
+                border-color: rgba(255, 255, 255, 0.35);
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .filter-tab.active {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.4);
+                color: white;
+            }
+
             /* ── Release grid ── */
 
             .releases-grid {
@@ -177,12 +232,31 @@
             <div class="releases-hub">
                 <div class="hub-heading">
                     <h1 class="player-header-title">Alphabets Heaven</h1>
-                    <p></p>
+                    <p>Music & Organica</p>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">
+                        All
+                    </button>
+                    <button class="filter-tab" data-filter="album-ep">
+                        Albums & EPs
+                    </button>
+                    <button class="filter-tab" data-filter="single-remix">
+                        Singles & Remixes
+                    </button>
+                    <button class="filter-tab" data-filter="other">
+                        Other
+                    </button>
                 </div>
 
                 <div class="releases-grid">
                     <!-- ── Aquarium mini site ── -->
-                    <a class="release-card" href="../aquarium/index.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="../aquarium/index.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/aquarium/aquarium.jpg"
@@ -194,8 +268,30 @@
                         </div>
                     </a>
                     <!-- ── Releases with vinyl player ── -->
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="eternal-gold-somnolence.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/eternal-gold-somnolence/eternal-gold-somnolence.jpg"
+                                alt="Eternal Gold Somnolence"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">
+                                Eternal Gold Somnolence
+                            </div>
+                            <div class="release-label">WotNot Music · 2025</div>
+                        </div>
+                    </a>
 
-                    <a class="release-card" href="eternal-infraviolet.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="eternal-infraviolet.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/eternal-infraviolet/eternal-infraviolet.jpg"
@@ -206,22 +302,29 @@
                             <div class="release-title">
                                 Eternal Infraviolet Sunset
                             </div>
+                            <div class="release-label">WotNot Music · 2025</div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="stories.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="cielo.html"
+                    >
                         <div class="release-artwork">
-                            <img
-                                src="images/stories/stories.jpg"
-                                alt="Stories"
-                            />
+                            <img src="images/cielo/cielo.jpg" alt="Cielo" />
                         </div>
                         <div class="release-info">
-                            <div class="release-title">Stories</div>
+                            <div class="release-title">Cielo</div>
+                            <div class="release-label">WotNot Music · 2020</div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="subtitles.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="subtitles.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/subtitles/subtitles.jpg"
@@ -234,7 +337,59 @@
                         </div>
                     </a>
 
-                    <a class="release-card" href="warp-records.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="your-lifestyle.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/your-lifestyle/your-lifestyle.jpg"
+                                alt="Your Lifestyle"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Your Lifestyle</div>
+                            <div class="release-label">WotNot · 2018</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="stories.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/stories/stories.jpg"
+                                alt="Stories"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Stories</div>
+                            <div class="release-label">WotNot Music · 2017</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="wander.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/wander/wander.jpg" alt="Wander" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Wander</div>
+                            <div class="release-label">WotNot · 2016</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="warp-records.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/warp-records/warp-records.jpg"
@@ -247,11 +402,26 @@
                         </div>
                     </a>
 
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="lovers.html"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/lovers/lovers.jpg" alt="Lovers" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Lovers</div>
+                            <div class="release-label">2015</div>
+                        </div>
+                    </a>
+
                     <!-- ── Other releases (link to Bandcamp) ── -->
 
                     <a
                         class="release-card"
                         href="everything-stays-the-same.html"
+                        data-type="album-ep"
                     >
                         <div class="release-artwork">
                             <img
@@ -263,43 +433,15 @@
                             <div class="release-title">
                                 Everything Stays The Same
                             </div>
+                            <div class="release-label">King Deluxe · 2014</div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="rosewater.html">
-                        <div class="release-artwork">
-                            <img
-                                src="images/rosewater/rosewater.jpg"
-                                alt="Rosewater"
-                            />
-                        </div>
-                        <div class="release-info">
-                            <div class="release-title">Rosewater</div>
-                        </div>
-                    </a>
-
-                    <a class="release-card" href="lovers.html">
-                        <div class="release-artwork">
-                            <img src="images/lovers/lovers.jpg" alt="Lovers" />
-                        </div>
-                        <div class="release-info">
-                            <div class="release-title">Lovers</div>
-                        </div>
-                    </a>
-
-                    <a class="release-card" href="siamese-burn.html">
-                        <div class="release-artwork">
-                            <img
-                                src="images/siamese-burn/siamese-burn.jpg"
-                                alt="Siamese Burn EP"
-                            />
-                        </div>
-                        <div class="release-info">
-                            <div class="release-title">Siamese Burn EP</div>
-                        </div>
-                    </a>
-
-                    <a class="release-card" href="mountainsound.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="mountainsound.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/mountainsound/mountainsound.jpg"
@@ -308,19 +450,65 @@
                         </div>
                         <div class="release-info">
                             <div class="release-title">Mountainsound</div>
+                            <div class="release-label">
+                                Cleaning Tapes · 2013
+                            </div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="boosh.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="siamese-burn.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/siamese-burn/siamese-burn.jpg"
+                                alt="Siamese Burn EP"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Siamese Burn EP</div>
+                            <div class="release-label">King Deluxe · 2013</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="rosewater.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/rosewater/rosewater.jpg"
+                                alt="Rosewater"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Rosewater</div>
+                            <div class="release-label">2012</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="boosh.html"
+                    >
                         <div class="release-artwork">
                             <img src="images/boosh/boosh.jpg" alt="Boosh" />
                         </div>
                         <div class="release-info">
                             <div class="release-title">Boosh</div>
+                            <div class="release-label">King Deluxe · 2012</div>
                         </div>
                     </a>
 
-                    <a class="release-card" href="jays-odyssey.html">
+                    <a
+                        class="release-card"
+                        data-type="album-ep"
+                        href="jays-odyssey.html"
+                    >
                         <div class="release-artwork">
                             <img
                                 src="images/jays-odyssey/jays-odyssey.jpg"
@@ -329,10 +517,153 @@
                         </div>
                         <div class="release-info">
                             <div class="release-title">Jay's Odyssey</div>
+                            <div class="release-label">King Deluxe · 2011</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Other ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        href="nitely.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/nitely/nitely.jpg"
+                                alt="Nitely"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Nitely</div>
+                            <div class="release-label">Jonny Wildey · 2021</div>
+                        </div>
+                    </a>
+
+                    <!-- ── Singles & Remixes ── -->
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="her-body.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/her-body/her-body.jpg"
+                                alt="Her Body"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Her Body</div>
+                            <div class="release-label">2023</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/track/slo"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/slo/slo.jpg" alt="Slo" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Slo</div>
+                            <div class="release-label">2021</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="wild-love.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/wild-love/wild-love.png"
+                                alt="Wild Love"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Wild Love</div>
+                            <div class="release-label">2019</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/track/le-cygne-the-swan"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/le-cygne/le-cygne.jpg"
+                                alt="Le Cygne (The Swan)"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Le Cygne (The Swan)</div>
+                            <div class="release-label">2019</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/album/dop"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/dope/dope.jpg" alt="Dopé" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Dopé</div>
+                            <div class="release-label">2018</div>
+                        </div>
+                    </a>
+
+                    <a
+                        class="release-card"
+                        data-type="single-remix"
+                        href="https://alphabetsheaven.bandcamp.com/album/edits"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        <div class="release-artwork">
+                            <img src="images/edits/edits.jpg" alt="Edits" />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Edits</div>
+                            <div class="release-label">WotNot · 2016</div>
                         </div>
                     </a>
                 </div>
             </div>
         </div>
+        <div class="bottom-fade"></div>
+        <script>
+            document.querySelectorAll(".filter-tab").forEach((tab) => {
+                tab.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".filter-tab")
+                        .forEach((t) => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    const filter = tab.dataset.filter;
+                    document
+                        .querySelectorAll(".release-card")
+                        .forEach((card) => {
+                            card.style.display =
+                                filter === "all" || card.dataset.type === filter
+                                    ? ""
+                                    : "none";
+                        });
+                });
+            });
+        </script>
     </body>
 </html>
