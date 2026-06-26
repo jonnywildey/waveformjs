@@ -236,10 +236,11 @@
                 </div>
 
                 <div class="filter-tabs">
-                    <button class="filter-tab" data-filter="all">
-                        All
+                    <button class="filter-tab active" data-filter="selected">
+                        Selected
                     </button>
-                    <button class="filter-tab active" data-filter="album-ep">
+                    <button class="filter-tab" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="album-ep">
                         Albums & EPs
                     </button>
                     <button class="filter-tab" data-filter="single-remix">
@@ -258,6 +259,7 @@
                     <a
                         class="release-card"
                         data-type="album-ep"
+                        data-selected
                         href="../aquarium/index.html"
                     >
                         <div class="release-artwork">
@@ -274,6 +276,7 @@
                     <a
                         class="release-card"
                         data-type="album-ep"
+                        data-selected
                         href="eternal-gold-somnolence.html"
                     >
                         <div class="release-artwork">
@@ -293,6 +296,7 @@
                     <a
                         class="release-card"
                         data-type="album-ep"
+                        data-selected
                         href="eternal-infraviolet.html"
                     >
                         <div class="release-artwork">
@@ -306,6 +310,22 @@
                                 Eternal Infraviolet Sunset
                             </div>
                             <div class="release-label">WotNot Music · 2025</div>
+                        </div>
+                    </a>
+                    <a
+                        class="release-card"
+                        data-type="other"
+                        data-selected
+                        href="../permute/index.html"
+                    >
+                        <div class="release-artwork">
+                            <img
+                                src="images/permute/permute.png"
+                                alt="Permute"
+                            />
+                        </div>
+                        <div class="release-info">
+                            <div class="release-title">Permute</div>
                         </div>
                     </a>
 
@@ -326,6 +346,7 @@
                     <a
                         class="release-card"
                         data-type="album-ep"
+                        data-selected
                         href="subtitles.html"
                     >
                         <div class="release-artwork">
@@ -391,6 +412,7 @@
                     <a
                         class="release-card"
                         data-type="album-ep"
+                        data-selected
                         href="warp-records.html"
                     >
                         <div class="release-artwork">
@@ -529,13 +551,11 @@
                     <a
                         class="release-card"
                         data-type="other"
+                        data-selected
                         href="nitely.html"
                     >
                         <div class="release-artwork">
-                            <img
-                                src="images/nitely/nitely.jpg"
-                                alt="Nitely"
-                            />
+                            <img src="images/nitely/nitely.jpg" alt="Nitely" />
                         </div>
                         <div class="release-info">
                             <div class="release-title">Nitely</div>
@@ -548,6 +568,7 @@
                     <a
                         class="release-card"
                         data-type="other"
+                        data-selected
                         href="https://www.youtube.com/watch?v=1ln0FvgzxwU"
                         target="_blank"
                         rel="noopener"
@@ -624,6 +645,7 @@
                     <a
                         class="release-card"
                         data-type="single-remix"
+                        data-selected
                         href="https://alphabetsheaven.bandcamp.com/track/slo"
                         target="_blank"
                         rel="noopener"
@@ -709,6 +731,7 @@
                     <a
                         class="release-card"
                         data-type="video"
+                        data-selected
                         href="https://www.youtube.com/watch?v=VyjzhuWJ6JU"
                         target="_blank"
                         rel="noopener"
@@ -835,7 +858,9 @@
                         </div>
                         <div class="release-info">
                             <div class="release-title">Woman</div>
-                            <div class="release-label">feat. Alessi's Ark · YouTube</div>
+                            <div class="release-label">
+                                feat. Alessi's Ark · YouTube
+                            </div>
                         </div>
                     </a>
 
@@ -854,7 +879,9 @@
                         </div>
                         <div class="release-info">
                             <div class="release-title">Pride and Joy</div>
-                            <div class="release-label">feat. Deft · YouTube</div>
+                            <div class="release-label">
+                                feat. Deft · YouTube
+                            </div>
                         </div>
                     </a>
 
@@ -910,7 +937,9 @@
                             />
                         </div>
                         <div class="release-info">
-                            <div class="release-title">Eternal Gold Somnolence</div>
+                            <div class="release-title">
+                                Eternal Gold Somnolence
+                            </div>
                             <div class="release-label">YouTube</div>
                         </div>
                     </a>
@@ -946,7 +975,6 @@
                             <div class="release-label">Vimeo</div>
                         </div>
                     </a>
-
                 </div>
             </div>
         </div>
@@ -954,10 +982,12 @@
         <script>
             function applyFilter(filter) {
                 document.querySelectorAll(".release-card").forEach((card) => {
-                    card.style.display =
-                        filter === "all" || card.dataset.type === filter
-                            ? ""
-                            : "none";
+                    const match =
+                        filter === "all" ||
+                        card.dataset.type === filter ||
+                        (filter === "selected" &&
+                            card.hasAttribute("data-selected"));
+                    card.style.display = match ? "" : "none";
                 });
             }
 
@@ -971,7 +1001,7 @@
                 });
             });
 
-            applyFilter("album-ep");
+            applyFilter("selected");
         </script>
     </body>
 </html>
