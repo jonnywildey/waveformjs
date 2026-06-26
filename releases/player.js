@@ -499,6 +499,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tracks,
     links = [],
     artwork = "",
+    videos = [],
   } = window.albumConfig;
   const player = new Waveform("long");
 
@@ -583,6 +584,32 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="release-info-label">Credits</div>
       ${credits.map((line) => `<p class="credit-line">${line}</p>`).join("")}
     `;
+  }
+
+  // Videos section — injected before .fx-section
+  if (videos.length > 0) {
+    const videosEl = document.createElement("div");
+    videosEl.className = "release-videos";
+    const videosLabel = document.createElement("div");
+    videosLabel.className = "release-info-label";
+    videosLabel.textContent = "Videos";
+    videosEl.appendChild(videosLabel);
+    videos.forEach(({ title: vTitle, url }) => {
+      const a = document.createElement("a");
+      a.className = "stream-link";
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = vTitle;
+      videosEl.appendChild(a);
+    });
+    const fxSection = document.querySelector(".fx-section");
+    if (fxSection) {
+      fxSection.parentNode.insertBefore(videosEl, fxSection);
+    } else {
+      const artworkCol = document.querySelector(".artwork-column");
+      if (artworkCol) artworkCol.appendChild(videosEl);
+    }
   }
 
   // Background crossfade — fades between track-specific artwork when available

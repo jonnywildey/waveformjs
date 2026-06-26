@@ -235,6 +235,37 @@
     margin: 0;
 }
 
+/* ── Videos links (left column) ─────────────────────────────────────────── */
+
+.release-videos {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 16px 14px;
+}
+
+/* ── Video card thumbnail overlay ────────────────────────────────────────── */
+
+.release-card[data-type="video"] .release-artwork {
+    position: relative;
+}
+
+.release-card[data-type="video"] .release-artwork::after {
+    content: "▶";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+.release-card[data-type="video"]:hover .release-artwork::after {
+    opacity: 1;
+}
+
 /* ── FX collapsible ──────────────────────────────────────────────────────── */
 
 .fx-section {
@@ -564,7 +595,8 @@ iframe {
         justify-content: center;
     }
 
-    .album-credits {
+    .album-credits,
+    .release-videos {
         flex: 0 0 100%;
         border-left: none;
         border-top: 1px solid rgba(255, 255, 255, 0.08);

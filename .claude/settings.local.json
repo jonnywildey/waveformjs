@@ -24,7 +24,28 @@
       "Bash(cp '/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Boosh Docs/[KING011] Alphabets Heaven - Boosh 3/*.mp3' '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Boosh/')",
       "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Siamese Burn EP')",
       "Bash(cp '/Users/jonnywildey/Dropbox/Public/Alphabets Heaven/Siamese Burn EP promo/*.mp3' '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Siamese Burn EP/')",
-      "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Mountainsound')"
+      "Bash(mkdir -p '/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Mountainsound')",
+      "WebFetch(domain:tidal.com)",
+      "WebFetch(domain:music.apple.com)",
+      "WebFetch(domain:open.spotify.com)",
+      "WebFetch(domain:kingdeluxe.bandcamp.com)",
+      "WebFetch(domain:alphabetsheaven.bandcamp.com)",
+      "WebSearch",
+      "WebFetch(domain:cleaningtapes.bandcamp.com)",
+      "WebFetch(domain:soundcloud.com)",
+      "WebFetch(domain:song.link)",
+      "WebFetch(domain:rxtx.bandcamp.com)",
+      "Bash(mkdir -p /Users/jonnywildey/rustcode/waveformjs/releases/images/warp-records)",
+      "Bash(cp \"/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Warp Records/Warp Records.jpg\" /Users/jonnywildey/rustcode/waveformjs/releases/images/warp-records/warp-records.jpg)",
+      "Bash(node ../generate-batch.js \"/Users/jonnywildey/rustcode/waveformjs/audio/Alphabets Heaven - Warp Records\" warp-records)",
+      "Bash(curl -s \"https://f4.bcbits.com/img/a0708261395_10.jpg\" -o her-body/her-body.jpg)",
+      "Bash(node add-vignette.js releases/images/wild-love/wild-love.png releases/images/cielo/cielo.jpg releases/images/your-lifestyle/your-lifestyle.jpg)",
+      "Bash(node ../generate-batch.js \"../audio/Alphabets Heaven - Wild Love\" wild-love)",
+      "Bash(node ../generate-batch.js \"../audio/Jonny Wildey - Nitely\" nitely)",
+      "Bash(node add-vignette.js releases/images/her-body/her-body.jpg)",
+      "Bash(node ../generate-batch.js \"../audio/Alphabets Heaven - Her Body\" her-body)",
+      "WebFetch(domain:www.youtube.com)",
+      "WebFetch(domain:vimeo.com)"
     ]
   }
 }
