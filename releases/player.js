@@ -22,8 +22,7 @@ class Waveform {
     this._scrubProgress = null;
     this.onEnded = () => {};
     if (!this.isIos) {
-      this._setupFx();
-      this._setupControls();
+      this._setupFx().then(() => this._setupControls());
     } else {
       // Hide FX controls on iOS — Web Audio FX chain not used
       const fx = document.querySelector(".fx-section");
@@ -40,8 +39,9 @@ class Waveform {
     return new Ctx();
   }
 
-  _setupFx() {
+  async _setupFx() {
     const ctx = this.context;
+    await ctx.audioWorklet.addModule("delay-processor.js");
 
     // Volume + lowpass filter chain → output
     this.gainNode = ctx.createGain();
@@ -52,11 +52,12 @@ class Waveform {
     this.lopass.connect(this.gainNode);
     this.gainNode.connect(ctx.destination);
 
-    // Delay: send → lopass → delay → feedback → hipass → compressor → (loops) → output
+    // Delay: send → lopass → worklet delay → feedback → hipass → compressor → (loops) → output
     this.delaySend = ctx.createGain();
     this.delaySend.gain.value = 0;
-    this.delayLine = ctx.createDelay(1.5);
-    this.delayLine.delayTime.value = 0.35;
+    this.delayLine = new AudioWorkletNode(ctx, "delay-processor", {
+      outputChannelCount: [2],
+    });
     this.delayFeedback = ctx.createGain();
     this.delayFeedback.gain.value = 0.4;
     this.delayLopass = ctx.createBiquadFilter();
@@ -97,11 +98,8 @@ class Waveform {
       );
     });
     bind("delay-time", (e) => {
-      this.delayLine.delayTime.setTargetAtTime(
-        +e.target.value,
-        this.context.currentTime,
-        0.1,
-      );
+      if (this.delayLine)
+        this.delayLine.parameters.get("delayTime").value = +e.target.value;
     });
     bind("delay-feedback", (e) => {
       this.delayFeedback.gain.value = +e.target.value;
